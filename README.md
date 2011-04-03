@@ -79,6 +79,10 @@ You can move NearlyFreeMail to the document root of your site, or to any other d
 simply by moving all the files and directories to the desired location.
 Just don't forget the dotfiles: `.htaccess` and `.git`.
 
+If you would like to help fix bugs, it might be a good idea to enable the **error log** in your site.
+To help with debugging, NearlyFreeMail produces a generous amount of diagnostic messages when e-mail is received.
+These are deposited into your error log, so that you can see which (if any) e-mail failed to deliver.
+
 The "nearlyfreemail" directory in your protected folder should not be messed with unless you know what you're doing.
 It contains information about all of your e-mail accounts, contacts, and messages.
 
