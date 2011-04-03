@@ -23,7 +23,10 @@ class Compose extends Base
         
         if ($to = \Common\Request::get('to'))
         {
-            $recipient = $to;
+            if ($valid_recipient = \Models\Contact::extract($to))
+            {
+                $recipient = $valid_recipient[0]->get_profile();
+            }
         }
         elseif ($id = \Common\Request::get('reply', 'int'))
         {
@@ -208,7 +211,7 @@ class Compose extends Base
         
         foreach ($_FILES as $file)
         {
-            $name = $file['name'];
+            $name = \Common\Security::filter($file['name'], 'filename');
             $source = is_uploaded_file($file['tmp_name']) ? $file['tmp_name'] : null;
             if ($source)
             {
@@ -242,6 +245,21 @@ class Compose extends Base
     
     public function send($message)
     {
+        // Check the character encoding of the message.
+        
+        if (!\Common\Security::validate($message->subject, 'utf-8'))
+        {
+            $error = 'Your message could not be sent, because the subject is not valid UTF-8.' . "\n\n";
+            $error = 'Please return to your draft, remove the invalid characters, and try again.';
+            \Common\AJAX::error($error);
+        }
+        if (!\Common\Security::validate($message->content, 'utf-8'))
+        {
+            $error = 'Your message could not be sent, because the content is not valid UTF-8.' . "\n\n";
+            $error = 'Please return to your draft, remove the invalid characters, and try again.';
+            \Common\AJAX::error($error);
+        }
+        
         // Load SwiftMailer.
         
         load_third_party('swiftmailer');
@@ -340,18 +358,10 @@ class Compose extends Base
             }
         }
         
+        // Finish!
+        
         \Common\DB::commit();
-        
-        // Did we success?
-        
-        if ($result == $recipient_count)
-        {
-            \Common\Response::redirect('index.php?action=inbox');
-        }
-        else
-        {
-            \Common\Response::redirect('index.php?action=inbox');  // TODO: FIX
-        }
+        \Common\Response::redirect('index.php?action=inbox');
     }
     
     // Produce a reply text.

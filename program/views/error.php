@@ -9,7 +9,7 @@
     
     <div class="rounded box">
     
-        <p><?php e($message); ?></p>
+        <p><?php e($message, true); ?></p>
         
         <p class="margin center"><br /><a href="javascript:history.back()">Go Back</a></p>
     
