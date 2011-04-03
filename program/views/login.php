@@ -9,7 +9,7 @@
     
     <div class="rounded box">
     
-        <p>Please make sure that your Internet connection is secure. If in doubt, use an SSH tunnel with your NearlyFreeSpeech.NET account.</p>
+        <p>Please make sure that your Internet connection is secure!</p>
         
         <form id="login" action="index.php" method="post" accept-charset="UTF-8" onsubmit="return ajax(this)">
         
