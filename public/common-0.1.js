@@ -19,10 +19,9 @@ $(document).ready(function()
     var autosave_element = $("#autosave");
     if (autosave_element.size())
     {
-        $("#as_enabled").text("Enabled");
+        $("#as_enabled").text("Pending");
         $("#autosave").append('<a id="as_disable" href="javascript:autosave_disable()">(Disable)</a>');
         autosave_interval = setInterval(autosave, 3 * 60 * 1000);  // 3 minutes.
-        window.onbeforeunload = function() { autosave(false); };
     }
 });
 
@@ -143,6 +142,10 @@ var autosave_interval;
 
 function autosave(async)
 {
+    if (async === undefined) async = true;
+    window.onbeforeunload = function() { autosave(false); };
+    $("#as_enabled").text("Saving..");
+    
     var data = {
         "action": "compose",
         "button": "autosave",
@@ -156,10 +159,6 @@ function autosave(async)
         "notes": $("#notes").val(),
         "csrf_token": $("#csrf_token").val()
     };
-    
-    if (async === undefined) async = true;
-    if (async == false && data.recipient == "" && data.cc == "" && data.bcc == "" && data.subject == "" && data.message_content == "") return;
-    $("#as_enabled").text("Saving..");
     
     var success_callback = function(data, textStatus, jqXHR)
     {
@@ -184,7 +183,7 @@ function autosave(async)
     
     var complete_callback = function(jqXHR, textStatus)
     {
-        setTimeout(function() { $("#as_enabled").text("Enabled"); }, 5000);  // 3 seconds.
+        setTimeout(function() { $("#as_enabled").text("Enabled"); }, 5000);
     }
     
     $.ajax({
