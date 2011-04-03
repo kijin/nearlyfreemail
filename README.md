@@ -3,7 +3,7 @@
 
 NearlyFreeMail is a **Web-based e-mail client** (webmail)
 customized for [NearlyFreeSpeech.NET](https://www.nearlyfreespeech.net/) (NFSN) users.
-It uses NFSN's [e-mail-to-URL forwarding service](https://www.nearlyfreespeech.net/services/email) for incoming messages,
+It uses NFSN's [e-mail-to-URL forwarding](https://www.nearlyfreespeech.net/services/email) service for incoming messages,
 and the open-source [SwiftMailer](http://swiftmailer.org/) library for outgoing messages.
 
 The goal is to allow NFSN users to send and receive e-mail with their own domain names,
@@ -23,22 +23,25 @@ Bugs in this software and/or network glitches could also cause your messages to 
 
 **NearlyFreeMail is neither endorsed nor supported by NearlyFreeSpeech.NET.**
 The author is not affiliated with NFSN in any way, other than being just another happy customer.
+Please do not contact NFSN about bugs in this software.
 
 
 ### Features ###
 
 Right now, you can:
 
-- Send and receive plain-text messages with your own domain name (HTML messages are converted to plain text)
-- Send and receive attachments up to ~7MB (larger messages may be rejected by NFSN)
+- Send and receive plain-text messages with your own domain name _(HTML messages are converted to plain text)_
+- Send and receive attachments up to ~7MB _(Larger messages may be rejected by NFSN)_
+- Reply, reply all, and forward _(With appropriate `In-Reply-To:` and `References:` headers)_
+- Add signatures to outgoing messages
 - Organize your messages into folders
 - Manage your address book
-- Reply, reply all, and forward (with appropriate `In-Reply-To:` and `References:` headers)
-- Add singnatures to outgoing messages
-- Auto-save your drafts (requires JavaScript)
-- Perform basic spam filtering (depends on spam score assigned by NFSN)
+- Auto-save your drafts _(This is the only feature that requires JavaScript)_
+- Perform basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
+- Unicode support _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
 
 More features may be added if there is enough demand and if the author has time.
+Planned features include MySQL support, aliases/personalities, and message filters.
 Updates, if any, will be published on the author's GitHub page.
 
 
@@ -54,7 +57,7 @@ To install and use NearlyFreeMail, you need:
 Currently, a lot of things are hard-coded in a way that would make it inconvenient to use NearlyFreeMail
 anywhere except in NFSN's pay-as-you-go shared hosting environment.
 For example, all messages and attachments are stored in the "protected" directory in a single SQLite database;
-and some features of included third-party libraries are disabled due to incompatibilities with NFSN.
+and some features of included third-party libraries are disabled due to incompatibilities with NFSN's strict policies.
 
 
 ### Installation ###
