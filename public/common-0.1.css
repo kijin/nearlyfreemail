@@ -182,4 +182,4 @@ em { font-style: italic; }
 #attachments button { border: 1px solid #d0d0d0; background-color: #eaeaea; padding: 4px 7px 4px 7px; margin-right: 5px; }
 #attachments button:hover, #attachments button:focus, #attachments button:active { border-color: #a0a0ff; background-color: #e8e8ff; }
 #compose fieldset.save { text-align: right; line-height: 100%; border-top: 1px solid #c0c0c0; padding-top: 10px; margin-bottom: 10px; }
-#autosave a:link { font-size: 0.8em; margin-left: 20px; color: #808080; }
+#autosave a:link { font-size: 0.8em; margin-left: 16px; color: #404040; }

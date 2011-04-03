@@ -19,9 +19,14 @@ $(document).ready(function()
     var autosave_element = $("#autosave");
     if (autosave_element.size())
     {
-        $("#as_enabled").text("Pending");
+        $("#as_enabled").text("Enabled.");
         $("#autosave").append('<a id="as_disable" href="javascript:autosave_disable()">(Disable)</a>');
-        autosave_interval = setInterval(autosave, 3 * 60 * 1000);  // 3 minutes.
+        $("input[type=text]").keypress(autosave_change_notify);
+        $("input[type=text]").change(autosave_change_notify);
+        $("textarea").keypress(autosave_change_notify);
+        $("textarea").change(autosave_change_notify);
+        autosave_interval = setInterval(autosave, 60000);  // every 1 minute
+        window.onbeforeunload = function() { autosave(false); };
     }
 });
 
@@ -137,14 +142,17 @@ function add_attachment()
 // Autosave variables.
 
 var autosave_interval;
+var autosave_need = false;
 
 // Autosave main function.
 
 function autosave(async)
 {
     if (async === undefined) async = true;
-    window.onbeforeunload = function() { autosave(false); };
-    $("#as_enabled").text("Saving..");
+    if (autosave_need == false) return;
+    $("#as_enabled").text("Saving...");
+    $("#as_changed").text("");
+    autosave_need = false;
     
     var data = {
         "action": "compose",
@@ -167,23 +175,23 @@ function autosave(async)
             $("#message_id").val(data.content);
             $("#references").val("");
             $("#notes").val("");
-            $("#as_enabled").text("Saved");
+            $("#as_enabled").text("Saved.");
         }
         else
         {
             alert(data.content);
-            $("#as_enabled").text("Save failed! Will retry in 3 minutes..");
+            $("#as_enabled").text("Save failed! Will retry in 1 minute...");
         }
     };
     
     var failure_callback = function(jqXHR, textStatus, errorThrown)
     {
-        $("#as_enabled").text("Save failed! Will retry in 3 minutes..");
+        $("#as_enabled").text("Save failed! Will retry in 1 minute...");
     };
     
     var complete_callback = function(jqXHR, textStatus)
     {
-        setTimeout(function() { $("#as_enabled").text("Enabled"); }, 5000);
+        setTimeout(function() { $("#as_enabled").text("Enabled."); }, 3000);
     }
     
     $.ajax({
@@ -200,13 +208,21 @@ function autosave(async)
     });
 }
 
+// Change notification.
+
+function autosave_change_notify()
+{
+    $("#as_changed").text("Changes detected.");
+    autosave_need = true;
+}
+
 // Disable autosave.
 
 function autosave_disable()
 {
     clearInterval(autosave_interval);
     window.onbeforeunload = function() { };
-    $("#as_enabled").text("Disabled");
+    $("#as_enabled").text("Disabled.");
     $("#as_disable").remove();
 }
 
