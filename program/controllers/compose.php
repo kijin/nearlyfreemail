@@ -65,6 +65,10 @@ class Compose extends Base
             }}
         }
         
+        // Add the current alias's signature.
+        
+        $content .= "\n\n" . $this->user->get_default_alias()->signature;
+        
         // Display the composition form.
         
         $view = new \Common\View('compose');

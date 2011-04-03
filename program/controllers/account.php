@@ -35,6 +35,7 @@ class Account extends Base
         $alias->name = $name;
         $alias->email = $email;
         $alias->incoming_key = $incoming_key;
+        $alias->signature = '';
         $alias->created_time = $account->created_time;
         $alias->save();
         $account->save(array('default_alias' => $alias->id));

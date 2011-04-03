@@ -12,6 +12,7 @@ class Alias extends \Beaver\Base
     public $name;
     public $email;
     public $incoming_key;
+    public $signature;
     public $created_time;
     
     // Get the incoming URL.
