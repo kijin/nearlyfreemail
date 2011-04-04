@@ -102,7 +102,7 @@
         <input type="hidden" name="action" value="mailbox_do_action" />
         <input type="hidden" name="folder_id" value="<?php if (isset($selected_folder)): ?><?php e($selected_folder->id); ?><?php endif; ?>" />
         <input type="hidden" name="page" value="<?php e($page); ?>" />
-        <input type="hidden" name="csrf_token" id="read_actions_csrf_token" value="<?php e($token); ?>" />
+        <input type="hidden" name="csrf_token" value="<?php e($token); ?>" />
     </fieldset>
     
     <!-- Visible Buttons -->

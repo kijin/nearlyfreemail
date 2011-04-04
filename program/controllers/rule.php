@@ -2,7 +2,7 @@
 
 namespace Controllers;
 
-class Folder extends Base
+class Rule extends Base
 {
     // All calls to this controller require login.
     
@@ -12,8 +12,8 @@ class Folder extends Base
     
     public function show()
     {
-        $view = new \Common\View('folders');
-        $view->title = 'Folders';
+        $view = new \Common\View('rules');
+        $view->title = 'Rules';
         $view->menu = 'settings';
         $view->user = $this->user;
         $view->render();

@@ -35,14 +35,16 @@ CREATE TABLE settings
 CREATE INDEX ix_settings_account_id ON settings (account_id);
 CREATE INDEX ix_settings_s_key      ON settings (s_key);
 
-CREATE TABLE filters
+CREATE TABLE rules
 (
     id         INTEGER PRIMARY KEY AUTOINCREMENT,
     account_id INTEGER NOT NULL REFERENCES accounts (id) ON DELETE CASCADE,
+    priority   INTEGER NOT NULL DEFAULT 0,
     rule       TEXT    NOT NULL,
     action     TEXT    NOT NULL
 );
-CREATE INDEX ix_filters_account_id ON filters (account_id);
+CREATE INDEX ix_rules_account_id ON rules (account_id);
+CREATE INDEX ix_rules_priority   ON rules (priority);
 
 CREATE TABLE contacts
 (

@@ -23,7 +23,11 @@ class Compose extends Base
         
         if ($to = \Common\Request::get('to'))
         {
-            if ($valid_recipient = \Models\Contact::extract($to))
+            if ($to === 'selected')
+            {
+                $recipient = isset($_SESSION['selected_contacts']) ? $_SESSION['selected_contacts'] : '';
+            }
+            elseif ($valid_recipient = \Models\Contact::extract($to))
             {
                 $recipient = $valid_recipient[0]->get_profile();
             }
@@ -277,6 +281,10 @@ class Compose extends Base
         $headers = $mail->getHeaders();
         $headers->remove('Message-ID');
         $headers->addTextHeader('Message-ID', $message->msgid);
+        
+        // Add the user-agent string.
+        
+        $headers->addTextHeader('User-Agent', 'NearlyFreeMail/' . \VERSION);
         
         // Add some redundant headers, in case somebody wants to reply to NFSN's unremovable Return-Path.
         

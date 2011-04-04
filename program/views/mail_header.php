@@ -21,39 +21,21 @@
 <!-- Sidebar -->
 
 <div id="sidebar">
-
-    <h3>Actions</h3>
-
-    <ul>
-        <?php if (isset($menu) && $menu !== 'main'): ?>
-        <li><a href="index.php?action=inbox">Return to Inbox</a></li>
-        <?php else: ?>
-        <li><a href="index.php?action=compose">New Message</a></li>
-        <?php endif; ?>
-        <li><a href="index.php?action=settings">Settings</a></li>
-        <li><form id="logout" action="index.php" method="post" accept-charset="UTF-8" onsubmit="return ajax(this)">
-            <input type="hidden" name="action" value="logout" />
-            <input type="hidden" name="logout_token" value="<?php e(\Common\Session::get_logout_token()); ?>" />
-            <button type="submit">Logout</button>
-        </form></li>
-    </ul>
-
-    <?php
-        if (isset($menu))
+<?php
+    if (isset($menu))
+    {
+        switch ($menu)
         {
-            switch ($menu)
-            {
-                case 'main': include 'sidebar_main.php'; break;
-                case 'compose': include 'sidebar_compose.php'; break;
-                case 'settings': include 'sidebar_settings.php'; break;
-            }
+            case 'main': include 'sidebar_main.php'; break;
+            case 'compose': include 'sidebar_compose.php'; break;
+            case 'settings': include 'sidebar_settings.php'; break;
         }
-        else
-        {
-            include 'sidebar_main.php';
-        }
-    ?>
-    
+    }
+    else
+    {
+        include 'sidebar_main.php';
+    }
+?>
 </div>
 
 <!-- Content Area -->

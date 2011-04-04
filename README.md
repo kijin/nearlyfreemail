@@ -1,15 +1,15 @@
 
 ### Introduction ###
 
-NearlyFreeMail is a **Web-based e-mail client** (webmail)
-customized for [NearlyFreeSpeech.NET](https://www.nearlyfreespeech.net/) (NFSN) members.
-It uses NFSN's [e-mail-to-URL forwarding](https://www.nearlyfreespeech.net/services/email) service for incoming messages,
-and the open-source [SwiftMailer](http://swiftmailer.org/) library for outgoing messages.
+NearlyFreeMail is a **Web-based e-mail client** (webmail) designed for [NearlyFreeSpeech.NET](https://www.nearlyfreespeech.net/) (NFSN) members.
+It uses NFSN's [e-mail-to-URL forwarding service](https://www.nearlyfreespeech.net/services/email) for incoming messages,
+and the open-source [SwiftMailer](http://swiftmailer.org/) library (i.e. `mail()` on steroids) for outgoing messages.
 
 The goal is to allow NFSN members to send and receive e-mail with their own domain names,
 without relying on third-party e-mail service providers such as Google Apps.
 For some people, an **all-NFSN solution** like this could have significant privacy benefits.
 For others, it may add to the geek factor of their NFSN experience.
+It might not cost less than other options, though -- it's only "nearly" free, after all.
 
 NearlyFreeMail is free software. It is distributed under the GNU General Public License (GPL), version 3 or later.
 Third-party components included with this distribution may be covered by other open-source licenses.
@@ -77,11 +77,11 @@ Follow the instructions to create your first all-NFSN e-mail account.
 
 You can move NearlyFreeMail to the document root of your site, or to any other directory,
 simply by moving all the files and directories to the desired location.
-**You must go to your NFSN control panel and update the forwarding URL if you move NearlyFreeMail.**
+**You must go to your NFSN control panel and update the forwarding URL if you change the installed location of NearlyFreeMail.**
 Also, don't forget the dotfiles: `.htaccess` and `.git`.
 
 If you would like to help fix bugs, it might be a good idea to enable the **error log** in your site.
-To help with debugging, NearlyFreeMail produces a generous amount of diagnostic messages when e-mail is received.
+To assist debugging, NearlyFreeMail produces a generous amount of diagnostic messages when e-mail is received.
 These are deposited into your error log, so that you can see which (if any) e-mail failed to deliver.
 
 
@@ -113,7 +113,8 @@ You might be tempted to add HTTP authentication ([basic](http://en.wikipedia.org
 **If you use HTTP authentication on your site, NFSN will not be able to deliver any incoming messages.**
 The best that you can do realistically to keep NearlyFreeMail hidden from random attackers
 would be to stash it in a subdirectory with a name that is hard to guess.
-Don't forget to update the forwarding URL if you do so.
+(The recipients of your messages, however, will be able to infer the location by reading the headers automatically added by NFSN.)
+Don't forget to update the forwarding URL if you move your installation of NearlyFreeMail.
 
 
 ### Updating ###

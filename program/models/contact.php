@@ -80,4 +80,9 @@ class Contact extends \Beaver\Base
             return $this->name . ' <' . $this->email . '>';
         }
     }
+    
+    public function __toString()
+    {
+        return $this->get_profile();
+    }
 }
