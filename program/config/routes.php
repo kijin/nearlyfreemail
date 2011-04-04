@@ -53,4 +53,5 @@ $routes = array(
     'GET.folders'  => 'Folder.show',
     'GET.contacts' => 'Contact.show',
     'GET.settings' => 'Setting.show',
+    'POST.settings' => 'Setting.save',
 );

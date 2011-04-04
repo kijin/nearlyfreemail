@@ -72,4 +72,15 @@ class Account extends \Beaver\Base
             $this->_settings[$key] = $value;
         }
     }
+    
+    // Change passphrase.
+    
+    public function change_passphrase($passphrase)
+    {
+        load_third_party('phpass');
+        $phpass = new \PasswordHash(8, false);
+        $hash = $phpass->HashPassword($passphrase);
+        unset($phpass);
+        $this->save(array('password' => $hash));
+    }
 }

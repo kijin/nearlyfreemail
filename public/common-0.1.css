@@ -183,3 +183,17 @@ em { font-style: italic; }
 #attachments button:hover, #attachments button:focus, #attachments button:active { border-color: #a0a0ff; background-color: #e8e8ff; }
 #compose fieldset.save { text-align: right; line-height: 100%; border-top: 1px solid #c0c0c0; padding-top: 10px; margin-bottom: 10px; }
 #autosave a:link { font-size: 0.8em; margin-left: 16px; color: #404040; }
+
+/* Settings View */
+
+#settings p.url { text-align: center; margin-top: 14px; margin-bottom: 6px; }
+#settings fieldset.category { width: 700px; padding: 16px; border: 1px solid #c0c0c0; background-color: #f4f4f4; margin-bottom: 16px; }
+#settings div.item { width: 100%; clear: both; position: relative; min-height: 54px; line-height: 150%; }
+#settings div.item span.explain { margin-left: 0px; font-size: 0.8em; }
+#settings div.item label { font-weight: bold; color: #606060; }
+#settings div.item input { position: absolute; right: 0px; top: 3px; width: 300px; }
+#settings div.item select { position: absolute; right: 0px; top: 3px; width: 300px; padding: 5px; }
+#settings div.item textarea { float: right; width: 580px; min-width: 580px; max-width: 580px; height: 100px; min-height: 100px; }
+
+
+
