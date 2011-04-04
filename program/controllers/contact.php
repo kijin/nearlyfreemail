@@ -29,7 +29,7 @@ class Contact extends Base
         $name = \Common\Request::post('name');
         $email = \Common\Request::post('email');
         $csrf_token = \Common\Request::post('csrf_token');
-    
+        
         // Check the CSRF token.
         
         if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
@@ -115,7 +115,6 @@ class Contact extends Base
         
         $contact->name = $name;
         $contact->email = $email;
-        $contact->last_used = time();
         $contact->save();
         
         // Redirect.

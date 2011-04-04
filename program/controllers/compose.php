@@ -302,27 +302,27 @@ class Compose extends Base
         
         // Add recipients.
         
-        $recipient_count = 0;
+        $recipient_list = array();
         $to = \Models\Contact::extract($message->recipient);
         foreach ($to as $addr)
         {
             $addr->name ? $mail->addTo($addr->email, $addr->name) : $mail->addTo($addr->email);
-            $recipient_count++;
+            $recipient_list[] = $addr->email;
         }
         $cc = \Models\Contact::extract($message->cc);
         foreach ($cc as $addr)
         {
             $addr->name ? $mail->addCc($addr->email, $addr->name) : $mail->addCc($addr->email);
-            $recipient_count++;
+            $recipient_list[] = $addr->email;
         }
         $bcc = \Models\Contact::extract($message->bcc);
         foreach ($bcc as $addr)
         {
             $addr->name ? $mail->addBcc($addr->email, $addr->name) : $mail->addBcc($addr->email);
-            $recipient_count++;
+            $recipient_list[] = $addr->email;
         }
         
-        if (!$recipient_count) \Common\AJAX::error('You cannot send a message with no recipients.');
+        if (!$recipient_list) \Common\AJAX::error('You cannot send a message with no recipients.');
         
         // Add attachments. (This routine obviously needs to be improved.)
         
@@ -366,6 +366,10 @@ class Compose extends Base
             }
         }
         
+        // Update the last-used timestamp of any contacts to which this message was sent.
+        
+        \Models\Contact::update_last_used_timestamp($recipient_list);
+        
         // Finish!
         
         \Common\DB::commit();
@@ -376,15 +380,13 @@ class Compose extends Base
     
     public function produce_reply_text($message)
     {
-        $headers = array('-------- Original Message --------');
-        $headers[] = 'Subject: ' . $message->subject;
-        $headers[] = 'Date: ' . gmdate('D, d M Y H:i:s', $message->sent_time) . ' +0000';
-        $headers[] = 'From: ' . $message->sender;
-        if ($message->reply_to) $headers[] = 'Reply-To: ' . $message->reply_to;
-        $headers[] = 'To: ' . $message->recipient;
+        date_default_timezone_set($this->user->get_setting('timezone'));
+        $sender = \Models\Contact::extract($message->sender);
+        $sender_name = $sender ? $sender[0]->name : '(no name)';
+        $header = 'On ' . date('D, d M Y H:i:s T', $message->sent_time) . ', ' . $sender_name . ' wrote:';
         
         $content = explode("\n", trim($message->content));
         $content = array_map(function($str) { return "> $str"; }, $content);
-        return "\n\n\n" . implode("\n", $headers) . "\n\n" . implode("\n", $content) . "\n";
+        return "\n\n\n" . $header . "\n" . implode("\n", $content) . "\n";
     }
 }

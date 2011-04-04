@@ -21,6 +21,15 @@ class Contact extends \Beaver\Base
         return self::find('WHERE account_id = ? ORDER BY last_used DESC LIMIT ?', array($account_id, $count));
     }
     
+    // Update the last-used timestamp of a set of contacts.
+    
+    public static function update_last_used_timestamp($emails)
+    {
+        $placeholders = implode(', ', array_fill(0, count($emails), '?'));
+        array_unshift($emails, time());
+        return \Common\DB::query('UPDATE contacts SET last_used = ? WHERE email IN (' . $placeholders . ')', $emails);
+    }
+    
     // A method to parse name & e-mail pairs.
     
     public static function extract($input)

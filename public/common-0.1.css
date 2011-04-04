@@ -181,6 +181,7 @@ em { font-style: italic; }
 #attachments #file_list div.newfiles span { font-size: 0.8em; }
 #attachments button { border: 1px solid #d0d0d0; background-color: #eaeaea; padding: 4px 7px 4px 7px; margin-right: 5px; }
 #attachments button:hover, #attachments button:focus, #attachments button:active { border-color: #a0a0ff; background-color: #e8e8ff; }
+
 #compose fieldset.save { text-align: right; line-height: 100%; border-top: 1px solid #c0c0c0; padding-top: 10px; margin-bottom: 10px; }
 #autosave a:link { font-size: 0.8em; margin-left: 16px; color: #404040; }
 
@@ -207,6 +208,7 @@ em { font-style: italic; }
 #settings_existing p.item span.email { color: #808080; margin-left: 8px; }
 #settings_existing p.item span.actions { font-size: 0.8em; float: right; }
 #settings_existing p.item span.gray { color: #808080; }
+
 #settings_actions_buttons { margin-top: 8px; font-size: 0.8em; }
 #settings_actions_buttons button { border: 1px solid #d0d0d0; background-color: #eaeaea; padding: 4px 7px 4px 7px; margin-right: 5px; }
 #settings_actions_buttons button:hover, #read_actions button:focus, #read_actions button:active { border-color: #a0a0ff; background-color: #e8e8ff; }
