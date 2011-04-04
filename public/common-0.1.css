@@ -96,14 +96,14 @@ em { font-style: italic; }
 #message_list thead { border-bottom: 1px solid #d0d0d0; background-color: #f4f4f4; }
 #message_list thead tr th { padding: 4px 0px 5px 0px; font-weight: bold; color: #808080; }
 #message_list thead tr th.select { text-align: left; padding-left: 8px; width: 32px; }
-#message_list thead tr th.select input { position: relative; top: 1px; }
+#message_list thead tr th.select input { position: relative; top: 1px; padding: 0px; border: 0px; }
 #message_list thead tr th.fromto { text-align: left; }
 #message_list thead tr th.subject { text-align: left; }
 #message_list thead tr th.time { text-align: right; padding-right: 10px; }
 #message_list tbody { border-bottom: 1px solid #e0e0e0; }
 #message_list tbody tr td { padding: 3px 0px 4px 0px; border-bottom: 1px dotted #e0e0e0; }
 #message_list tbody tr td.select { text-align: left; padding-left: 8px; width: 32px; }
-#message_list tbody tr td.select input { position: relative; top: 1px; }
+#message_list tbody tr td.select input { position: relative; top: 1px; padding: 0px; border: 0px; }
 #message_list tbody tr td.fromto { text-align: left; padding-right: 10px; }
 #message_list tbody tr td.subject { text-align: left; padding-right: 10px; }
 #message_list tbody tr td.subject span.replied { color: #6090b0; margin-left: 4px; }
@@ -204,8 +204,9 @@ em { font-style: italic; }
 
 #settings_existing { width: 700px; padding: 16px; border: 1px solid #d0d0d0; margin-bottom: 10px; }
 #settings_existing p.item { margin-bottom: 6px; }
-#settings_existing p.item input { position: relative; top: 1px; left: -3px; }
+#settings_existing p.item input { position: relative; top: 1px; left: -3px; padding: 0px; border: 0px; }
 #settings_existing p.item span.email { color: #808080; margin-left: 8px; }
+#settings_existing p.item span.messages { font-size: 0.8em; color: #606060; }
 #settings_existing p.item span.actions { font-size: 0.8em; float: right; }
 #settings_existing p.item span.gray { color: #808080; }
 

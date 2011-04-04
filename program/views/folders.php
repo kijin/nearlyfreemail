@@ -35,6 +35,7 @@
     <p class="item">
         <input type="checkbox" name="selected_folders[]" value="<?php e($folder->id); ?>" <?php if (in_array($folder->name, \Config\Defaults::$folders)): ?>disabled="disabled"<?php endif; ?> />
         <a href="index.php?action=list&amp;folder=<?php e($folder->name); ?>"><?php e($folder->name); ?></a> &nbsp;
+        <span class="messages">(<?php e($folder->messages_all); ?> messages, <?php e($folder->messages_new); ?> new)</span>
         <span class="actions">
             <?php if (in_array($folder->name, \Config\Defaults::$folders)): ?>
                 <span class="gray">System Folder</span>
