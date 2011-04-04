@@ -8,7 +8,7 @@
 
 <!-- New Contacts Form -->
 
-<form id="contacts_add" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings_add" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
     
     <fieldset class="category rounded">
         <label for="name">Name</label>
@@ -28,7 +28,7 @@
 
 <!-- Existing Contacts -->
 
-<form id="contacts_existing" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form id="settings_existing" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
     <!-- Contacts List -->
     
@@ -51,7 +51,7 @@
     
     <!-- Visible Buttons -->
     
-    <fieldset id="contacts_actions_buttons">
+    <fieldset id="settings_actions_buttons">
         <button type="submit" class="rounded" name="button" value="send_message">Send a Message to Selected Contacts</button>
         <button type="submit" class="rounded" name="button" value="delete">Delete Selected Contacts</button>
     </fieldset>

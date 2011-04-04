@@ -62,6 +62,10 @@ $routes = array(
     'POST.contacts_do_action' => 'Contact.do_action',
     
     'GET.folders' => 'Folder.show',
+    'POST.folders_add' => 'Folder.add',
+    'GET.folders_edit' => 'Folder.edit_form',
+    'POST.folders_edit' => 'Folder.edit_post',
+    'POST.folders_do_action' => 'Folder.do_action',
     
     'GET.rules' => 'Rule.show',
     
