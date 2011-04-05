@@ -30,7 +30,7 @@ $default = function()
 
 $routes = array(
 
-    'GET.welcome' => 'Account.install_welcome',
+    'GET.welcome' => 'Install.install_welcome',
     'GET.login'   => 'Account.login_form',
     'POST.login'  => 'Account.login_post',
     'POST.logout' => 'Account.logout',

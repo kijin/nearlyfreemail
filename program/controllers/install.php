@@ -64,7 +64,7 @@ class Install extends Base
             
             $incoming_key = \Common\Security::get_random(\Config\INCOMING_KEY_LENGTH);
             $account_controller = new Account();
-            $account_id = $account->create($name, $email, $pass1, $incoming_key, 1);
+            $account_id = $account_controller->create($name, $email, $pass1, $incoming_key, 1);
             
             \Models\Setting::install();
             \Common\Session::login($account_id);
