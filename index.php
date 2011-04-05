@@ -48,14 +48,14 @@ load_third_party('beaver');
 
 // Find the protected directory.
 
-if (preg_match('#^(/\\w+/\\w+)/public#', BASEDIR, $matches) &&
+if (preg_match('#^(/\\w+/\\w+)/public#', BASEDIR, $matches) &&  // NFSN Web.
     file_exists($matches[1] . '/protected') &&
     is_dir($matches[1] . '/protected'))
 {
     define('STORAGE_DIR', $matches[1] . '/protected/' . \Config\STORAGE_DIR);
     define('STORAGE_DBFILE', STORAGE_DIR . '/db.sqlite');
 }
-elseif (file_exists('/home/protected') && is_dir('/home/protected'))
+elseif (file_exists('/home/protected') && is_dir('/home/protected'))  // CLI.
 {
     define('STORAGE_DIR', '/home/protected/' . \Config\STORAGE_DIR);
     define('STORAGE_DBFILE', STORAGE_DIR . '/db.sqlite');

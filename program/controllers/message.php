@@ -20,7 +20,7 @@ class Message extends Base
         
         // Don't display drafts.
         
-        if ($message->is_draft == 1) \Common\Response::redirect('index.php?action=edit&message_id=' . $message->id);
+        if ($message->is_draft == 1) \Common\AJAX::redirect('index.php?action=edit&message_id=' . $message->id);
         
         // Mark the message as read.
         
@@ -163,13 +163,13 @@ class Message extends Base
                 break;
             
             case 'reply':
-                \Common\Response::redirect('index.php?action=compose&reply=' . $message->id);
+                \Common\AJAX::redirect('index.php?action=compose&reply=' . $message->id);
             
             case 'reply_all':
-                \Common\Response::redirect('index.php?action=compose&reply_all=' . $message->id);
+                \Common\AJAX::redirect('index.php?action=compose&reply_all=' . $message->id);
             
             case 'forward':
-                \Common\Response::redirect('index.php?action=compose&forward=' . $message->id);
+                \Common\AJAX::redirect('index.php?action=compose&forward=' . $message->id);
             
             default:
                 \Common\AJAX::error('Action not recognized. Are you using an old version of Internet Explorer?');
@@ -177,7 +177,7 @@ class Message extends Base
         
         // Redirect to the original folder.
         
-        \Common\Response::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $folder_page);
+        \Common\AJAX::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $folder_page);
     }
     
     // Download an attachment.

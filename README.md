@@ -44,6 +44,8 @@ More features may be added if there is enough demand and if the author has time.
 Planned features include MySQL support, aliases/personalities, and message filters.
 Updates, if any, will be published on the author's GitHub page.
 
+Please also read "Known Issues" below.
+
 
 ### Requirements ###
 
@@ -115,6 +117,27 @@ The best that you can do realistically to keep NearlyFreeMail hidden from random
 would be to stash it in a subdirectory with a name that is hard to guess.
 (The recipients of your messages, however, will be able to infer the location by reading the headers automatically added by NFSN.)
 Don't forget to update the forwarding URL if you move your installation of NearlyFreeMail.
+
+
+### Known Issues ###
+
+If your site is not accessible for any reason when NFSN tries to deliver a message, delivery will fail silently.
+There is currently no solution to this problem, due to the architecture of NFSN's e-mail-to-URL forwarding gateway.
+
+Attachments with names that include non-ASCII characters will be renamed to body1, body2, etc.
+A workaround will be developed in the future.
+
+The message source is stored separately from the content and any attachments.
+This leads NearlyFreeMail to consume up to twice as much storage as the actual size of the message.
+("Up to" twice as much, but usually less, since the message source is compressed before storage.)
+
+Deleting large messages will not automatically reduce the size of the SQLite database file.
+In order to reclaim unused space, you must manually vacuum the database using the following commands:
+
+    sqlite3 /home/protected/nearlyfreemail/db.sqlite
+    vacuum; .quit
+
+Do not do this too often, because vacuuming a large SQLite database may consume a lot of server resources.
 
 
 ### Updating ###

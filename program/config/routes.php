@@ -50,21 +50,21 @@ $routes = array(
     'POST.compose' => 'Compose.save',
     'GET.edit'     => 'Compose.edit',
     
-    'GET.settings' => 'Setting.show',
+    'GET.settings'  => 'Setting.show',
     'POST.settings' => 'Setting.save',
     
     'GET.aliases' => 'Alias.show',
     
-    'GET.contacts' => 'Contact.show',
-    'POST.contacts_add' => 'Contact.add',
-    'GET.contacts_edit' => 'Contact.edit_form',
-    'POST.contacts_edit' => 'Contact.edit_post',
+    'GET.contacts'            => 'Contact.show',
+    'POST.contacts_add'       => 'Contact.add',
+    'GET.contacts_edit'       => 'Contact.edit_form',
+    'POST.contacts_edit'      => 'Contact.edit_post',
     'POST.contacts_do_action' => 'Contact.do_action',
     
-    'GET.folders' => 'Folder.show',
-    'POST.folders_add' => 'Folder.add',
-    'GET.folders_edit' => 'Folder.edit_form',
-    'POST.folders_edit' => 'Folder.edit_post',
+    'GET.folders'            => 'Folder.show',
+    'POST.folders_add'       => 'Folder.add',
+    'GET.folders_edit'       => 'Folder.edit_form',
+    'POST.folders_edit'      => 'Folder.edit_post',
     'POST.folders_do_action' => 'Folder.do_action',
     
     'GET.rules' => 'Rule.show',

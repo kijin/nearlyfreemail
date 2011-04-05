@@ -238,7 +238,7 @@ class Compose extends Base
         $button = \Common\Request::post('button');
         switch ($button)
         {
-            case 'save': \Common\Response::redirect('index.php?action=edit&message_id=' . $message->id);
+            case 'save': \Common\AJAX::redirect('index.php?action=edit&message_id=' . $message->id);
             case 'autosave': \Common\AJAX::content($message->id);
             case 'send': $this->send($message);
             default: \Common\AJAX::error('Unknown Error');
@@ -373,7 +373,7 @@ class Compose extends Base
         // Finish!
         
         \Common\DB::commit();
-        \Common\Response::redirect('index.php?action=inbox');
+        \Common\AJAX::redirect('index.php?action=inbox');
     }
     
     // Produce a reply text.

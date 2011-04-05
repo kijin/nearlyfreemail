@@ -43,7 +43,7 @@
             <input type="password" id="newpass1" name="newpass1" value="" />
         </div>
         <div class="item">
-            <label for="newpass2">New Passphrase</label><br />
+            <label for="newpass2">New Passphrase, Again</label><br />
             <span class="explain">Just to make sure you didn't make any typos the first time.</span>
             <input type="password" id="newpass2" name="newpass2" value="" />
         </div>

@@ -182,11 +182,11 @@ class Mailbox extends Base
         $current_folder = \Models\Folder::get($folder_id);
         if ($current_folder && $current_folder->account_id == $this->user->id)
         {
-            \Common\Response::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $page);
+            \Common\AJAX::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $page);
         }
         else
         {
-            \Common\Response::redirect('index.php?action=inbox');
+            \Common\AJAX::redirect('index.php?action=inbox');
         }
     }
 }
