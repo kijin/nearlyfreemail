@@ -146,6 +146,11 @@ There is currently no solution to this problem, due to the architecture of NFSN'
 Attachments with names that include non-ASCII characters will be renamed to body1, body2, etc.
 A workaround will be developed in the future.
 
+Autosave will save the list of recipients, subject, and content of your draft,
+but it will not automatically save attachments that have yet to be uploaded.
+If you want to save attachments as well, click the "Save Draft" button.
+This shortcoming will be fixed in the future.
+
 The message source is stored separately from the content and any attachments.
 This leads NearlyFreeMail to consume up to twice as much storage as the actual size of the message.
 ("Up to" twice as much, but usually less, since the message source is compressed before storage.)
