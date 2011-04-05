@@ -1,5 +1,6 @@
 
-### Introduction ###
+Introduction
+------------
 
 NearlyFreeMail is a **Web-based e-mail client** (webmail) designed for [NearlyFreeSpeech.NET](https://www.nearlyfreespeech.net/) (NFSN) members.
 It uses NFSN's [e-mail-to-URL forwarding service](https://www.nearlyfreespeech.net/services/email) for incoming messages,
@@ -15,7 +16,8 @@ NearlyFreeMail is free software. It is distributed under the GNU General Public 
 Third-party components included with this distribution may be covered by other open-source licenses.
 
 
-### Important Disclaimer ###
+Important Disclaimer
+--------------------
 
 NearlyFreeMail is experimental software. **Do not rely on this software for critical correspondence.**
 NearlyFreeMail depends on implementation details of NFSN's e-mail-to-URL gateway, which may change or disappear altogether.
@@ -26,7 +28,8 @@ The author is not affiliated with NFSN in any way, other than being just another
 Please do not contact NFSN about bugs in this software.
 
 
-### Features ###
+Features
+--------
 
 Right now, you can:
 
@@ -47,7 +50,8 @@ Updates, if any, will be published on the author's GitHub page.
 Please also read "Known Issues" below.
 
 
-### Requirements ###
+Requirements
+------------
 
 To install and use NearlyFreeMail, you need:
 
@@ -62,7 +66,8 @@ For example, all messages and attachments are stored in the "protected" director
 and some features of included third-party libraries are disabled due to incompatibilities with NFSN's strict policies.
 
 
-### Installation ###
+Installation
+------------
 
 Log in to your site with SSH. Issue the following commands, in that order:
 
@@ -87,7 +92,20 @@ To assist debugging, NearlyFreeMail produces a generous amount of diagnostic mes
 These are deposited into your error log, so that you can see which (if any) e-mail failed to deliver.
 
 
-### Security ###
+Updating
+--------
+
+To keep your copy of NearlyFreeMail up to date, log in to your SSH account again,
+go to the directory where you have installed NearlyFreeMail, and issue the following command:
+
+    git pull
+
+That's it. No tarballs to decompress and upload, no files to chmod or rename!
+Do this from time to time, so that you may receive new features and critical security fixes.
+
+
+Security
+--------
 
 The author will try to keep NearlyFreeMail protected from known attack vectors on a best effort basis.
 However, since the security of a web application depends heavily on its environment,
@@ -119,7 +137,8 @@ would be to stash it in a subdirectory with a name that is hard to guess.
 Don't forget to update the forwarding URL if you move your installation of NearlyFreeMail.
 
 
-### Known Issues ###
+Known Issues
+------------
 
 If your site is not accessible for any reason when NFSN tries to deliver a message, delivery will fail silently.
 There is currently no solution to this problem, due to the architecture of NFSN's e-mail-to-URL forwarding gateway.
@@ -135,29 +154,7 @@ Deleting large messages will not automatically reduce the size of the SQLite dat
 In order to reclaim unused space, you must manually vacuum the database using the following commands:
 
     sqlite3 /home/protected/nearlyfreemail/db.sqlite
-    vacuum; .quit
+    vacuum;
+    .quit
 
 Do not do this too often, because vacuuming a large SQLite database may consume a lot of server resources.
-
-
-### Updating ###
-
-To keep your copy of NearlyFreeMail up to date, log in to your SSH account again,
-go to the directory where you have installed NearlyFreeMail, and issue the following command:
-
-    git pull
-
-That's it. No tarballs to decompress and upload, no files to chmod or rename!
-Do this from time to time, so that you may receive new features and critical security fixes.
-
-
-### Resetting ###
-
-If something goes horribly wrong while you are test-driving NearlyFreeMail and you want to start again from scratch,
-there is no need to re-download NearlyFreeMail. (None of the application files are modified at runtime.)
-Just run the following command. **This will erase all your e-mail accounts, contacts, and messages!**
-
-    truncate -s 0 /home/protected/nearlyfreemail/db.sqlite
-
-The next time you try to access NearlyFreeMail, you will be greeted with a new installation screen.
-
