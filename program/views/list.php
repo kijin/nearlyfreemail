@@ -144,7 +144,7 @@
             <select id="action_move" name="move">
                 <?php foreach ($folders as $folder): ?>
                 <?php if ($folder->name === 'Drafts') continue; ?>
-                <option value="<?php e($folder->id); ?>"<?php if ($folder === $selected_folder): ?> selected="selected"<?php endif; ?>><?php e($folder->name); ?></option>
+                <option value="<?php e($folder->id); ?>"<?php if (isset($selected_folder) && $folder->id == $selected_folder->id): ?> selected="selected"<?php endif; ?>><?php e($folder->name); ?></option>
                 <?php endforeach; ?>
             </select>
             <button type="submit" class="rounded" name="button" value="move">Move</button>
@@ -192,7 +192,7 @@
         <a href="index.php?action=search&amp;keywords=<?php e($keywords_url); ?>&amp;page=<?php e($i); ?>" class="<?php if ($i == $page): ?>selected<?php endif; ?>"><?php e($i); ?></a>
     <?php endfor; ?>
     
-    <?php if (count($messages) < \Config\MESSAGES_PER_PAGE): ?>
+    <?php if (count($messages) < $user->get_setting('messages_per_page')): ?>
         &nbsp;(end)
     <?php else: ?>
         &nbsp;<a href="index.php?action=search&amp;keywords=<?php e($keywords_url); ?>&amp;page=<?php e($page + 1); ?>">(more)</a>
