@@ -55,7 +55,7 @@ class Install extends Base
         
         try
         {
-            $schema = file_get_contents(BASEDIR . '/program/config/schema.sql');
+            $schema = file_get_contents(BASEDIR . '/program/bootstrap/schema.sql');
             $schema = explode(';', $schema);
             foreach ($schema as $stmt)
             {

@@ -10,7 +10,7 @@
  * @copyright  (c) 2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    GPL v3 <http://www.opensource.org/licenses/gpl-3.0.html>
  * @link       http://github.com/kijin/nearlyfreemail
- * @version    0.1
+ * @version    0.1.1
  * 
  * -----------------------------------------------------------------------------
  * 
@@ -36,82 +36,20 @@ date_default_timezone_set('UTC');
 error_reporting(E_ALL | E_STRICT);
 ini_set('log_errors', 1);
 ini_set('magic_quotes_gpc', 'Off');
-define('BASEDIR', __DIR__);
-define('VERSION', '0.1');
+define('BASEDIR', dirname(__FILE__));
+define('VERSION', '0.1.1');
 
-// Load the configuration.
+// Version check. This is more friendly than a parse error.
 
-include BASEDIR . '/program/config/config.php';
-include BASEDIR . '/program/config/routes.php';
-include BASEDIR . '/program/thirdparty/loader.php';
-load_third_party('beaver');
-
-// Find the protected directory.
-
-if (preg_match('#^(/\\w+/\\w+)/public#', BASEDIR, $matches) &&  // NFSN Web.
-    file_exists($matches[1] . '/protected') &&
-    is_dir($matches[1] . '/protected'))
-{
-    define('STORAGE_DIR', $matches[1] . '/protected/' . \Config\STORAGE_DIR);
-    define('STORAGE_DBFILE', STORAGE_DIR . '/db.sqlite');
-}
-elseif (file_exists('/home/protected') && is_dir('/home/protected'))  // CLI.
-{
-    define('STORAGE_DIR', '/home/protected/' . \Config\STORAGE_DIR);
-    define('STORAGE_DBFILE', STORAGE_DIR . '/db.sqlite');
-}
-else
+if (version_compare(PHP_VERSION, '5.3', '<'))
 {
     header('HTTP/1.0 500 Internal Server Error');
     header('Content-Type: text/plain; charset=UTF-8');
-    echo "Cannot find the protected directory.\n";
-    echo "Are you sure you're using NearlyFreeSpeech.NET?\n";
+    echo "This script requires PHP 5.3 or higher.\n";
+    echo "Please change your server type to PHP 5.3 or higher.\n";
     exit;
 }
 
-// Make sure the storage directory exists and is writable.
+// The rest of the program makes extensive use of PHP 5.3 features.
 
-if (!file_exists(STORAGE_DIR) || !is_writable(STORAGE_DIR))
-{
-    header('HTTP/1.0 500 Internal Server Error');
-    header('Content-Type: text/plain; charset=UTF-8');
-    echo "The protected directory doesn't exist, or it is not writable.\n";
-    echo "Please create /home/protected/{\Config\STORAGE_DIR} ";
-    echo "and chgrp it to 'web'.\n";
-    exit;
-}
-
-// Set up the autoloader.
-
-spl_autoload_register(function($class_name)
-{
-    $class_name = strtolower(str_replace('\\', '/', $class_name));
-    $file_name = BASEDIR . '/program/' . $class_name . '.php';
-    if (file_exists($file_name)) include $file_name;
-});
-
-// Set up the default error message.
-
-\Common\Response::not_found_set_default_callback(function()
-{
-    $view = new \Common\View('error');
-    $view->title = '404 Not Found';
-    $view->message = 'It seems you\'re looking for a page that doesn\'t exist.';
-    $view->render();
-});
-
-// Start the session, and initialize the database and the Beaver ORM.
-
-\Common\Session::start(\Config\SESSION_NAME);
-\Common\DB::initialize(STORAGE_DBFILE);
-\Common\DB::query('PRAGMA foreign_keys = ON');
-\Beaver\Base::set_database(\Common\DB::get_pdo());
-
-// If installation is not complete, run the installation now.
-
-if (!\Models\Setting::is_installed()) $install();
-
-// Dispatch all other requests to the appropriate controller/method.
-
-\Common\Router::dispatch($routes);
-\Common\Response::not_found();
+include BASEDIR . '/program/bootstrap/bootstrap.php';
