@@ -76,6 +76,7 @@
     
     <fieldset class="save">
         <div id="autosave" class="status">Autosave: <span id="as_enabled">Disabled.</span> <span id="as_changed"></span></div>
+        <script type="text/javascript"> autosave_url = '<?php u('/mail/compose'); ?>'; </script>
         <button type="submit" class="rounded" name="button" value="save" onclick="autosave_override()">Save Draft</button>
         <button type="submit" class="rounded" name="button" value="send" onclick="autosave_override()">Send Message</button>
     </fieldset>

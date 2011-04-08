@@ -69,7 +69,6 @@ function ajax_success_default(data, textStatus, jqXHR)
 {
     switch (data.status)
     {
-        case "CONTENT": alert(data.message); break;
         case "REDIRECT": window.location.href = data.location; break;
         case "ERROR": alert(data.message); break;
         default: alert(data.message);
@@ -95,6 +94,8 @@ function ajax_change_encoding()
 {
     var selected_encoding = $("#change_encoding").val();
     var data = { "encoding": selected_encoding };
+    var url = window.location.href;
+    if (url.indexOf('?') > -1) url = url.substr(0, url.indexOf('?'));
     
     var success_callback = function(data, textStatus, jqXHR)
     {
@@ -111,7 +112,7 @@ function ajax_change_encoding()
     };
     
     $.ajax({
-        "url": window.location.href,
+        "url": url + '/encoding',
         "type": "post",
         "data": data,
         "processData": true,
@@ -139,6 +140,7 @@ function add_attachment()
 
 var autosave_interval;
 var autosave_need = false;
+var autosave_url = '';
 
 // Autosave main function.
 
@@ -190,7 +192,7 @@ function autosave(async)
     }
     
     $.ajax({
-        "url": window.location.href,
+        "url": autosave_url,
         "type": "post",
         "async": async,
         "data": data,

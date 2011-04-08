@@ -37,7 +37,7 @@ $routes = array(
     'GET  /mail/search'      => '\\Controllers\\Mailbox->search',
     
     'GET  /mail/read/(int)'             => '\\Controllers\\Message->read',
-    'POST /mail/read/(int)'             => '\\Controllers\\Message->change_encoding',
+    'POST /mail/read/(int)/encoding'    => '\\Controllers\\Message->change_encoding',
     'POST /mail/read/action/(int)'      => '\\Controllers\\Message->do_action',
     'GET  /mail/attachment/(int)/(int)' => '\\Controllers\\Message->download_attachment',
     'GET  /mail/source/(int)\\.eml'     => '\\Controllers\\Message->download_source',
@@ -45,7 +45,6 @@ $routes = array(
     'GET  /mail/compose'    => '\\Controllers\\Compose->create',
     'POST /mail/compose'    => '\\Controllers\\Compose->save',
     'GET  /mail/edit/(int)' => '\\Controllers\\Compose->edit',
-    'POST /mail/edit/(int)' => '\\Controllers\\Compose->save',
     
     'GET  /settings'                     => '\\Controllers\\Setting->show',
     'POST /settings/account'             => '\\Controllers\\Setting->save',
