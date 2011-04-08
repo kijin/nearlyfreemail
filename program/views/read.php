@@ -71,7 +71,7 @@
         <dd>
             <?php foreach ($attachments as $attachment): ?>
             <div class="attachment">
-                <a href="<?php u('/mail/attachment', $message->id, $attachment->id); ?>"><?php e($attachment->filename); ?></a>
+                <a href="<?php u('/mail/attachment', $message->id, $attachment->id, $attachment->filename); ?>"><?php e($attachment->filename); ?></a>
                 <span class="filesize">(<?php f($attachment->filesize); ?>)</span>
             </div>
             <?php endforeach; ?>

@@ -44,7 +44,7 @@
                 <div class="existing">
                 <?php foreach ($attachments as $attachment): ?>
                     <p><input type="checkbox" name="attach_delete_<?php e($attachment->id); ?>" value="yes" /><span class="delete">Delete</span>
-                    <a href="<?php u('/mail/attachment', $message->id, $attachment->id); ?>"><?php e($attachment->filename); ?></a>
+                    <a href="<?php u('/mail/attachment', $message->id, $attachment->id, $attachment->filename); ?>"><?php e($attachment->filename); ?></a>
                     <span class="filesize">(<?php f($attachment->filesize); ?>)</span></p>
                 <?php endforeach; ?>
                 </div>

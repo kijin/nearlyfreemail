@@ -36,11 +36,11 @@ $routes = array(
     'POST /mail/list/action' => '\\Controllers\\Mailbox->do_action',
     'GET  /mail/search'      => '\\Controllers\\Mailbox->search',
     
-    'GET  /mail/read/(int)'             => '\\Controllers\\Message->read',
-    'POST /mail/read/(int)/encoding'    => '\\Controllers\\Message->change_encoding',
-    'POST /mail/read/action/(int)'      => '\\Controllers\\Message->do_action',
-    'GET  /mail/attachment/(int)/(int)' => '\\Controllers\\Message->download_attachment',
-    'GET  /mail/source/(int)\\.eml'     => '\\Controllers\\Message->download_source',
+    'GET  /mail/read/(int)'                     => '\\Controllers\\Message->read',
+    'POST /mail/read/(int)/encoding'            => '\\Controllers\\Message->change_encoding',
+    'POST /mail/read/action/(int)'              => '\\Controllers\\Message->do_action',
+    'GET  /mail/attachment/(int)/(int)/([^/]+)' => '\\Controllers\\Message->download_attachment',
+    'GET  /mail/source/(int)\\.eml'             => '\\Controllers\\Message->download_source',
     
     'GET  /mail/compose'    => '\\Controllers\\Compose->create',
     'POST /mail/compose'    => '\\Controllers\\Compose->save',

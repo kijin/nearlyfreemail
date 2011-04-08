@@ -199,7 +199,7 @@ class Message extends Base
     
     // Download an attachment.
     
-    public function download_attachment($message_id, $file_id)
+    public function download_attachment($message_id, $file_id, $file_name)
     {
         // Check the message ID.
         
@@ -214,7 +214,7 @@ class Message extends Base
         // Stream the contents to the client.
         
         header('Content-Type: ' . \Common\MIME::from_filename($filename));
-		header('Content-Disposition: attachment; filename="' . $filename . '"');
+		//header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: ' . $filesize);
         
