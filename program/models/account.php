@@ -45,7 +45,20 @@ class Account extends \Beaver\Base
     public function get_setting($key)
     {
         if ($this->_settings === false) $this->_settings = Setting::get_settings($this->id);
-        return array_key_exists($key, $this->_settings) ? $this->_settings[$key] : null;
+        if (array_key_exists($key, $this->_settings))
+        {
+            return $this->_settings[$key];
+        }
+        elseif (property_exists('\\Config\\Defaults', $key))
+        {
+            $value = \Config\Defaults::${$key};
+            Setting::add_setting($this->id, $key, $value);
+            return $value;
+        }
+        else
+        {
+            return null;
+        }
     }
     
     // Set a setting.
