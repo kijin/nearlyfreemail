@@ -33,6 +33,7 @@ class Setting extends Base
         $signature = \Common\Request::post('signature');
         $messages_per_page = \Common\Request::post('messages_per_page');
         $show_recent_contacts = \Common\Request::post('show_recent_contacts');
+        $content_display_font = \Common\Request::post('content_display_font');
         $spam_threshold = \Common\Request::post('spam_threshold', 'float');
         $timezone = \Common\Request::post('timezone');
         $csrf_token = \Common\Request::post('csrf_token');
@@ -84,6 +85,11 @@ class Setting extends Base
             \Common\AJAX::error('Number of recent contacts should be between 0 and 20.');
         }
         
+        if (!in_array($content_display_font, array('serif', 'sans-serif', 'monospace')))
+        {
+            \Common\AJAX::error('Please select a valid display font for message content.');
+        }
+        
         if ($spam_threshold <= 0.5 || $spam_threshold > 10)
         {
             \Common\AJAX::error('Please select a valid spam filtering type.');
@@ -113,6 +119,7 @@ class Setting extends Base
             $this->user->change_passphrase($newpass1);
         }
         
+        $this->user->set_setting('content_display_font', $content_display_font);
         $this->user->set_setting('messages_per_page', (int)$messages_per_page);
         $this->user->set_setting('show_recent_contacts', (int)$show_recent_contacts);
         $this->user->set_setting('spam_threshold', (float)$spam_threshold);

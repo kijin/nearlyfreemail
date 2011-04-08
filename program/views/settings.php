@@ -72,6 +72,15 @@
             <input type="text" id="show_recent_contacts" name="show_recent_contacts" value="<?php e($user->get_setting('show_recent_contacts')); ?>" />
         </div>
         <div class="item">
+            <label for="content_display_font">Display Font for Message Content</label><br />
+            <span class="explain">For those of you who like fixed-width fonts.</span>
+            <select id="content_display_font" name="content_display_font">
+                <option value="serif" <?php if ($user->get_setting('content_display_font') == 'serif'): ?>selected="selected"<?php endif; ?>>Serif</option>
+                <option value="sans-serif" <?php if ($user->get_setting('content_display_font') == 'sans-serif'): ?>selected="selected"<?php endif; ?>>Sans-Serif (Default)</option>
+                <option value="monospace" <?php if ($user->get_setting('content_display_font') == 'monospace'): ?>selected="selected"<?php endif; ?>>Monospace</option>
+            </select>
+        </div>
+        <div class="item">
             <label for="spam_threshold">Spam Filtering</label><br />
             <span class="explain">Be careful, this is experimental.</span>
             <select id="spam_threshold" name="spam_threshold">

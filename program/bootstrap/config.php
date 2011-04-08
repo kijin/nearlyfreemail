@@ -12,6 +12,7 @@ const INCOMING_KEY_LENGTH = 20;
 
 class Defaults
 {
+    static $content_display_font = 'sans-serif';
     static $messages_per_page = 10;
     static $show_recent_contacts = 5;
     static $spam_threshold = 5;

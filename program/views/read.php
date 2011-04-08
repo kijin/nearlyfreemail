@@ -134,7 +134,7 @@
 <!-- Read View Content -->
 
 <div id="read_content">
-    <div id="read_content_text"><?php e($message->content, true); ?></div>
+    <div id="read_content_text" class="<?php e($user->get_setting('content_display_font')); ?>"><?php e($message->content, true); ?></div>
 </div>
 
 <!-- Read View Encoding Selector -->
