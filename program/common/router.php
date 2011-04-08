@@ -48,7 +48,11 @@ class Router
             if (!is_null($def_method) && $def_method !== $method) continue;
             if (!is_null($def_host) && $def_host !== $host) continue;
             if (!preg_match('#^' . str_replace(self::$_shortcuts, self::$_regexes, $def_url) . '$#', $url, $args)) continue;
+            
+            // Turn captured parameters into a usable form.
+            
             array_shift($args);
+            $args = array_map('urldecode', $args);
             
             // Parse the callback.
             

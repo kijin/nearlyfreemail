@@ -209,12 +209,11 @@ class Message extends Base
         // Check the file ID.
         
         list($filename, $filesize, $content) = $message->get_attachment($file_id);
-        if ($filename === null) \Common\Response::not_found();
+        if ($filename === null || $filename !== $file_name) \Common\Response::not_found();
         
         // Stream the contents to the client.
         
         header('Content-Type: ' . \Common\MIME::from_filename($filename));
-		//header('Content-Disposition: attachment; filename="' . $filename . '"');
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: ' . $filesize);
         
