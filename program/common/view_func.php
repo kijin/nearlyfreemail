@@ -11,7 +11,7 @@ function d($input)
     if ($diff < 3600) return ($i = round($diff / 60)) . ' minute' . ($i == 1 ? '' : 's') . ' ago';
     if ($diff < 86400) return ($i = round($diff / 3600)) . ' hour' . ($i == 1 ? '' : 's') . ' ago';
     if ($diff < 864000) return ($i = round($diff / 86400)) . ' day' . ($i == 1 ? '' : 's') . ' ago';
-    return date('d M Y', $input);
+    e(date('d M Y', $input));
 }
 
 // String escape function.
@@ -31,5 +31,13 @@ function f($input)
     if ($input < 1048576) return number_format($input / 1024, 1, '.', '') . 'K';
     if ($input < 1073741824) return number_format($input / 1048576, 1, '.', '') . 'M';
     if ($input < 1099511627776) return number_format($input / 1073741824, 1, '.', '') . 'G';
-    return number_format($input / 1099511627776, 1, '.', '') . 'T';
+    e(number_format($input / 1099511627776, 1, '.', '') . 'T');
+}
+
+// URL generation function.
+
+function u( /* args */ )
+{
+    $args = func_get_args();
+    e(\Common\Router::get_url(implode('/', $args)));
 }

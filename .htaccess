@@ -1,5 +1,7 @@
 RewriteEngine On
-RewriteRule ^([a-z0-9]+)$ ./index.php/$1 [L]
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule . /index.php [L]
 
 php_value log_errors On
 php_value magic_quotes_gpc Off
