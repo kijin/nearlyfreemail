@@ -39,6 +39,10 @@ class Folder extends Base
         {
             \Common\AJAX::error('Please enter a name between 1 and 30 characters.');
         }
+        if (!preg_match('/[a-zA-Z0-9._-]+/', $name))
+        {
+            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, and period.)');
+        }
         
         // Add.
         
@@ -90,6 +94,10 @@ class Folder extends Base
         if (!\Common\Security::validate($name, 'unicode,min=1,max=30'))
         {
             \Common\AJAX::error('Please enter a name between 1 and 30 characters.');
+        }
+        if (!preg_match('/[a-zA-Z0-9._-]+/', $name))
+        {
+            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, and period.)');
         }
         
         // Rename.
