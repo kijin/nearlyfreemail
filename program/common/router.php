@@ -18,7 +18,8 @@ class Router
         $method = isset($_SERVER['REQUEST_METHOD']) ? $_SERVER['REQUEST_METHOD'] : '';
         $host = isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '';
         $url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : '';
-        $url_real = substr($url, strlen(rtrim(dirname($_SERVER['SCRIPT_NAME']), '/')));
+        $url = substr($url, 0, (($pos = strpos($url, '?')) !== false) ? $pos : strlen($url));
+        $url = substr($url, strlen(rtrim(dirname($_SERVER['SCRIPT_NAME']), '/')));
         
         // Try to match routes to the current request.
         
@@ -46,7 +47,7 @@ class Router
             
             if (!is_null($def_method) && $def_method !== $method) continue;
             if (!is_null($def_host) && $def_host !== $host) continue;
-            if (!preg_match('#^' . str_replace(self::$_shortcuts, self::$_regexes, $def_url) . '$#', $url_real, $args)) continue;
+            if (!preg_match('#^' . str_replace(self::$_shortcuts, self::$_regexes, $def_url) . '$#', $url, $args)) continue;
             array_shift($args);
             
             // Parse the callback.
@@ -77,11 +78,12 @@ class Router
     
     // URL constructor.
     
-    public static function get_url($remainder)
+    public static function get_url( /* args */ )
     {
         static $base = false;
         if (!$base) $base = rtrim(dirname($_SERVER['SCRIPT_NAME']), '/');
-        return $base . '/' . ltrim($remainder, '/');
+        $args = func_get_args();
+        return str_replace('//', '/', $base . '/' . implode('/', $args));
     }
 }
 
