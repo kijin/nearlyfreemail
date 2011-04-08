@@ -64,7 +64,6 @@ class View
         // Render the view and exit.
         
         extract($this->_vars);
-        include_once __DIR__ . '/view_func.php';
         include $this->_filename;
         echo "\n";
         exit;

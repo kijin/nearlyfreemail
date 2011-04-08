@@ -83,9 +83,9 @@
         </td>
         <td class="time <?php if (!$message->is_draft && !$message->is_read): ?>unread<?php endif; ?>">
             <?php if ($message->is_draft == 2): /* Sent Mail */ ?>
-                <?php d($message->sent_time); ?>
+                <?php t($message->sent_time); ?>
             <?php else: /* Drafts & All Other Messages */ ?>
-                <?php d($message->received_time); ?>
+                <?php t($message->received_time); ?>
             <?php endif; ?>
         </td>
     </tr>

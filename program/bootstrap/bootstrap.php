@@ -3,8 +3,8 @@
 // Load some configuration files.
 
 include BASEDIR . '/program/bootstrap/config.php';
+include BASEDIR . '/program/bootstrap/functions.php';
 include BASEDIR . '/program/bootstrap/routes.php';
-include BASEDIR . '/program/thirdparty/loader.php';
 
 // Find the protected directory.
 
