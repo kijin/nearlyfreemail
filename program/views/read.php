@@ -15,36 +15,36 @@
     <div class="item">
         <dt>From:</dt>
         <dd>
-            <?php echo \Models\Contact::extract_and_link($message->sender, '<a class="addr" href="index.php?action=compose&amp;to=ADDRESS">ADDRESS</a>'); ?>
+            <?php echo \Models\Contact::extract_and_link($message->sender, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?>
             <?php if ($message->is_draft == 0 && strpos($message->notes, 'NOSOURCE') === false): ?>
-                <div class="source"><a href="index.php?action=download_source&amp;message_id=<?php e($message->id); ?>">View Source</a></div>
+                <div class="source"><a href="<?php u('/mail/source', $message->id . '.eml') ?>">View Source</a></div>
             <?php endif; ?>
         </dd>
     </div>
     
     <div class="item">
         <dt>To:</dt>
-        <dd><?php echo \Models\Contact::extract_and_link($message->recipient, '<a class="addr" href="index.php?action=compose&amp;to=ADDRESS">ADDRESS</a>'); ?></dd>
+        <dd><?php echo \Models\Contact::extract_and_link($message->recipient, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?></dd>
     </div>
     
     <?php if ($message->reply_to): ?>
     <div class="item">
         <dt>Reply-To:</dt>
-        <dd><?php echo \Models\Contact::extract_and_link($message->reply_to, '<a class="addr" href="index.php?action=compose&amp;to=ADDRESS">ADDRESS</a>'); ?></dd>
+        <dd><?php echo \Models\Contact::extract_and_link($message->reply_to, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?></dd>
     </div>
     <?php endif; ?>
     
     <?php if ($message->cc): ?>
     <div class="item">
         <dt>Cc:</dt>
-        <dd><?php echo \Models\Contact::extract_and_link($message->cc, '<a class="addr" href="index.php?action=compose&amp;to=ADDRESS">ADDRESS</a>'); ?></dd>
+        <dd><?php echo \Models\Contact::extract_and_link($message->cc, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?></dd>
     </div>
     <?php endif; ?>
     
     <?php if ($message->bcc): ?>
     <div class="item">
         <dt>Bcc:</dt>
-        <dd><?php echo \Models\Contact::extract_and_link($message->bcc, '<a class="addr" href="index.php?action=compose&amp;to=ADDRESS">ADDRESS</a>'); ?></dd>
+        <dd><?php echo \Models\Contact::extract_and_link($message->bcc, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?></dd>
     </div>
     <?php endif; ?>
     
@@ -53,12 +53,12 @@
     <?php if ($message->is_draft > 0): ?>
     <div class="item">
         <dt>Sent At:</dt><?php date_default_timezone_set($user->get_setting('timezone')); ?>
-        <dd><?php e(date('D, d M Y H:i:s T', $message->sent_time)); ?> (<?php e(d($message->sent_time)); ?>)</dd>
+        <dd><?php e(date('D, d M Y H:i:s T', $message->sent_time)); ?> (<?php d($message->sent_time); ?>)</dd>
     </div>
     <?php else: ?>
     <div class="item">
         <dt>Received At:</dt><?php date_default_timezone_set($user->get_setting('timezone')); ?>
-        <dd><?php e(date('D, d M Y H:i:s T', $message->received_time)); ?> (<?php e(d($message->received_time)); ?>)
+        <dd><?php e(date('D, d M Y H:i:s T', $message->received_time)); ?> (<?php d($message->received_time); ?>)
             <div class="delivery_time">Delivered in <?php e(number_format($message->received_time - $message->sent_time)); ?> Seconds</div></dd>
     </div>
     <?php endif; ?>
@@ -71,8 +71,8 @@
         <dd>
             <?php foreach ($attachments as $attachment): ?>
             <div class="attachment">
-                <a href="index.php?action=download_attachment&amp;message_id=<?php e($message->id); ?>&amp;file_id=<?php e($attachment->id); ?>"><?php e($attachment->filename); ?></a>
-                <span class="filesize">(<?php e(f($attachment->filesize)); ?>)</span>
+                <a href="<?php u('/mail/attachment', $message->id, $attachment->id); ?>"><?php e($attachment->filename); ?></a>
+                <span class="filesize">(<?php f($attachment->filesize); ?>)</span>
             </div>
             <?php endforeach; ?>
         </dd>
@@ -83,7 +83,7 @@
 
 <!-- Read View Actions -->
 
-<form id="read_actions" action="index.php" method="post" accept-charset="UTF-8">
+<form id="read_actions" action="<?php u('/mail/read/action', $message->id); ?>" method="post" accept-charset="UTF-8">
     
     <!-- Shortcuts to Inbox and Archive -->
     
@@ -124,9 +124,9 @@
     <!-- Hidden Fields -->
     
     <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-    <input type="hidden" name="action" value="message_do_action" />
-    <input type="hidden" name="folder_page" value="<?php e($selected_page); ?>" />
-    <input type="hidden" name="message_id" id="read_actions_message_id" value="<?php e($message->id); ?>" />
+        <input type="hidden" name="folder_id" value="<?php e($selected_folder_id); ?>" />
+        <input type="hidden" name="search_id" value="<?php e($selected_search_id); ?>" />
+        <input type="hidden" name="page" value="<?php e($selected_page); ?>" />
     <input type="hidden" name="csrf_token" id="read_actions_csrf_token" value="<?php e($token); ?>" />
     
 </form>
@@ -140,13 +140,7 @@
 <!-- Read View Encoding Selector -->
 
 <?php if ($message->is_draft == 0 && strpos($message->notes, 'NOSOURCE') === false): ?>
-<form id="read_encoding" action="index.php" method="get" accept-charset="UTF-8">
-    
-    <!-- Hidden Fields, Only Used for NoScript Requests -->
-    
-    <input type="hidden" name="action" value="read" />
-    <input type="hidden" name="message_id" value="<?php e($message->id); ?>" />
-    <input type="hidden" name="page" value="<?php e($selected_page); ?>" />
+<form id="read_encoding" action="<?php u('/mail/read', $message->id); ?>" method="get" accept-charset="UTF-8">
     
     <!-- Current Encoding -->
     

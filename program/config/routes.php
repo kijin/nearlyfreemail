@@ -8,20 +8,12 @@ $install = function()
     $controller->install_form();
 };
 
-// The function to call when an incoming message is detected.
-
-$incoming = function($key)
-{
-    $controller = new \Controllers\Incoming();
-    $controller->receive($key);
-};
-
 // The function to call if index.php is called without any arguments.
 
 $default = function()
 {
     $user = \Models\Account::get(\Common\Session::get_login_id());
-    $user and \Common\Response::redirect('index.php?action=inbox');
+    $user and \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
     $controller = new \Controllers\Account();
     $controller->login_form();
 };
@@ -29,44 +21,45 @@ $default = function()
 // Other routes.
 
 $routes = array(
-
-    'GET.welcome' => 'Install.install_welcome',
-    'GET.login'   => 'Account.login_form',
-    'POST.login'  => 'Account.login_post',
-    'POST.logout' => 'Account.logout',
     
-    'GET.inbox'              => 'Mailbox.inbox',
-    'GET.list'               => 'Mailbox.show',
-    'GET.search'             => 'Mailbox.search',
-    'POST.mailbox_do_action' => 'Mailbox.do_action',
+    'GET  /' => $default,
     
-    'GET.read'                    => 'Message.read',
-    'GET.message_change_encoding' => 'Message.change_encoding',
-    'POST.message_do_action'      => 'Message.do_action',
-    'GET.download_attachment'     => 'Message.download_attachment',
-    'GET.download_source'         => 'Message.download_source',
+    'POST /([0-9a-f]{8,})' => '\\Controllers\\Incoming->receive',
     
-    'GET.compose'  => 'Compose.create',
-    'POST.compose' => 'Compose.save',
-    'GET.edit'     => 'Compose.edit',
+    'GET  /account/welcome' => '\\Controllers\\Install->install_welcome',
+    'GET  /account/login'   => '\\Controllers\\Account->login_form',
+    'POST /account/login'   => '\\Controllers\\Account->login_post',
+    'POST /account/logout'  => '\\Controllers\\Account->logout',
     
-    'GET.settings'  => 'Setting.show',
-    'POST.settings' => 'Setting.save',
+    'GET  /mail'             => '\\Controllers\\Mailbox->inbox',
+    'GET  /mail/list/(any)'  => '\\Controllers\\Mailbox->show',
+    'POST /mail/list/action' => '\\Controllers\\Mailbox->do_action',
+    'GET  /mail/search'      => '\\Controllers\\Mailbox->search',
     
-    'GET.aliases' => 'Alias.show',
+    'GET  /mail/read/(int)'             => '\\Controllers\\Message->read',
+    'POST /mail/read/(int)'             => '\\Controllers\\Message->change_encoding',
+    'POST /mail/read/action/(int)'      => '\\Controllers\\Message->do_action',
+    'GET  /mail/attachment/(int)/(int)' => '\\Controllers\\Message->download_attachment',
+    'GET  /mail/source/(int)\\.eml'     => '\\Controllers\\Message->download_source',
     
-    'GET.contacts'            => 'Contact.show',
-    'POST.contacts_add'       => 'Contact.add',
-    'GET.contacts_edit'       => 'Contact.edit_form',
-    'POST.contacts_edit'      => 'Contact.edit_post',
-    'POST.contacts_do_action' => 'Contact.do_action',
+    'GET  /mail/compose'    => '\\Controllers\\Compose->create',
+    'POST /mail/compose'    => '\\Controllers\\Compose->save',
+    'GET  /mail/edit/(int)' => '\\Controllers\\Compose->edit',
+    'POST /mail/edit/(int)' => '\\Controllers\\Compose->save',
     
-    'GET.folders'            => 'Folder.show',
-    'POST.folders_add'       => 'Folder.add',
-    'GET.folders_edit'       => 'Folder.edit_form',
-    'POST.folders_edit'      => 'Folder.edit_post',
-    'POST.folders_do_action' => 'Folder.do_action',
-    
-    'GET.rules' => 'Rule.show',
+    'GET  /settings'                     => '\\Controllers\\Setting->show',
+    'POST /settings/account'             => '\\Controllers\\Setting->save',
+    'GET  /settings/aliases'             => '\\Controllers\\Alias->show',
+    'GET  /settings/contacts'            => '\\Controllers\\Contact->show',
+    'POST /settings/contacts/add'        => '\\Controllers\\Contact->add',
+    'GET  /settings/contacts/edit/(int)' => '\\Controllers\\Contact->edit_form',
+    'POST /settings/contacts/edit'       => '\\Controllers\\Contact->edit_post',
+    'POST /settings/contacts/action'     => '\\Controllers\\Contact->do_action',
+    'GET  /settings/folders'             => '\\Controllers\\Folder->show',
+    'POST /settings/folders/add'         => '\\Controllers\\Folder->add',
+    'GET  /settings/folders/edit/(int)'  => '\\Controllers\\Folder->edit_form',
+    'POST /settings/folders/edit'        => '\\Controllers\\Folder->edit_post',
+    'POST /settings/folders/action'      => '\\Controllers\\Folder->do_action',
+    'GET  /settings/rules'               => '\\Controllers\\Rule->show',
     
 );

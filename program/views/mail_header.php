@@ -3,15 +3,14 @@
 
 <div id="header">
 
-    <h1><a href="index.php?action=inbox"><img src="./public/images/logo_32px.png" alt="NearlyFreeMail" /></a></h1>
+    <h1><a href="<?php u('/'); ?>"><img src="<?php u('/public/images/logo_32px.png'); ?>" alt="NearlyFreeMail" /></a></h1>
     
     <div class="profile">
         <span class="name"><?php e($user->get_default_alias()->name); ?></span>
         <span class="email"><?php e($user->get_default_alias()->email); ?></span>
     </div>
     
-    <form id="search" action="index.php" method="get" accept-charset="UTF-8">
-        <input type="hidden" name="action" value="search" />
+    <form id="search" action="/mail/search" method="get" accept-charset="UTF-8">
         <input type="text" name="keywords" value="" class="rounded" />
         <button type="submit" class="rounded">Search</button>
     </form>

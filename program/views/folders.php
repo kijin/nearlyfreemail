@@ -8,7 +8,7 @@
 
 <!-- New Folders Form -->
 
-<form id="settings_add" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings_add" class="rounded" action="<?php u('/settings/folders/add'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
     
     <fieldset class="category rounded">
         <label for="name">Name</label>
@@ -18,7 +18,6 @@
     
     <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-        <input type="hidden" name="action" value="folders_add" />
         <input type="hidden" name="csrf_token" id="csrf_token" value="<?php e($token); ?>" />
     </fieldset>
     
@@ -26,7 +25,7 @@
 
 <!-- Existing Folders -->
 
-<form id="settings_existing" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form id="settings_existing" class="rounded" action="<?php u('/settings/folders/action'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
     <!-- Contacts List -->
     
@@ -34,13 +33,13 @@
     <?php foreach ($folders as $folder): ?>
     <p class="item">
         <input type="checkbox" name="selected_folders[]" value="<?php e($folder->id); ?>" <?php if (in_array($folder->name, \Config\Defaults::$folders)): ?>disabled="disabled"<?php endif; ?> />
-        <a href="index.php?action=list&amp;folder=<?php e($folder->name); ?>"><?php e($folder->name); ?></a> &nbsp;
+        <a href="<?php u('/mail/list', $folder->name); ?>"><?php e($folder->name); ?></a> &nbsp;
         <span class="messages">(<?php e($folder->messages_all); ?> messages, <?php e($folder->messages_new); ?> new)</span>
         <span class="actions">
             <?php if (in_array($folder->name, \Config\Defaults::$folders)): ?>
                 <span class="gray">System Folder</span>
             <?php else: ?>
-                <a href="index.php?action=folders_edit&amp;folder_id=<?php e($folder->id); ?>">Rename</a>
+                <a href="<?php u('/settings/folders/edit', $folder->id); ?>">Rename</a>
             <?php endif; ?>
         </span>
     </p>
@@ -50,7 +49,6 @@
     <!-- Hidden Fields -->
     
     <fieldset>
-        <input type="hidden" name="action" value="folders_do_action" />
         <input type="hidden" name="csrf_token" value="<?php e($token); ?>" />
     </fieldset>
     

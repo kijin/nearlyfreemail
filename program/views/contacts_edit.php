@@ -8,7 +8,7 @@
 
 <!-- Edit Contacts Form -->
 
-<form id="settings_add" class="rounded" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings_add" class="rounded" action="<?php u('/settings/contacts/edit'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
     
     <fieldset class="category rounded">
         <label for="name">Name</label>
@@ -20,7 +20,6 @@
     
     <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-        <input type="hidden" name="action" value="contacts_edit" />
         <input type="hidden" name="contact_id" value="<?php e($contact->id); ?>" />
         <input type="hidden" name="csrf_token" id="csrf_token" value="<?php e($token); ?>" />
     </fieldset>

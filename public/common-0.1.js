@@ -94,11 +94,7 @@ function ajax_failure_default(jqXHR, textStatus, errorThrown)
 function ajax_change_encoding()
 {
     var selected_encoding = $("#change_encoding").val();
-    var data = {
-        "action": "message_change_encoding",
-        "message_id": $("#read_actions_message_id").val(),
-        "encoding": selected_encoding
-    };
+    var data = { "encoding": selected_encoding };
     
     var success_callback = function(data, textStatus, jqXHR)
     {
@@ -115,8 +111,8 @@ function ajax_change_encoding()
     };
     
     $.ajax({
-        "url": "index.php",
-        "type": "get",
+        "url": window.location.href,
+        "type": "post",
         "data": data,
         "processData": true,
         "success": success_callback,
@@ -155,7 +151,6 @@ function autosave(async)
     autosave_need = false;
     
     var data = {
-        "action": "compose",
         "button": "autosave",
         "message_id": $("#message_id").val(),
         "recipient": $("#recipient").val(),
@@ -195,7 +190,7 @@ function autosave(async)
     }
     
     $.ajax({
-        "url": "index.php",
+        "url": window.location.href,
         "type": "post",
         "async": async,
         "data": data,

@@ -49,16 +49,15 @@ class Folder extends Base
         
         // Redirect.
         
-        \Common\AJAX::redirect('index.php?action=folders');
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/folders'));
     }
     
     // Edit form.
     
-    public function edit_form()
+    public function edit_form($folder_id)
     {
         // Check user input.
         
-        $folder_id = \Common\Request::get('folder_id');
         $folder = \Models\Folder::get($folder_id);
         if (!$folder || $folder->account_id !== $this->user->id) \Common\AJAX::error('Folder not found, or access denied.');
         
@@ -101,7 +100,7 @@ class Folder extends Base
         
         // Redirect.
         
-        \Common\AJAX::redirect('index.php?action=folders');
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/folders'));
     }
     
     // Folder actions.
@@ -153,7 +152,7 @@ class Folder extends Base
                     $folder->delete();
                 }
                 \Common\DB::commit();
-                \Common\AJAX::redirect('index.php?action=folders');
+                \Common\AJAX::redirect(\Common\Router::get_url('/settings/folders'));
                 
             default:
                 \Common\AJAX::error('Action not recognized. Are you using an old version of Internet Explorer?');

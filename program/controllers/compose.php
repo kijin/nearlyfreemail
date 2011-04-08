@@ -95,11 +95,10 @@ class Compose extends Base
     
     // Edit a draft.
     
-    public function edit()
+    public function edit($message_id)
     {
         // Check the message ID.
         
-        $message_id = \Common\Request::get('message_id', 'int');
         $message = \Models\Message::get($message_id);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         if ($message->is_draft != 1) \Common\AJAX::error('Selected message is not a draft.');
@@ -238,7 +237,7 @@ class Compose extends Base
         $button = \Common\Request::post('button');
         switch ($button)
         {
-            case 'save': \Common\AJAX::redirect('index.php?action=edit&message_id=' . $message->id);
+            case 'save': \Common\AJAX::redirect(\Common\Router::get_url('/mail/edit', $message->id));
             case 'autosave': \Common\AJAX::content($message->id);
             case 'send': $this->send($message);
             default: \Common\AJAX::error('Unknown Error');
@@ -373,7 +372,7 @@ class Compose extends Base
         // Finish!
         
         \Common\DB::commit();
-        \Common\AJAX::redirect('index.php?action=inbox');
+        \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
     }
     
     // Produce a reply text.

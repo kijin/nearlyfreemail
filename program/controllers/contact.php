@@ -58,16 +58,15 @@ class Contact extends Base
         
         // Redirect.
         
-        \Common\AJAX::redirect('index.php?action=contacts');
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/contacts'));
     }
     
     // Edit form.
     
-    public function edit_form()
+    public function edit_form($contact_id)
     {
         // Check user input.
         
-        $contact_id = \Common\Request::get('contact_id');
         $contact = \Models\Contact::get($contact_id);
         if (!$contact || $contact->account_id !== $this->user->id) \Common\AJAX::error('Contact not found, or access denied.');
         
@@ -119,7 +118,7 @@ class Contact extends Base
         
         // Redirect.
         
-        \Common\AJAX::redirect('index.php?action=contacts');
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/contacts'));
     }
     
     // Contact actions.
@@ -155,13 +154,13 @@ class Contact extends Base
         {
             case 'send_message':
                 $_SESSION['selected_contacts'] = implode(', ', $contacts);
-                \Common\AJAX::redirect('index.php?action=compose&to=selected');
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/compose?to=selected'));
             
             case 'delete':
                 \Common\DB::begin_transaction();
                 foreach ($contacts as $contact) $contact->delete();
                 \Common\DB::commit();
-                \Common\AJAX::redirect('index.php?action=contacts');
+                \Common\AJAX::redirect(\Common\Router::get_url('/settings/contacts'));
                 
             default:
                 \Common\AJAX::error('Action not recognized. Are you using an old version of Internet Explorer?');

@@ -119,7 +119,7 @@ class Account extends Base
         // Everything looks legit. Escort this user to his/her inbox.
         
         \Common\Session::login($account->id);
-        \Common\AJAX::redirect('index.php?action=inbox');
+        \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
     }
     
     // Logout.
@@ -137,6 +137,6 @@ class Account extends Base
         // Log this user out, and redirect to the login screen.
         
         \Common\Session::logout();
-        \Common\AJAX::redirect('index.php');
+        \Common\AJAX::redirect(\Common\Router::get_url('/'));
     }
 }

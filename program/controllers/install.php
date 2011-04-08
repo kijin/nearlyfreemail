@@ -76,7 +76,7 @@ class Install extends Base
         
         // Redirect to the welcome page.
         
-        \Common\AJAX::redirect('index.php?action=welcome');
+        \Common\AJAX::redirect(\Common\Router::get_url('/account/welcome'));
     }
     
     // Welcome screen with further instructions, displayed when installation is complete.

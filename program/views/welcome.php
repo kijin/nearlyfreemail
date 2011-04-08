@@ -4,7 +4,7 @@
 
 <div id="dialog">
 
-    <h1><img src="./public/images/logo_32px.png" alt="nearlyfreemail" /></h1>
+    <h1><img src="<?php u('/public/images/logo_32px.png'); ?>" alt="nearlyfreemail" /></h1>
     <h2>Welcome</h2>
     
     <div class="rounded box">
@@ -37,7 +37,7 @@
         <h3>You're done!</h3>
         <p>Please be patient. It may take several hours for other e-mail service providers to notice the changes you just made.
            If your messages don't seem to get through, get some rest and try again tomorrow.</p>
-        <p class="margin_up"><a href="index.php?action=inbox">Click here</a> to open your inbox when you're ready.</a></p>
+        <p class="margin_up"><a href="<?php u('/mail'); ?>">Click here</a> to open your inbox when you're ready.</a></p>
         
     </div>
     

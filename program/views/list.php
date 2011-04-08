@@ -15,7 +15,7 @@
 
 <!-- Form Begins -->
 
-<form id="list_actions" action="index.php" method="post" accept-charset="UTF-8">
+<form id="list_actions" action="<?php u('/mail/list/action'); ?>" method="post" accept-charset="UTF-8">
     
     <!-- List View Table -->
 
@@ -55,7 +55,7 @@
             <?php if (isset($selected_folder) && in_array($selected_folder->name, array('Drafts', 'Sent')) && $message->is_draft > 0): /* Drafts & Sent Mail */ ?>
                 <?php $recipients = \Models\Contact::extract($message->recipient); ?>
                 <?php $recipient = $recipients ? $recipients[0] : new \Models\Contact(); ?>
-                <a href="index.php?action=compose&amp;to=<?php e($recipient->get_profile()); ?>"><?php e($recipient->name ?: $recipient->email); ?></a>
+                <a href="<?php u('/mail/compose?to=' . $recipient->get_profile()); ?>"><?php e($recipient->name ?: $recipient->email); ?></a>
                 <?php $count = count($recipients) + count(\Models\Contact::extract($message->cc)) + count(\Models\Contact::extract($message->bcc)); ?>
                 <?php if ($count > 1): ?>&nbsp;(<?php e($count - 1); ?> more)<?php endif; ?>
             <?php elseif (isset($selected_folder) && in_array($selected_folder->name, array('Drafts', 'Sent'))): /* Received Mail in Wrong Folder */ ?>
@@ -67,22 +67,25 @@
             <?php else: /* Regular Received Mail */ ?>
                 <?php $sender = \Models\Contact::extract($message->sender); ?>
                 <?php $sender = $sender ? $sender[0] : new \Models\Contact(); ?>
-                <a href="index.php?action=compose&amp;to=<?php e($sender->get_profile()); ?>"><?php e($sender->name ?: $sender->email); ?></a>
+                <a href="<?php u('/mail/compose?to=' . $sender->get_profile()); ?>"><?php e($sender->name ?: $sender->email); ?></a>
             <?php endif; ?>
         </td>
         <td class="subject <?php if (!$message->is_draft && !$message->is_read): ?>unread<?php endif; ?>">
             <?php if ($message->is_draft == 1): /* Unsent Drafts */ ?>
-                <a href="index.php?action=edit&amp;message_id=<?php e($message->id); ?>"><?php e($message->subject ?: '(no subject)'); ?></a>
+                <a href="<?php u('/mail/edit', $message->id); ?>"><?php e($message->subject ?: '(no subject)'); ?></a>
             <?php else: /* All Other Messages */ ?>
-                <a href="index.php?action=read&amp;message_id=<?php e($message->id); ?><?php if (isset($selected_folder)): ?>&amp;page=<?php e($page); ?><?php endif; ?>"><?php e($message->subject ?: '(no subject)'); ?></a>
+                <?php if (isset($selected_folder)): $param = '?folder_id=' . $selected_folder->id . '&page=' . $page; ?>
+                <?php elseif (isset($search_id)): $param = '?search_id=' . $search_id . '&page=' . $page; ?>
+                <?php else: $param = ''; endif; ?>
+                <a href="<?php u('/mail/read', $message->id); ?><?php e($param); ?>"><?php e($message->subject ?: '(no subject)'); ?></a>
                 <?php if ($message->is_replied): ?><span class="replied">[<?php if ($message->is_replied & 1): ?>R<?php endif; ?><?php if ($message->is_replied & 2): ?>F<?php endif; ?>]</span><?php endif; ?>
             <?php endif; ?>
         </td>
         <td class="time <?php if (!$message->is_draft && !$message->is_read): ?>unread<?php endif; ?>">
             <?php if ($message->is_draft == 2): /* Sent Mail */ ?>
-                <?php e(d($message->sent_time)); ?>
-            <?php else: ?>
-                <?php e(d($message->received_time)); /* Drafts & All Other Messages */ ?>
+                <?php d($message->sent_time); ?>
+            <?php else: /* Drafts & All Other Messages */ ?>
+                <?php d($message->received_time); ?>
             <?php endif; ?>
         </td>
     </tr>
@@ -99,8 +102,8 @@
     
     <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-        <input type="hidden" name="action" value="mailbox_do_action" />
         <input type="hidden" name="folder_id" value="<?php if (isset($selected_folder)): ?><?php e($selected_folder->id); ?><?php endif; ?>" />
+        <input type="hidden" name="search_id" value="<?php if (isset($search_id)): ?><?php e($search_id); ?><?php endif; ?>" />
         <input type="hidden" name="page" value="<?php e($page); ?>" />
         <input type="hidden" name="csrf_token" value="<?php e($token); ?>" />
     </fieldset>
@@ -167,7 +170,7 @@
 
 <?php if (isset($pages)): /* Regular Folder */ ?>
 
-    <a href="index.php?action=list&amp;folder=<?php e($selected_folder->name); ?>">&laquo;</a>
+    <a href="<?php u('/mail/list', $selected_folder->name); ?>">&laquo;</a>
     
     <?php
         $min = $page - 5;
@@ -178,24 +181,23 @@
     ?>
     
     <?php for ($i = $min; $i <= $max; $i++): ?>
-        <a href="index.php?action=list&amp;folder=<?php e($selected_folder->name); ?>&amp;page=<?php e($i); ?>" class="<?php if ($i == $page): ?>selected<?php endif; ?>"><?php e($i); ?></a>
+        <a href="<?php u('/mail/list', $selected_folder->name); ?>?page=<?php e($i); ?>" class="<?php if ($i == $page): ?>selected<?php endif; ?>"><?php e($i); ?></a>
     <?php endfor; ?>
     
-    <a href="index.php?action=list&amp;folder=<?php e($selected_folder->name); ?>&amp;page=<?php e($pages); ?>">&raquo;</a>
+    <a href="<?php u('/mail/list', $selected_folder->name); ?>?page=<?php e($pages); ?>">&raquo;</a>
 
 <?php else: /* Search Result */ ?>
 
-    <?php $keywords_url = urlencode(implode(' ', $keywords)); ?>
-    <a href="index.php?action=search&amp;keywords=<?php e($keywords_url); ?>">&laquo;</a>
+    <a href="<?php u('/mail/search?search_id=' . $search_id); ?>">&laquo;</a>
     
     <?php for ($i = 1; $i <= $page; $i++): ?>
-        <a href="index.php?action=search&amp;keywords=<?php e($keywords_url); ?>&amp;page=<?php e($i); ?>" class="<?php if ($i == $page): ?>selected<?php endif; ?>"><?php e($i); ?></a>
+        <a href="<?php u('/mail/search?search_id=' . $search_id); ?>&amp;page=<?php e($i); ?>" class="<?php if ($i == $page): ?>selected<?php endif; ?>"><?php e($i); ?></a>
     <?php endfor; ?>
     
     <?php if (count($messages) < $user->get_setting('messages_per_page')): ?>
         &nbsp;(end)
     <?php else: ?>
-        &nbsp;<a href="index.php?action=search&amp;keywords=<?php e($keywords_url); ?>&amp;page=<?php e($page + 1); ?>">(more)</a>
+        &nbsp;<a href="<?php u('/mail/search?search_id='. $search_id); ?>&amp;page=<?php e($page + 1); ?>">(more)</a>
     <?php endif; ?>
     
 <?php endif; ?>

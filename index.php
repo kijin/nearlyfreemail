@@ -109,46 +109,9 @@ spl_autoload_register(function($class_name)
 
 // If installation is not complete, run the installation now.
 
-if (!\Models\Setting::is_installed())
-{
-    $install();
-    exit;
-}
-
-// If this is an incoming message, run the e-mail receiver now.
-
-if (preg_match('#/([0-9a-f]{8,})$#', $_SERVER['REQUEST_URI'], $matches))
-{
-    $incoming($matches[1]);
-    exit;
-}
-
-// If this is a request for the home page, run the default callback.
-
-if (!count($_GET) && !count($_POST))
-{
-    $default();
-    exit;
-}
+if (!\Models\Setting::is_installed()) $install();
 
 // Dispatch all other requests to the appropriate controller/method.
 
-foreach ($routes as $action => $route)
-{
-    $action = explode('.', $action, 2);
-    if ($action[0] === $_SERVER['REQUEST_METHOD'] && $var = '_' . $action[0])
-    {
-        if (isset(${$var}['action']) && ${$var}['action'] === $action[1])
-        {
-            $route = explode('.', $route, 2);
-            $controller_name = '\\Controllers\\' . $route[0];
-            $controller = new $controller_name();
-            $controller->{$route[1]}();
-            break;
-        }
-    }
-}
-
-// If we're here, it means four-oh-four.
-
+\Common\Router::dispatch($routes);
 \Common\Response::not_found();

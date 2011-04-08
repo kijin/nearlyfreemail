@@ -122,6 +122,6 @@ class Setting extends Base
         
         // Redirect to the same page.
         
-        \Common\AJAX::redirect('index.php?action=settings');
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings'));
     }
 }

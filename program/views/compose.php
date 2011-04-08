@@ -8,7 +8,7 @@
 
 <!-- Compose Form -->
 
-<form id="compose" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form id="compose" action="/mail/compose" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
     <!-- Standard Fields -->
     
@@ -44,8 +44,8 @@
                 <div class="existing">
                 <?php foreach ($attachments as $attachment): ?>
                     <p><input type="checkbox" name="attach_delete_<?php e($attachment->id); ?>" value="yes" /><span class="delete">Delete</span>
-                    <a href="index.php?action=download_attachment&amp;message_id=<?php e($message->id); ?>&amp;file_id=<?php e($attachment->id); ?>"><?php e($attachment->filename); ?></a>
-                    <span class="filesize">(<?php e(f($attachment->filesize)); ?>)</span></p>
+                    <a href="<?php u('/mail/attachment', $message->id, $attachment->id); ?>"><?php e($attachment->filename); ?></a>
+                    <span class="filesize">(<?php f($attachment->filesize); ?>)</span></p>
                 <?php endforeach; ?>
                 </div>
             <?php endif; ?>
@@ -66,7 +66,6 @@
     
     <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-        <input type="hidden" name="action" value="compose" />
         <input type="hidden" name="message_id" id="message_id" value="<?php e($message ? $message->id : ''); ?>" />
         <input type="hidden" name="csrf_token" id="csrf_token" value="<?php e($token); ?>" />
         <input type="hidden" name="references" id="references" value="<?php e(isset($references) ? $references : ''); ?>" />

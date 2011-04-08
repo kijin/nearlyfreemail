@@ -10,17 +10,16 @@ class Message extends Base
     
     // Read.
     
-    public function read()
+    public function read($message_id)
     {
         // Find the requested message, and check if it belongs to this user.
         
-        $message_id = \Common\Request::get('message_id', 'int');
         $message = \Models\Message::get($message_id);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         
         // Don't display drafts.
         
-        if ($message->is_draft == 1) \Common\AJAX::redirect('index.php?action=edit&message_id=' . $message->id);
+        if ($message->is_draft == 1) \Common\AJAX::redirect(\Common\Router::get_url('/mail/edit', $message->id));
         
         // Mark the message as read.
         
@@ -35,8 +34,10 @@ class Message extends Base
             if ($folder->id === $message->folder_id) $selected_folder = $folder;
         }
         
-        // Which page were we on? This is useful when redirecting later on.
+        // Do we have any folder ID, search ID, or page number to remember?
         
+        $selected_folder_id = \Common\Request::get('folder_id', 'int');
+        $selected_search_id = \Common\Request::get('search_id');
         $selected_page = \Common\Request::get('page', 'int');
         if ($selected_page < 1) $selected_page = 1;
         
@@ -69,6 +70,8 @@ class Message extends Base
         $view->user = $this->user;
         $view->folders = $folders;
         $view->selected_folder = $selected_folder;
+        $view->selected_folder_id = $selected_folder_id;
+        $view->selected_search_id = $selected_search_id;
         $view->selected_page = $selected_page;
         $view->message = $message;
         $view->displayed_encoding = $displayed_encoding;
@@ -77,17 +80,16 @@ class Message extends Base
     
     // Change encoding (AJAX version).
     
-    public function change_encoding()
+    public function change_encoding($message_id)
     {
         // Find the requested message, and check if it belongs to this user.
         
-        $message_id = \Common\Request::get('message_id', 'int');
         $message = \Models\Message::get($message_id, false, true);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         
         // Check if the requested encoding is valid.
         
-        $encoding = \Common\Request::get('encoding');
+        $encoding = \Common\Request::post('encoding');
         $encodings = mb_list_encodings();
         if (!in_array($encoding, $encodings)) \Common\AJAX::error('Encoding \'' . $encoding . '\' is not supported.');
         
@@ -105,13 +107,14 @@ class Message extends Base
     
     // Message actions.
     
-    public function do_action()
+    public function do_action($message_id)
     {
         // Grab user input.
         
-        $message_id = \Common\Request::post('message_id', 'int');
+        $folder_id = \Common\Request::post('folder_id', 'int');
+        $search_id = \Common\Request::post('search_id');
+        $page = \Common\Request::post('page', 'int');
         $csrf_token = \Common\Request::post('csrf_token');
-        $folder_page = \Common\Request::post('folder_page', 'int');
         $button = \Common\Request::post('button');
         $move = \Common\Request::post('move');
         
@@ -123,10 +126,6 @@ class Message extends Base
         // Check the CSRF token.
         
         if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
-        
-        // Most of the actions below will redirect to the current folder.
-        
-        $current_folder = \Models\Folder::get($message->folder_id);
         
         // Do various other things with the message.
         
@@ -163,36 +162,52 @@ class Message extends Base
                 break;
             
             case 'reply':
-                \Common\AJAX::redirect('index.php?action=compose&reply=' . $message->id);
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/compose?reply=' . $message->id));
             
             case 'reply_all':
-                \Common\AJAX::redirect('index.php?action=compose&reply_all=' . $message->id);
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/compose?reply_all=' . $message->id));
             
             case 'forward':
-                \Common\AJAX::redirect('index.php?action=compose&forward=' . $message->id);
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/compose?forward=' . $message->id));
             
             default:
                 \Common\AJAX::error('Action not recognized. Are you using an old version of Internet Explorer?');
         }
         
-        // Redirect to the original folder.
+        // Redirect to the original folder or search list.
         
-        \Common\AJAX::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $folder_page);
+        if ($folder_id && $current_folder = \Models\Folder::get($folder_id))
+        {
+            if ($current_folder->account_id == $this->user->id)
+            {
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/list', $current_folder->name . '?page=' . $page));
+            }
+            else
+            {
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
+            }
+        }
+        elseif ($search_id !== '')
+        {
+            \Common\AJAX::redirect(\Common\Router::get_url('/mail/search?search_id=' . $search_id . '&page=' . $page));
+        }
+        else
+        {
+            \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
+        }
     }
     
     // Download an attachment.
     
-    public function download_attachment()
+    public function download_attachment($message_id, $file_id)
     {
         // Check the message ID.
         
-        $message_id = \Common\Request::get('message_id', 'int');
         $message = \Models\Message::get($message_id);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         
         // Check the file ID.
         
-        $file_id = \Common\Request::get('file_id', 'int');
         list($filename, $filesize, $content) = $message->get_attachment($file_id);
         if ($filename === null) \Common\Response::not_found();
         
@@ -216,11 +231,10 @@ class Message extends Base
     
     // Download the message source.
     
-    public function download_source()
+    public function download_source($message_id)
     {
         // Check the message ID.
         
-        $message_id = \Common\Request::get('message_id', 'int');
         $message = \Models\Message::get($message_id);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         

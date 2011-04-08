@@ -8,7 +8,7 @@
 
 <!-- Settings Form -->
 
-<form id="settings" action="index.php" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings" action="<?php u('/settings/account'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
     
     <!-- Incoming URL -->
     
@@ -97,7 +97,6 @@
     
     <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
-        <input type="hidden" name="action" value="settings" />
         <input type="hidden" name="csrf_token" id="csrf_token" value="<?php e($token); ?>" />
     </fieldset>
     

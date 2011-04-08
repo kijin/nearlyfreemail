@@ -17,11 +17,10 @@ class Mailbox extends Base
     
     // Show the contents of a mailbox.
     
-    public function show($folder_name = false)
+    public function show($folder_name)
     {
         // Get a list of this user's folders, and check if the requested folder is valid.
         
-        $folder_name = ($folder_name !== false) ? $folder_name : \Common\Request::get('folder');
         $folders = \Models\Folder::get_folders($this->user->id);
         $selected_folder = null;
         foreach ($folders as $folder)
@@ -57,12 +56,36 @@ class Mailbox extends Base
     {
         // Get the keywords and parse them.
         
-        $keywords = \Common\Request::get('keywords');
-        $keywords = explode(' ', $keywords);
+        if ($keywords = \Common\Request::get('keywords'))
+        {
+            $search_id = substr(md5($keywords), 0, 10);
+            $keywords = explode(' ', $keywords);
+            $_SESSION['searches'][$search_id] = $keywords;
+        }
+        elseif ($search_id = \Common\Request::get('search_id'))
+        {
+            if (isset($_SESSION['searches'][$search_id]))
+            {
+                $keywords = $_SESSION['searches'][$search_id];
+            }
+            else
+            {
+                $keywords = array();
+            }
+        }
+        else
+        {
+            $keywords = array();
+        }
+        
+        //if (!count($keywords)) \Common\AJAX::redirect(\Common\Router::get_url('/'));
+        
+        // Get the page number.
+        
         $page = \Common\Request::get('page', 'int') ?: 1;
         if ($page < 1) $page = 1;
         
-        // Search.
+        // Perform the search.
         
         header('Content-Type: text/plain; charset=UTF-8');
         $messages = \Models\Message::search($this->user->id, null, $keywords, $this->user->get_setting('messages_per_page'), $page);
@@ -74,6 +97,7 @@ class Mailbox extends Base
         $view->user = $this->user;
         $view->folders = \Models\Folder::get_folders($this->user->id);
         $view->keywords = $keywords;
+        $view->search_id = $search_id;
         $view->page = $page;
         $view->messages = $messages;
         $view->render();
@@ -88,6 +112,7 @@ class Mailbox extends Base
         $selected_messages = isset($_POST['selected_messages']) ? $_POST['selected_messages'] : array();
         $csrf_token = \Common\Request::post('csrf_token');
         $folder_id = \Common\Request::post('folder_id', 'int');
+        $search_id = \Common\Request::post('search_id');
         $page = \Common\Request::post('page', 'int');
         $button = \Common\Request::post('button');
         $move = \Common\Request::post('move');
@@ -177,16 +202,26 @@ class Mailbox extends Base
                 \Common\AJAX::error('Action not recognized. Are you using an old version of Internet Explorer?');
         }
         
-        // Redirect to the original folder and page.
+        // Redirect to the original list and page.
         
-        $current_folder = \Models\Folder::get($folder_id);
-        if ($current_folder && $current_folder->account_id == $this->user->id)
+        if ($folder_id && $current_folder = \Models\Folder::get($folder_id))
         {
-            \Common\AJAX::redirect('index.php?action=list&folder=' . $current_folder->name . '&page=' . $page);
+            if ($current_folder->account_id == $this->user->id)
+            {
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail/list', $current_folder->name . '?page=' . $page));
+            }
+            else
+            {
+                \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
+            }
+        }
+        elseif ($search_id !== '')
+        {
+            \Common\AJAX::redirect(\Common\Router::get_url('/mail/search?search_id=' . $search_id . '&page=' . $page));
         }
         else
         {
-            \Common\AJAX::redirect('index.php?action=inbox');
+            \Common\AJAX::redirect(\Common\Router::get_url('/mail'));
         }
     }
 }

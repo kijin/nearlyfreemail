@@ -4,7 +4,7 @@
 
 <div id="dialog">
 
-    <h1><img src="./public/images/logo_32px.png" alt="nearlyfreemail" /></h1>
+    <h1><img src="<?php u('/public/images/logo_32px.png'); ?>" alt="nearlyfreemail" /></h1>
     <h2>Installation</h2>
     
     <div class="rounded box">
