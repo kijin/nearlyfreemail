@@ -1,7 +1,6 @@
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule . /index.php [L]
+RewriteCond $1 !^(public/|favicon\.ico|robots\.txt)
+RewriteRule ^(.*)$ index.php [L]
 
 php_value log_errors On
 php_value magic_quotes_gpc Off

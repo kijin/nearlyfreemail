@@ -8,7 +8,7 @@
 
 <!-- Compose Form -->
 
-<form id="compose" action="/mail/compose" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form id="compose" action="<?php u('/mail/compose'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
 
     <!-- Standard Fields -->
     

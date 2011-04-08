@@ -10,7 +10,7 @@
         <span class="email"><?php e($user->get_default_alias()->email); ?></span>
     </div>
     
-    <form id="search" action="/mail/search" method="get" accept-charset="UTF-8">
+    <form id="search" action="<?php u('/mail/search'); ?>" method="get" accept-charset="UTF-8">
         <input type="text" name="keywords" value="" class="rounded" />
         <button type="submit" class="rounded">Search</button>
     </form>
