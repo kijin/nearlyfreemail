@@ -379,7 +379,6 @@ class Compose extends Base
     
     public function produce_reply_text($message)
     {
-        date_default_timezone_set($this->user->get_setting('timezone'));
         $sender = \Models\Contact::extract($message->sender);
         $sender_name = $sender ? $sender[0]->name : '(no name)';
         $header = 'On ' . date('D, d M Y H:i:s T', $message->sent_time) . ', ' . $sender_name . ' wrote:';

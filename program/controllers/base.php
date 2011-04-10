@@ -31,7 +31,9 @@ class Base
                 $controller->login_form(); exit;
             }
         }
-        return $this->user = \Models\Account::get($id);
+        $this->user = \Models\Account::get($id);
+        date_default_timezone_set($this->user->get_setting('timezone'));
+        return $this->user;
     }
     
     // Check if the user is an administrator, and display an error if not.

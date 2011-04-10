@@ -52,12 +52,12 @@
     
     <?php if ($message->is_draft > 0): ?>
     <div class="item">
-        <dt>Sent At:</dt><?php date_default_timezone_set($user->get_setting('timezone')); ?>
+        <dt>Sent At:</dt>
         <dd><?php e(date('D, d M Y H:i:s T', $message->sent_time)); ?> (<?php t($message->sent_time); ?>)</dd>
     </div>
     <?php else: ?>
     <div class="item">
-        <dt>Received At:</dt><?php date_default_timezone_set($user->get_setting('timezone')); ?>
+        <dt>Received At:</dt>
         <dd><?php e(date('D, d M Y H:i:s T', $message->received_time)); ?> (<?php t($message->received_time); ?>)
             <div class="delivery_time">Delivered in <?php e(number_format($message->received_time - $message->sent_time)); ?> Seconds</div></dd>
     </div>
