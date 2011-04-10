@@ -65,6 +65,12 @@ anywhere except in NFSN's pay-as-you-go shared hosting environment.
 For example, all messages and attachments are stored in the "protected" directory in a single SQLite database;
 and some features of included third-party libraries are disabled due to incompatibilities with NFSN's strict policies.
 
+NearlyFreeMail follows web standards for the most part, except where browser-specific hack are required.
+It should appear and function as intended in all modern desktop browsers,
+such as Firefox 3.5 and higher, Internet Explorer 8 and higher, Chrome, Safari, and Opera.
+It is known to break noticeably in Internet Explorer 7 and lower, including the infamous IE6.
+Mobile browsers have not been tested.
+
 
 Installation
 ------------
