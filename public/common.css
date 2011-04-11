@@ -188,6 +188,17 @@ em { font-style: italic; }
 #compose fieldset.save { text-align: right; line-height: 100%; border-top: 1px solid #c0c0c0; padding-top: 10px; margin-bottom: 10px; }
 #autosave a:link { font-size: 0.8em; margin-left: 16px; color: #404040; }
 
+#compose_contacts { }
+#compose_contacts li { height: 22px; }
+#compose_contacts li:hover { height: 42px; }
+#compose_contacts div { height: 22px; overflow: hidden; }
+#compose_contacts div:hover { height: 42px; }
+#compose_contacts p.name { color: #404040; margin-bottom: 6px; }
+#compose_contacts p.buttons { display: none; font-size: 0.8em; }
+#compose_contacts p.buttons button { color: #808080; border: 0px; padding: 0px; background-color: transparent; margin-right: 6px; text-decoration: underline; cursor: pointer; }
+#compose_contacts p.buttons button:hover { color: #0000e0; }
+#compose_contacts p.email { color: #808080; font-size: 0.8em; }
+
 /* Settings View */
 
 #settings p.url { text-align: center; margin-top: 14px; margin-bottom: 6px; }

@@ -14,6 +14,17 @@ $(document).ready(function()
         $("#message_list input[type=checkbox]").attr("checked", $("#select_all").attr("checked"));
     });
     
+    // Add events to sidebar contacts, if the compose form is loaded.
+    
+    var compose_contacts_element = $("#compose_contacts");
+    if (compose_contacts_element.size())
+    {
+        compose_contacts_element.find("li").hover(
+            function() { $(this).find("p.buttons").show(); },
+            function() { $(this).find("p.buttons").hide(); }
+        );
+    }
+    
     // Start autosave, if the compose form is loaded.
     
     var autosave_element = $("#autosave");
@@ -228,4 +239,51 @@ function autosave_disable()
 function autosave_override()
 {
     window.onbeforeunload = function() { };
+}
+
+// Add a contact to the To: / Cc: / Bcc: input boxes.
+
+function add_to(id)
+{
+    var email = $("#compose_contact_" + id).val();
+    var existing = $("#recipient").val().trim();
+    if (existing == "")
+    {
+        $("#recipient").val(email);
+    }
+    else
+    {
+        $("#recipient").val(existing + ", " + email);
+    }
+    autosave_change_notify();
+}
+
+function add_cc(id)
+{
+    var email = $("#compose_contact_" + id).val();
+    var existing = $("#cc").val().trim();
+    if (existing == "")
+    {
+        $("#cc").val(email);
+    }
+    else
+    {
+        $("#cc").val(existing + ", " + email);
+    }
+    autosave_change_notify();
+}
+
+function add_bcc(id)
+{
+    var email = $("#compose_contact_" + id).val();
+    var existing = $("#bcc").val().trim();
+    if (existing == "")
+    {
+        $("#bcc").val(email);
+    }
+    else
+    {
+        $("#bcc").val(existing + ", " + email);
+    }
+    autosave_change_notify();
 }

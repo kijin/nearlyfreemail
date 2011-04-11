@@ -13,10 +13,19 @@
 
 <h3>Contacts <span class="info"><a href="<?php u('/settings/contacts'); ?>">(edit)</a></span></h3>
 
-<ul>
+<ul id="compose_contacts">
 <?php $recent_contacts = \Models\Contact::get_recent($user->id, $user->get_setting('show_recent_contacts')); ?>
 <?php foreach ($recent_contacts as $contact): ?>
-    <li><a href="<?php u('/mail/compose?to=' . $contact->get_profile()); ?>"><?php e($contact->name); ?></a></li>
+    <li><div>
+        <p class="name"><?php e($contact->name); ?></p>
+        <p class="buttons">
+            <button type="button" onclick="return add_to(<?php e($contact->id); ?>);">To</button>
+            <button type="button" onclick="return add_cc(<?php e($contact->id); ?>);">Cc</button>
+            <button type="button" onclick="return add_bcc(<?php e($contact->id); ?>);">Bcc</button>
+            <input type="hidden" id="compose_contact_<?php e($contact->id); ?>" value="<?php e($contact->get_profile()); ?>" />
+        </p>
+        <noscript><p class="email"><?php e($contact->email); ?></p></noscript>
+    </div></li>
 <?php endforeach; ?>
 <?php if (!$recent_contacts): ?>
     <li>None</li>
