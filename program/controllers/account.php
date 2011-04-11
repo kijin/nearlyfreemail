@@ -8,13 +8,6 @@ class Account extends Base
     
     public function create($name, $email, $passphrase, $incoming_key, $is_admin)
     {
-        // Hash the passphrase.
-        
-        load_third_party('phpass');
-        $phpass = new \PasswordHash(8, false);
-        $hash = $phpass->HashPassword(hash('sha512', $passphrase));
-        unset($phpass);
-        
         // Begin a transaction.
         
         \Common\DB::begin_transaction();
@@ -38,6 +31,10 @@ class Account extends Base
         $alias->signature = '';
         $alias->created_time = $account->created_time;
         $alias->save();
+        
+        // Add some additional properties to the account.
+        
+        $account->change_passphrase($passphrase);
         $account->save(array('default_alias' => $alias->id));
         
         // Create the default settings.
@@ -104,14 +101,10 @@ class Account extends Base
         {
             \Common\AJAX::error('Incorrect e-mail address or passphrase.');
         }
-        else
         
         $alias = $alias[0];
         $account = $alias->get_account();
-        
-        load_third_party('phpass');
-        $phpass = new \PasswordHash(8, false);
-        if (!$phpass->CheckPassword(hash('sha512', $pass), $account->password) && !$phpass->CheckPassword($pass, $account->password))
+        if (!$account->check_passphrase($pass))
         {
             \Common\AJAX::error('Incorrect e-mail address or passphrase.');
         }

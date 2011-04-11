@@ -10,7 +10,7 @@
  * @copyright  (c) 2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    GPL v3 <http://www.opensource.org/licenses/gpl-3.0.html>
  * @link       http://github.com/kijin/nearlyfreemail
- * @version    0.1.1
+ * @version    0.1.2
  * 
  * -----------------------------------------------------------------------------
  * 
