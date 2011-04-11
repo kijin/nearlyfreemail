@@ -277,10 +277,10 @@ class Security
     {
         // Use recursion if $length is greater than 64.
         
-        if ($length > 64)
+        if ($length > 128)
         {
             $random = '';
-            while (strlen($random) < $length) $random .= self::get(128);
+            while (strlen($random) < $length) $random .= self::get_random(128);
             return substr($random, 0, $length);
         }
         
@@ -309,6 +309,8 @@ class Security
         
         // Hash and return.
         
-        return substr(hash('sha256', $entropy_obtained), 0, $length);
+        if ($length <= 40) return substr(hash('sha1', $entropy_obtained), 0, $length);
+        if ($length <= 64) return substr(hash('sha256', $entropy_obtained), 0, $length);
+        return substr(hash('sha512', $entropy_obtained), 0, $length);
     }
 }
