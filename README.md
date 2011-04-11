@@ -15,6 +15,8 @@ It might not cost less than other options, though -- it's only "nearly" free, af
 NearlyFreeMail is free software. It is distributed under the GNU General Public License (GPL), version 3 or later.
 Third-party components included with this distribution may be covered by other open-source licenses.
 
+Screenshots can be found [here](http://imgur.com/a/7oUDK).
+
 
 Important Disclaimer
 --------------------
