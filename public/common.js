@@ -246,7 +246,7 @@ function autosave_override()
 function add_to(id)
 {
     var email = $("#compose_contact_" + id).val();
-    var existing = $("#recipient").val().trim();
+    var existing = $.trim($("#recipient").val());
     if (existing == "")
     {
         $("#recipient").val(email);
@@ -261,7 +261,7 @@ function add_to(id)
 function add_cc(id)
 {
     var email = $("#compose_contact_" + id).val();
-    var existing = $("#cc").val().trim();
+    var existing = $.trim($("#cc").val());
     if (existing == "")
     {
         $("#cc").val(email);
@@ -276,7 +276,7 @@ function add_cc(id)
 function add_bcc(id)
 {
     var email = $("#compose_contact_" + id).val();
-    var existing = $("#bcc").val().trim();
+    var existing = $.trim($("#bcc").val());
     if (existing == "")
     {
         $("#bcc").val(email);
