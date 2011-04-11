@@ -9,3 +9,5 @@
 #attachments button { padding-top: 2px; padding-bottom: 2px; }
 #settings_add button { padding-top: 3px; padding-bottom: 3px; }
 #settings_actions_buttons button { padding-top: 2px; padding-bottom: 2px; }
+
+#compose_contacts div { margin-top: -13px; }

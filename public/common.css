@@ -191,7 +191,7 @@ em { font-style: italic; }
 #compose_contacts { }
 #compose_contacts li { height: 22px; }
 #compose_contacts li:hover { height: 42px; }
-#compose_contacts div { height: 22px; overflow: hidden; }
+#compose_contacts div { margin: 0px; padding: 0px; height: 22px; overflow: hidden; }
 #compose_contacts div:hover { height: 42px; }
 #compose_contacts p.name { color: #404040; margin-bottom: 6px; }
 #compose_contacts p.buttons { display: none; font-size: 0.8em; }
