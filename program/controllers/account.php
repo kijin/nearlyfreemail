@@ -12,7 +12,7 @@ class Account extends Base
         
         load_third_party('phpass');
         $phpass = new \PasswordHash(8, false);
-        $hash = $phpass->HashPassword($passphrase);
+        $hash = $phpass->HashPassword(hash('sha512', $passphrase));
         unset($phpass);
         
         // Begin a transaction.
@@ -111,7 +111,7 @@ class Account extends Base
         
         load_third_party('phpass');
         $phpass = new \PasswordHash(8, false);
-        if (!$phpass->CheckPassword($pass, $account->password))
+        if (!$phpass->CheckPassword(hash('sha512', $pass), $account->password) && !$phpass->CheckPassword($pass, $account->password))
         {
             \Common\AJAX::error('Incorrect e-mail address or passphrase.');
         }

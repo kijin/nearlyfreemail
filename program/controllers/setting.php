@@ -63,7 +63,7 @@ class Setting extends Base
         {
             load_third_party('phpass');
             $phpass = new \PasswordHash(8, false);
-            if (!$phpass->CheckPassword($pass, $this->user->password))
+            if (!$phpass->CheckPassword(hash('sha512', $pass), $this->user->password) && !$phpass->CheckPassword($pass, $this->user->password))
             {
                 \Common\AJAX::error('Please enter your current passphrase correctly.');
             }
