@@ -116,7 +116,7 @@ class Security
                 // Basic checks.
                 
                 if (!ctype_digit($input)) return false;
-                if ($input[0] == '0') return false;
+                if ($input !== '0' && substr($input, 0, 1) === '0') return false;
                 
                 // Rule checks.
                 

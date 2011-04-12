@@ -32,7 +32,8 @@ class Setting extends Base
         $newpass2 = \Common\Request::post('newpass2');
         $signature = \Common\Request::post('signature');
         $messages_per_page = \Common\Request::post('messages_per_page');
-        $show_recent_contacts = \Common\Request::post('show_recent_contacts');
+        $show_sidebar_contacts = \Common\Request::post('show_sidebar_contacts');
+        $show_compose_contacts = \Common\Request::post('show_compose_contacts');
         $content_display_font = \Common\Request::post('content_display_font');
         $spam_threshold = \Common\Request::post('spam_threshold', 'float');
         $timezone = \Common\Request::post('timezone');
@@ -78,9 +79,14 @@ class Setting extends Base
             \Common\AJAX::error('Messages per page should be between 5 and 50.');
         }
         
-        if (!\Common\Security::validate($show_recent_contacts, 'int,min=0,max=20'))
+        if (!\Common\Security::validate($show_sidebar_contacts, 'int,min=0,max=20'))
         {
-            \Common\AJAX::error('Number of recent contacts should be between 0 and 20.');
+            \Common\AJAX::error('Number of displayed contacts should be between 0 and 20.');
+        }
+        
+        if (!\Common\Security::validate($show_compose_contacts, 'int,min=0,max=20'))
+        {
+            \Common\AJAX::error('Number of displayed contacts should be between 0 and 20.');
         }
         
         if (!in_array($content_display_font, array('serif', 'sans-serif', 'monospace')))
@@ -119,7 +125,8 @@ class Setting extends Base
         
         $this->user->set_setting('content_display_font', $content_display_font);
         $this->user->set_setting('messages_per_page', (int)$messages_per_page);
-        $this->user->set_setting('show_recent_contacts', (int)$show_recent_contacts);
+        $this->user->set_setting('show_sidebar_contacts', (int)$show_sidebar_contacts);
+        $this->user->set_setting('show_compose_contacts', (int)$show_compose_contacts);
         $this->user->set_setting('spam_threshold', (float)$spam_threshold);
         $this->user->set_setting('timezone', $timezone);
         

@@ -41,7 +41,8 @@ class Account extends Base
         
         $account->set_setting('content_display_font', \Config\Defaults::$content_display_font);
         $account->set_setting('messages_per_page', \Config\Defaults::$messages_per_page);
-        $account->set_setting('show_recent_contacts', \Config\Defaults::$show_recent_contacts);
+        $account->set_setting('show_sidebar_contacts', \Config\Defaults::$show_sidebar_contacts);
+        $account->set_setting('show_compose_contacts', \Config\Defaults::$show_compose_contacts);
         $account->set_setting('spam_threshold', \Config\Defaults::$spam_threshold);
         $account->set_setting('timezone', \Config\Defaults::$timezone);
         

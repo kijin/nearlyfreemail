@@ -67,36 +67,59 @@
             <input type="text" id="messages_per_page" name="messages_per_page" value="<?php e($user->get_setting('messages_per_page')); ?>" />
         </div>
         <div class="item">
-            <label for="show_recent_contacts">Number of Recently Used Contacts in Sidebar</label><br />
+            <label for="show_sidebar_contacts">Show Contacts in Default Sidebar</label><br />
             <span class="explain">Enter an integer between 0 and 20.</span>
-            <input type="text" id="show_recent_contacts" name="show_recent_contacts" value="<?php e($user->get_setting('show_recent_contacts')); ?>" />
+            <input type="text" id="show_sidebar_contacts" name="show_sidebar_contacts" value="<?php e($user->get_setting('show_sidebar_contacts')); ?>" />
+        </div>
+        <div class="item">
+            <label for="show_compose_contacts">Show Contacts in Compose Screen</label><br />
+            <span class="explain">Enter an integer between 0 and 20.</span>
+            <input type="text" id="show_compose_contacts" name="show_compose_contacts" value="<?php e($user->get_setting('show_compose_contacts')); ?>" />
         </div>
         <div class="item">
             <label for="content_display_font">Display Font for Message Content</label><br />
             <span class="explain">For those of you who like fixed-width fonts.</span>
             <select id="content_display_font" name="content_display_font">
-                <option value="serif" <?php if ($user->get_setting('content_display_font') == 'serif'): ?>selected="selected"<?php endif; ?>>Serif</option>
-                <option value="sans-serif" <?php if ($user->get_setting('content_display_font') == 'sans-serif'): ?>selected="selected"<?php endif; ?>>Sans-Serif (Default)</option>
-                <option value="monospace" <?php if ($user->get_setting('content_display_font') == 'monospace'): ?>selected="selected"<?php endif; ?>>Monospace</option>
+                <?php $current = $user->get_setting('content_display_font'); ?>
+                <option value="serif" <?php if ($current == 'serif'): ?>selected="selected"<?php endif; ?>>Serif</option>
+                <option value="sans-serif" <?php if ($current == 'sans-serif'): ?>selected="selected"<?php endif; ?>>Sans-Serif (Default)</option>
+                <option value="monospace" <?php if ($current == 'monospace'): ?>selected="selected"<?php endif; ?>>Monospace</option>
             </select>
         </div>
         <div class="item">
             <label for="spam_threshold">Spam Filtering</label><br />
             <span class="explain">Be careful, this is experimental.</span>
             <select id="spam_threshold" name="spam_threshold">
-                <option value="7" <?php if ($user->get_setting('spam_threshold') > 6): ?>selected="selected"<?php endif; ?>>Permissive</option>
-                <option value="5" <?php if ($user->get_setting('spam_threshold') == 5): ?>selected="selected"<?php endif; ?>>Moderate (Default)</option>
-                <option value="3" <?php if ($user->get_setting('spam_threshold') == 3): ?>selected="selected"<?php endif; ?>>Aggressive</option>
-                <option value="1.5" <?php if ($user->get_setting('spam_threshold') < 2): ?>selected="selected"<?php endif; ?>>Very Aggressive</option>
+                <?php $current = $user->get_setting('spam_threshold'); ?>
+                <option value="8.00" <?php if ($current == 8.00): ?>selected="selected"<?php endif; ?>>8.00 (Disabled)</option>
+                <option value="7.50" <?php if ($current == 7.50): ?>selected="selected"<?php endif; ?>>7.50</option>
+                <option value="7.00" <?php if ($current == 7.00): ?>selected="selected"<?php endif; ?>>7.00</option>
+                <option value="6.50" <?php if ($current == 6.50): ?>selected="selected"<?php endif; ?>>6.50</option>
+                <option value="6.00" <?php if ($current == 6.00): ?>selected="selected"<?php endif; ?>>6.00 (Permissive)</option>
+                <option value="5.50" <?php if ($current == 5.50): ?>selected="selected"<?php endif; ?>>5.50</option>
+                <option value="5.00" <?php if ($current == 5.00): ?>selected="selected"<?php endif; ?>>5.00</option>
+                <option value="4.50" <?php if ($current == 4.50): ?>selected="selected"<?php endif; ?>>4.50</option>
+                <option value="4.00" <?php if ($current == 4.00): ?>selected="selected"<?php endif; ?>>4.00 (Moderate)</option>
+                <option value="3.50" <?php if ($current == 3.50): ?>selected="selected"<?php endif; ?>>3.50</option>
+                <option value="3.00" <?php if ($current == 3.00): ?>selected="selected"<?php endif; ?>>3.00</option>
+                <option value="2.75" <?php if ($current == 2.75): ?>selected="selected"<?php endif; ?>>2.75</option>
+                <option value="2.50" <?php if ($current == 2.50): ?>selected="selected"<?php endif; ?>>2.50 (Aggressive)</option>
+                <option value="2.25" <?php if ($current == 2.25): ?>selected="selected"<?php endif; ?>>2.25</option>
+                <option value="2.00" <?php if ($current == 2.00): ?>selected="selected"<?php endif; ?>>2.00</option>
+                <option value="1.75" <?php if ($current == 1.75): ?>selected="selected"<?php endif; ?>>1.75</option>
+                <option value="1.50" <?php if ($current == 1.50): ?>selected="selected"<?php endif; ?>>1.50 (Very Aggressive)</option>
+                <option value="1.25" <?php if ($current == 1.25): ?>selected="selected"<?php endif; ?>>1.25</option>
+                <option value="1.00" <?php if ($current == 1.00): ?>selected="selected"<?php endif; ?>>1.00 (Spartan)</option>
             </select>
         </div>
         <div class="item">
             <label for="timezone">Timezone</label><br />
             <span class="explain">Please select the nearest city in the same timezone as yours.</span>
             <select id="timezone" name="timezone">
+                <?php $current = $user->get_setting('timezone'); ?>
                 <?php $zones = DateTimeZone::listIdentifiers(); sort($zones); ?>
                 <?php foreach ($zones as $zone): ?>
-                    <option value="<?php e($zone); ?>" <?php if($user->get_setting('timezone') === $zone): ?>selected="selected"<?php endif; ?>><?php e($zone); ?></option>
+                    <option value="<?php e($zone); ?>" <?php if($current === $zone): ?>selected="selected"<?php endif; ?>><?php e($zone); ?></option>
                 <?php endforeach; ?>
             </select>
         </div>

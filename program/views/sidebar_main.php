@@ -22,14 +22,19 @@
 <?php endforeach; ?>
 </ul>
 
-<h3>Contacts <span class="info"><a href="<?php u('/settings/contacts'); ?>">(edit)</a></span></h3>
+<?php $show_sidebar_contacts = $user->get_setting('show_sidebar_contacts'); ?>
+<?php if ($show_sidebar_contacts > 0): ?>
 
-<ul>
-<?php $recent_contacts = \Models\Contact::get_recent($user->id, $user->get_setting('show_recent_contacts')); ?>
-<?php foreach ($recent_contacts as $contact): ?>
-    <li><a href="<?php u('/mail/compose?to=' . $contact->get_profile()); ?>"><?php e($contact->name); ?></a></li>
-<?php endforeach; ?>
-<?php if (!$recent_contacts): ?>
-    <li>None</li>
+    <h3>Contacts <span class="info"><a href="<?php u('/settings/contacts'); ?>">(edit)</a></span></h3>
+
+    <ul>
+    <?php $recent_contacts = \Models\Contact::get_recent($user->id, $show_sidebar_contacts); ?>
+    <?php foreach ($recent_contacts as $contact): ?>
+        <li><a href="<?php u('/mail/compose?to=' . $contact->get_profile()); ?>"><?php e($contact->name); ?></a></li>
+    <?php endforeach; ?>
+    <?php if (!$recent_contacts): ?>
+        <li>None</li>
+    <?php endif; ?>
+    </ul>
+
 <?php endif; ?>
-</ul>
