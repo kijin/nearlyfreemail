@@ -16,7 +16,7 @@ class Account extends Base
         
         $account = new \Models\Account();
         $account->default_alias = 0;
-        $account->password = $hash;
+        $account->password = '';
         $account->created_time = time();
         $account->is_admin = $is_admin;
         $account->save();
