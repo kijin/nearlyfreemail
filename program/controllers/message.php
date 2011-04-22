@@ -84,7 +84,7 @@ class Message extends Base
     {
         // Find the requested message, and check if it belongs to this user.
         
-        $message = \Models\Message::get($message_id, false, true);
+        $message = \Models\Message::get($message_id);
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         
         // Check if the requested encoding is valid.

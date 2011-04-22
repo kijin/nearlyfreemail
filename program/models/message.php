@@ -34,7 +34,7 @@ class Message extends \Beaver\Base
     
     public static function get_list($account_id, $folder_id, $count, $page)
     {
-        return self::find('WHERE account_id = ? AND folder_id = ? ORDER BY received_time DESC LIMIT ? OFFSET ?', array($account_id, $folder_id, $count, $count * ($page - 1)));
+        return self::select('WHERE account_id = ? AND folder_id = ? ORDER BY received_time DESC LIMIT ? OFFSET ?', array($account_id, $folder_id, $count, $count * ($page - 1)));
     }
     
     // Search messages for a series of keywords.
@@ -64,7 +64,7 @@ class Message extends \Beaver\Base
         $querystring .= 'AND is_draft = 0 ORDER BY received_time DESC LIMIT ? OFFSET ?';
         $params[] = $count;
         $params[] = $count * ($page - 1);
-        return self::find($querystring, $params);
+        return self::select($querystring, $params);
     }
     
     // Mark as read.

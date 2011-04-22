@@ -17,7 +17,7 @@ class Folder extends \Beaver\Base
     
     public static function get_folder($account_id, $name)
     {
-        $folder = self::find('WHERE account_id = ? AND name = ? LIMIT 1', array($account_id, $name));
+        $folder = self::select('WHERE account_id = ? AND name = ? LIMIT 1', array($account_id, $name));
         return $folder ? $folder[0] : null;
     }
     

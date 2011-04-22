@@ -31,7 +31,7 @@ class Incoming extends Base
         // Does the URL key belong to an account/alias here?
         
         error_log('NEW MESSAGE RECEIVED FOR KEY: ' . $key);
-        $alias = \Models\Alias::find('WHERE incoming_key LIKE ?', array($key . '%'));
+        $alias = \Models\Alias::select('WHERE incoming_key LIKE ?', array($key . '%'));
         if (!$alias)
         {
             error_log('Recipient not found. Message rejected. [code 404]');

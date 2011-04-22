@@ -18,7 +18,7 @@ class Contact extends \Beaver\Base
     
     public static function get_recent($account_id, $count)
     {
-        return self::find('WHERE account_id = ? ORDER BY last_used DESC LIMIT ?', array($account_id, $count));
+        return self::select('WHERE account_id = ? ORDER BY last_used DESC LIMIT ?', array($account_id, $count));
     }
     
     // Update the last-used timestamp of a set of contacts.

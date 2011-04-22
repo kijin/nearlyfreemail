@@ -10,7 +10,7 @@
  * @copyright  (c) 2010-2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    LGPL v3 <http://www.gnu.org/copyleft/lesser.html>
  * @link       http://github.com/kijin/beaver
- * @version    0.1.2
+ * @version    0.2.2
  * 
  * -----------------------------------------------------------------------------
  * 
@@ -43,7 +43,7 @@ class Base
     protected static $_db = null;
     protected static $_db_is_pgsql = false;
     protected static $_cache = null;
-    protected $_is_unsaved_object = false;
+    protected $_is_unsaved_object = true;
     
     // The following properties may be overridden by children.
     
@@ -52,7 +52,7 @@ class Base
     
     // Call this method to inject a PDO object (or equivalent) to the ORM.
     
-    public static function set_database($db)
+    final public static function set_database($db)
     {
         self::$_db = $db;
         if ($db instanceof \PDO && $db->getAttribute(\PDO::ATTR_DRIVER_NAME) === 'pgsql')
@@ -63,16 +63,17 @@ class Base
     
     // Call this method to inject a Memcached object (or equivalent) to the ORM.
     
-    public static function set_cache($cache)
+    final public static function set_cache($cache)
     {
         self::$_cache = $cache;
     }
     
-    // Constructor. The optional argument is set to false if it's called by get() or find().
+    // Flag this object as saved. (This flag is used internally by the ORM.)
     
-    public function __construct($auto = true)
+    final public function _flag_as_saved()
     {
-        $this->_is_unsaved_object = (bool)$auto;
+        $this->_is_unsaved_object = false;
+        return $this;
     }
     
     // Save any changes to this object.
@@ -155,62 +156,66 @@ class Base
         $this->_is_unsaved_object = true;
     }
     
-    // Get method.
+    // Fetch a single object, identified by its ID.
     
     public static function get($id, $cache = false)
     {
+        $result = static::select('WHERE ' . static::$_pk . ' = ?', array($id), $cache);
+        return count($result) ? $result[0] : null;
+    }
+    
+    // Fetch an array of objects, identified by their IDs.
+    
+    public static function get_array($ids, $cache = false)
+    {
+        // This method can also be called with an arbitrary number of arguments instead of an array.
+        
+        if (!is_array($ids))
+        {
+            $ids = func_get_args();
+            $cache = false;
+        }
+        
         // Look up the cache.
         
         if ($cache && self::$_cache)
         {
-            $cache_key = '_BEAVER::' . get_called_class() . ':' . (is_array($id) ? sha1(serialize($id)) : $id);
+            $cache_key = '_BEAVER::' . get_called_class() . ':' . sha1(serialize($ids = (array)$ids));
             $cache_result = self::$_cache->get($cache_key);
-            if ($cache_result !== false) return $cache_result;
+            if ($cache_result !== false && $cache_result !== null) return unserialize($cache_result);
         }
         
-        // If fetching a single object.
+        // Find some objects, preserving the order in the input array.
         
-        if (!is_array($id))
+        $query = 'SELECT * FROM ' . static::$_table . ' WHERE ' . static::$_pk . ' IN (';
+        $query .= implode(', ', array_fill(0, count($ids), '?')) . ')';
+        $ps = self::$_db->prepare($query);
+        $ps->execute($ids);
+        
+        $result = array_combine($ids, array_fill(0, count($ids), null));
+        $class = get_called_class();
+        while ($object = $ps->fetchObject($class))
         {
-            $ps = self::$_db->prepare('SELECT * FROM ' . static::$_table . ' WHERE ' . static::$_pk . ' = ? LIMIT 1');
-            $ps->execute(array($id));
-            $object = $ps->fetchObject(get_called_class(), array(false));
-            $result = $object ?: null;
-        }
-        
-        // If fetching an array of objects.
-        
-        else
-        {
-            $query = 'SELECT * FROM ' . static::$_table . ' WHERE ' . static::$_pk . ' IN (';
-            $query .= implode(', ', array_fill(0, count($id), '?')) . ')';
-            $ps = self::$_db->prepare($query);
-            $ps->execute($id);
-            
-            $result = array_combine($id, array_fill(0, count($id), null));  // Preserve order
-            while ($object = $ps->fetchObject(get_called_class(), array(false)))
-            {
-                $result[$object->{static::$_pk}] = $object;
-            }
+            $result[$object->{static::$_pk}] = $object->_flag_as_saved();
         }
         
         // Store in cache.
         
-        if ($cache && self::$_cache) self::$_cache->set($cache_key, $result, (int)$cache);
+        if ($cache && self::$_cache) self::$_cache->set($cache_key, serialize($result), (int)$cache);
         return $result;
     }
     
-    // Generic search method.
+    // Generic select method.
     
-    public static function find($where, $params = array(), $cache = false)
+    public static function select($where, $params = array(), $cache = false)
     {
         // Look up the cache.
         
         if ($cache && self::$_cache)
         {
-            $cache_key = '_BEAVER::' . get_called_class() . ':' . sha1($where . "\n" . serialize($id));
+            $cache_key = '_BEAVER::' . get_called_class() . ':' . sha1($where . "\n" . serialize($params));
             $cache_result = self::$_cache->get($cache_key);
-            if ($cache_result !== false) return $cache_result;
+            if ($cache_result !== false && $cache_result !== null) return unserialize($cache_result);
         }
         
         // Find some objects.
@@ -219,72 +224,142 @@ class Base
         $ps->execute((array)$params);
         
         $result = array();
-        while ($object = $ps->fetchObject(get_called_class(), array(false)))
+        $class = get_called_class();
+        while ($object = $ps->fetchObject($class))
         {
-            $result[] = $object;
+            $result[] = $object->_flag_as_saved();
         }
-        return $result;
         
         // Store in cache.
         
-        if ($cache && self::$_cache) self::$_cache->set($cache_key, $result, (int)$cache);
+        if ($cache && self::$_cache) self::$_cache->set($cache_key, serialize($result), (int)$cache);
         return $result;
     }
     
-    // Various search methods.
+    // Other search methods.
     
     public static function __callStatic($name, $args)
     {
-        // Check method name.
+        // Check the method name.
         
-        $name = strtolower($name);
-        if (strncmp($name, 'find_by_', 8))
+        if (strlen($name) <= 8 || strncmp($name, 'find_by_', 8))
         {
             throw new BadMethodCallException('Static method not found: ' . $name);
         }
         
-        $field = substr($name, 8);
-        if (!$field || !property_exists(get_called_class(), $field) || $field[0] === '_')
+        // Check the search field name, including any operators.
+        
+        $search_field = substr($name, 8);
+        $comp_regex = '/^((?U).+)__?([gl]te?|x?between|not|in|notin|startswith|endswith|contains|)$/';
+        
+        if ($search_field[0] === '_')
         {
-            throw new BadMethodCallException('Property not found: ' . $field);
+            throw new BadMethodCallException('Cannot search by non-existent property: ' . $search_field);
+        }
+        elseif (property_exists(get_called_class(), $search_field))
+        {
+            $search_comp = null;
+        }
+        elseif (preg_match($comp_regex, $search_field, $matches) && property_exists(get_called_class(), $matches[1]))
+        {
+            $search_field = $matches[1];
+            $search_comp = $matches[2];
+        }
+        else
+        {
+            throw new BadMethodCallException('Cannot search by non-existent property: ' . $search_field);
         }
         
-        // Check arguments.
+        // The first argument is the most important one.
         
         if (!count($args)) throw new BadMethodCallException('Missing arguments');
-        $value = $args[0];
-        if (isset($args[1]))
+        $search_value = (array)$args[0];
+        
+        // Look for additional arguments.
+        
+        if (isset($args[1]))  // Sort
         {
-            $order_field = $args[1];
-            if (strlen($order_field) && in_array($order_field[strlen($order_field) - 1], array('+', '-')))
+            $order_fields = explode(',', $args[1]);
+            $order_fields_sql = array();
+            foreach ($order_fields as $order_field)
             {
-                $order_sign = ($order_field[strlen($order_field) - 1] === '+') ? 'ASC' : 'DESC';
-                $order_field = substr($order_field, 0, strlen($order_field) - 1);
+                $order_field = trim($order_field);
+                if (!$order_field) continue;
+                if (in_array($order_sign = $order_field[strlen($order_field) - 1], array('+', '-')))
+                {
+                    $order_sign = ($order_sign === '-') ? 'DESC' : 'ASC';
+                    $order_field = substr($order_field, 0, strlen($order_field) - 1);
+                }
+                else
+                {
+                    $order_sign = 'ASC';
+                }
+                if (!strlen($order_field) || !property_exists(get_called_class(), $order_field) || $order_field[0] === '_')
+                {
+                    throw new BadMethodCallException('Property not found: ' . $order_field);
+                }
+                $order_fields_sql[] = $order_field . ' ' . $order_sign;
             }
-            if (!$order_field || !property_exists(get_called_class(), $order_field) || $order_field[0] === '_')
-            {
-                throw new BadMethodCallException('Property not found: ' . $order_field);
-            }
         }
-        
-        // Find all matching objects.
-        
-        $query = 'SELECT * FROM ' . static::$_table . ' WHERE ' . $field . ' = ?';
-        if (isset($order_field))
+        if (isset($args[2]) && $args[2] !== null)  // Limit
         {
-            $query .= ' ORDER BY ' . $order_field;
-            if (isset($order_sign)) $query .= ' ' . $order_sign;
+            $limit = (int)$args[2];
+            $offset = 0;
         }
-        
-        $ps = self::$_db->prepare($query);
-        $ps->execute(array($value));
-        
-        $return = array();
-        while ($object = $ps->fetchObject(get_called_class(), array(false)))
+        if (isset($args[3]) && $args[3] !== null)  // Offset
         {
-            $return[] = $object;
+            $offset = (int)$args[3];
         }
-        return $return;
+        if (isset($args[4]))  // Cache
+        {
+            $cache = $args[4];
+        }
+        
+        // Build the WHERE clause.
+        
+        switch ($search_comp)
+        {
+            case null: $query = 'WHERE ' . $search_field . ' = ?'; break;
+            case 'gte': $query = 'WHERE ' . $search_field . ' >= ?'; break;
+            case 'lte': $query = 'WHERE ' . $search_field . ' <= ?'; break;
+            case 'gt': $query = 'WHERE ' . $search_field . ' > ?'; break;
+            case 'lt': $query = 'WHERE ' . $search_field . ' < ?'; break;
+            case 'between': $query = 'WHERE ' . $search_field . ' BETWEEN ? AND ?'; break;
+            case 'xbetween': $query = 'WHERE ' . $search_field . ' > ? AND ' . $search_field . ' < ?'; break;
+            case 'not': $query = 'WHERE ' . $search_field . ' != ?'; break;
+            case 'in': $query = 'WHERE ' . $search_field . ' IN (' . implode(', ', array_fill(0, count($search_value), '?')) . ')'; break;
+            case 'notin': $query = 'WHERE ' . $search_field . ' NOT IN (' . implode(', ', array_fill(0, count($search_value), '?')) . ')'; break;
+            case 'startswith':
+                $query = 'WHERE ' . $search_field . ' LIKE ? ESCAPE ?';
+                $search_value[0] = str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), $search_value[0]) . '%';
+                $search_value[1] = '\\';
+                break;
+            case 'endswith':
+                $query = 'WHERE ' . $search_field . ' LIKE ? ESCAPE ?';
+                $search_value[0] = '%' . str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), $search_value[0]);
+                $search_value[1] = '\\';
+                break;
+            case 'contains':
+                $query = 'WHERE ' . $search_field . ' LIKE ? ESCAPE ?';
+                $search_value[0] = '%' . str_replace(array('\\', '%', '_'), array('\\\\', '\\%', '\\_'), $search_value[0]) . '%';
+                $search_value[1] = '\\';
+                break;
+            default: $query = 'WHERE ' . $search_field . ' = ?';
+        }
+        
+        if (isset($order_fields_sql) && count($order_fields_sql))
+        {
+            $query .= ' ORDER BY ' . implode(', ', $order_fields_sql);
+        }
+        
+        if (isset($limit))
+        {
+            $query .= ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+        }
+        
+        // Return all matching objects.
+        
+        return static::select($query, $search_value, isset($cache) ? $cache : false);
     }
 }
 
