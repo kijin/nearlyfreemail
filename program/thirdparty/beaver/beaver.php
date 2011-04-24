@@ -10,7 +10,7 @@
  * @copyright  (c) 2010-2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    LGPL v3 <http://www.gnu.org/copyleft/lesser.html>
  * @link       http://github.com/kijin/beaver
- * @version    0.2.2
+ * @version    0.2.3
  * 
  * -----------------------------------------------------------------------------
  * 
@@ -242,16 +242,22 @@ class Base
     {
         // Check the method name.
         
-        if (strlen($name) <= 8 || strncmp($name, 'find_by_', 8))
+        if (strlen($name) > 7 && !strncmp($name, 'get_if_', 7))
+        {
+            $search_field = substr($name, 7);
+        }
+        elseif (strlen($name) > 8 && !strncmp($name, 'find_by_', 8))  // Deprecated since 0.2.3
+        {
+            $search_field = substr($name, 8);
+        }
+        else
         {
             throw new BadMethodCallException('Static method not found: ' . $name);
         }
         
         // Check the search field name, including any operators.
         
-        $search_field = substr($name, 8);
         $comp_regex = '/^((?U).+)__?([gl]te?|x?between|not|in|notin|startswith|endswith|contains|)$/';
-        
         if ($search_field[0] === '_')
         {
             throw new BadMethodCallException('Cannot search by non-existent property: ' . $search_field);
@@ -272,7 +278,7 @@ class Base
         
         // The first argument is the most important one.
         
-        if (!count($args)) throw new BadMethodCallException('Missing arguments');
+        if (!count($args)) throw new BadMethodCallException('Search methods require at least one argument.');
         $search_value = (array)$args[0];
         
         // Look for additional arguments.
@@ -296,7 +302,7 @@ class Base
                 }
                 if (!strlen($order_field) || !property_exists(get_called_class(), $order_field) || $order_field[0] === '_')
                 {
-                    throw new BadMethodCallException('Property not found: ' . $order_field);
+                    throw new InvalidArgumentException('Cannot order by non-existent property: ' . $order_field);
                 }
                 $order_fields_sql[] = $order_field . ' ' . $order_sign;
             }
@@ -367,3 +373,4 @@ class Base
 
 class Exception extends \Exception { }
 class BadMethodCallException extends \BadMethodCallException { }
+class InvalidArgumentException extends \InvalidArgumentException { }
