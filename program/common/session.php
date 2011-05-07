@@ -8,6 +8,11 @@ class Session
     {
         session_name($name);
         session_start();
+        if (isset($_SESSION['last_refresh']) && $_SESSION['last_refresh'] < time() - 300)
+        {
+            $_SESSION['last_refresh'] = time();
+            session_regenerate_id();
+        }
     }
     
     public static function refresh()
@@ -19,6 +24,7 @@ class Session
     {
         $_SESSION['login'] = $id;
         $_SESSION['logout_token'] = Security::get_random(32);
+        $_SESSION['last_refresh'] = time();
         session_regenerate_id();
     }
     
