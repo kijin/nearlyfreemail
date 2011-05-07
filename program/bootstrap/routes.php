@@ -24,7 +24,7 @@ $routes = array(
     
     'GET  /' => $default,
     
-    'POST /([0-9a-f]{8,})' => '\\Controllers\\Incoming->receive',
+    'POST /([0-9a-f]{12,})' => '\\Controllers\\Incoming->receive',
     
     'GET  /account/welcome' => '\\Controllers\\Install->install_welcome',
     'GET  /account/login'   => '\\Controllers\\Account->login_form',
