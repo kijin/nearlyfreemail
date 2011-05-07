@@ -21,7 +21,7 @@ class Account extends \Beaver\Base
     
     public function get_aliases()
     {
-        return Alias::find_by_account_id($this->id, 'name+');
+        return Alias::get_if_account_id($this->id, 'name+');
     }
     
     // Get the default alias.

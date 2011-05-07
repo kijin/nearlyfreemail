@@ -25,7 +25,7 @@ class Folder extends \Beaver\Base
     
     public static function get_folders($account_id)
     {
-        $folders = self::find_by_account_id($account_id, 'name+');
+        $folders = self::get_if_account_id($account_id, 'name+');
         foreach ($folders as $index => $folder)
         {
             if ($folder->name === 'Inbox')

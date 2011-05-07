@@ -99,7 +99,7 @@ class Account extends Base
         // Check the login credentials.
         
         $ok = true;
-        $alias = \Models\Alias::find_by_email($email);
+        $alias = \Models\Alias::get_if_email($email);
         if (!$alias)
         {
             \Common\AJAX::error('Incorrect e-mail address or passphrase.');

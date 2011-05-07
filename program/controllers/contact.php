@@ -16,7 +16,7 @@ class Contact extends Base
         $view->title = 'Contacts';
         $view->menu = 'settings';
         $view->user = $this->user;
-        $view->contacts = \Models\Contact::find_by_account_id($this->user->id, 'name+');
+        $view->contacts = \Models\Contact::get_if_account_id($this->user->id, 'name+');
         $view->render();
     }
     
