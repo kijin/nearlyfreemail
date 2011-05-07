@@ -18,7 +18,8 @@ CREATE TABLE aliases
     email        TEXT    NOT NULL UNIQUE,
     incoming_key TEXT    NOT NULL UNIQUE,
     signature    TEXT    NOT NULL,
-    created_time INTEGER NOT NULL
+    created_time INTEGER NOT NULL,
+    notes        TEXT    NOT NULL
 );
 CREATE INDEX ix_aliases_account_id   ON aliases (account_id);
 CREATE INDEX ix_aliases_name         ON aliases (name);

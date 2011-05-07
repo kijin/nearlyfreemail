@@ -30,6 +30,7 @@ class Account extends Base
         $alias->incoming_key = $incoming_key;
         $alias->signature = '';
         $alias->created_time = $account->created_time;
+        $alias->notes = '';
         $alias->save();
         
         // Add some additional properties to the account.
