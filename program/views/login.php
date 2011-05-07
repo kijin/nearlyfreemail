@@ -11,7 +11,7 @@
     
         <p>Please make sure that your Internet connection is secure!</p>
         
-        <form id="login" action="<?php u('/account/login'); ?>" method="post" accept-charset="UTF-8" onsubmit="return ajax(this)">
+        <form id="login" class="ajax_capable" action="<?php u('/account/login'); ?>" method="post" accept-charset="UTF-8">
         
             <p class="margin"><label for="email">E-mail Address</label></p>
             <p><input id="email" name="email" type="text" class="focus" /></p>

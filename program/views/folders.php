@@ -8,7 +8,7 @@
 
 <!-- New Folders Form -->
 
-<form id="settings_add" class="rounded" action="<?php u('/settings/folders/add'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings_add" class="rounded ajax_capable" action="<?php u('/settings/folders/add'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     
     <fieldset class="category rounded">
         <label for="name">Name</label>

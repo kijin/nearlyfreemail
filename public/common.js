@@ -7,6 +7,13 @@ $(document).ready(function()
     
     $("input.focus").focus();
     
+    // Attach AJAX submit capability to all forms marked as ajax-capable.
+    
+    $("form.ajax_capable").submit(function(event)
+    {
+        ajax(this); event.preventDefault();
+    });
+    
     // Enable the select-all checkbox in the list view.
     
     $("#select_all").removeAttr("disabled").click(function()
@@ -68,10 +75,6 @@ function ajax(form, success_callback, failure_callback, complete_callback)
         "cache": false,
         "dataType": "json"
     });
-    
-    // Prevent page refresh.
-    
-    return false;
 }
 
 // Default success callback.
@@ -132,8 +135,6 @@ function ajax_change_encoding()
         "cache": false,
         "dataType": "json"
     });
-    
-    return false;
 }
 
 // Add a file input to the compose form.

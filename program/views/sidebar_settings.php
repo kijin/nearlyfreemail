@@ -4,7 +4,7 @@
 <ul>
     <li><a href="<?php u('/mail'); ?>">Return to Inbox</a></li>
     <li><a href="<?php u('/mail/compose'); ?>">New Message</a></li>
-    <li><form id="logout" action="<?php u('/account/logout'); ?>" method="post" accept-charset="UTF-8" onsubmit="return ajax(this)">
+    <li><form id="logout" action="<?php u('/account/logout'); ?>" method="post" accept-charset="UTF-8">
         <input type="hidden" name="action" value="logout" />
         <input type="hidden" name="logout_token" value="<?php e(\Common\Session::get_logout_token()); ?>" />
         <button type="submit">Logout</button>

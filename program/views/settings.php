@@ -8,7 +8,7 @@
 
 <!-- Settings Form -->
 
-<form id="settings" action="<?php u('/settings/account'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data" onsubmit="return ajax(this)">
+<form id="settings" class="ajax_capable" action="<?php u('/settings/account'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     
     <!-- Incoming URL -->
     

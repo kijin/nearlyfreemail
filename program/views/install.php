@@ -12,7 +12,7 @@
         <p>Welcome to NearlyFreeMail!</p>
         <p>Please complete the installation by creating your first e-mail account.</p>
         
-        <form id="install" action="index.php" method="post" accept-charset="UTF-8" onsubmit="return ajax(this)">
+        <form id="install" class="ajax_capable" action="index.php" method="post" accept-charset="UTF-8">
         
             <p class="margin">
                 <label for="email">E-mail</label>
