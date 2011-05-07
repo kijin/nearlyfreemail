@@ -57,6 +57,11 @@ class Install
             self::$_last_error = 'Invalid version: ' . $from_version;
             return false;
         }
+        if (!strncmp($matches[0], VERSION, strlen($matches[0])))  // Same major version.
+        {
+            \Common\DB::query('UPDATE settings SET s_value = ? WHERE s_key = ?', VERSION, 'installed_version');
+            return true;
+        }
         
         $filename = BASEDIR . '/program/schemata/upgrade.from.' . $matches[0] . '.sql';
         if (!file_exists($filename))
