@@ -1,4 +1,0 @@
-
-<!-- Content Area End -->
-
-</div>

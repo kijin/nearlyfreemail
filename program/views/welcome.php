@@ -1,3 +1,4 @@
+<?php $BODY_CLASS='dialog'; ?>
 <?php include 'common_header.php'; ?>
 
 <!-- Welcome Dialog -->
@@ -43,5 +44,4 @@
     
 </div>
 
-<?php include 'disclaimer.php'; ?>
 <?php include 'common_footer.php'; ?>

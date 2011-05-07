@@ -1,8 +1,8 @@
 
 /* Body Defaults */
 
-body { background: white; font: normal 10pt/100% Verdana, sans-serif; color: #000000; }
-body.mail_screen { background: white url('./images/mail_bg.png') top left repeat-y; }
+body { background: white url('./images/mail_bg.png') top left repeat-y; font: normal 10pt/100% Verdana, sans-serif; color: #000000; }
+body.dialog { background: white; }
 
 /* Common Elements */
 

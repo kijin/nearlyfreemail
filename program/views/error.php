@@ -1,3 +1,4 @@
+<?php $BODY_CLASS='dialog'; ?>
 <?php include 'common_header.php'; ?>
 
 <!-- Error Dialog -->

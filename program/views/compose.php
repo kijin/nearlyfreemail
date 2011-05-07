@@ -1,6 +1,4 @@
-<?php $BODY_CLASS='mail_screen'; ?>
 <?php include 'common_header.php'; ?>
-<?php include 'mail_header.php'; ?>
 
 <!-- Compose View Title -->
 
@@ -85,5 +83,4 @@
 
 <!-- Standard Footers -->
 
-<?php include 'mail_footer.php'; ?>
 <?php include 'common_footer.php'; ?>
