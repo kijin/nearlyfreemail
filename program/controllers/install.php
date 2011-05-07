@@ -51,31 +51,21 @@ class Install extends Base
             \Common\AJAX::error('Please select a passphrase.');
         }
         
-        // This will fail if the database is not writable.
+        // Create the tables and the new user account.
+
+        $success = \Models\Install::create_tables();
+        if (!$success) \Common\AJAX::error('DATABASE ERROR: ' . \Models\Install::get_last_error());
         
-        try
-        {
-            $schema = file_get_contents(BASEDIR . '/program/bootstrap/schema.sql');
-            $schema = explode(';', $schema);
-            foreach ($schema as $stmt)
-            {
-                if (!empty($stmt)) \Common\DB::query($stmt);
-            }
-            
-            $incoming_key = \Common\Security::get_random(\Config\INCOMING_KEY_LENGTH);
-            $account_controller = new Account();
-            $account_id = $account_controller->create($name, $email, $pass1, $incoming_key, 1);
-            
-            \Models\Setting::install();
-            \Common\Session::login($account_id);
-        }
-        catch (\PDOException $e)
-        {
-            \Common\AJAX::error('ERROR: The database is not writable. Please check filesystem permissions.' . "\n\n" . $e->getMessage());
-        }
+        $incoming_key = \Common\Security::get_random(\Config\INCOMING_KEY_LENGTH);
+        $account_controller = new Account();
+        $account_id = $account_controller->create($name, $email, $pass1, $incoming_key, 1);
         
-        // Redirect to the welcome page.
+        $success = \Models\Install::mark_as_installed();
+        if (!$success) \Common\AJAX::error('DATABASE ERROR: ' . \Models\Install::get_last_error());
         
+        // Log in as the new user account, and display the welcome page.
+        
+        \Common\Session::login($account_id);
         \Common\AJAX::redirect(\Common\Router::get_url('/account/welcome'));
     }
     

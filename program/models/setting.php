@@ -4,28 +4,6 @@ namespace Models;
 
 class Setting
 {
-    // Installed?
-    
-    public static function is_installed()
-    {
-        try
-        {
-            $query = \Common\DB::query('SELECT s_value FROM settings WHERE s_key = ?', 'installed_version');
-            return true;
-        }
-        catch (\PDOException $e)
-        {
-            return false;
-        }
-    }
-    
-    // Install!
-    
-    public static function install()
-    {
-        \Common\DB::query('INSERT INTO settings (s_key, s_value) VALUES (?, ?)', 'installed_version', VERSION);
-    }
-    
     // Get all settings for an account.
     
     public static function get_settings($account_id)

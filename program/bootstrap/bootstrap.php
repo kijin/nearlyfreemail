@@ -76,7 +76,7 @@ load_third_party('beaver');
 
 // If installation is not complete, run the installer now.
 
-if (!\Models\Setting::is_installed()) $install();
+if (!\Models\Install::is_installed()) $install();
 
 // Dispatch all other requests to the appropriate controller/method.
 
