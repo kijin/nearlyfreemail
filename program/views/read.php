@@ -14,9 +14,7 @@
         <dt>From:</dt>
         <dd>
             <?php echo \Models\Contact::extract_and_link($message->sender, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?>
-            <?php if ($message->is_draft == 0 && strpos($message->notes, 'NOSOURCE') === false): ?>
-                <div class="source"><a href="<?php u('/mail/source', $message->id . '.eml') ?>">View Source</a></div>
-            <?php endif; ?>
+            <div class="source"><a href="<?php u('/mail/source', $message->id . '.eml') ?>">View Source</a></div>
         </dd>
     </div>
     
@@ -137,7 +135,6 @@
 
 <!-- Read View Encoding Selector -->
 
-<?php if ($message->is_draft == 0 && strpos($message->notes, 'NOSOURCE') === false): ?>
 <form id="read_encoding" action="<?php u('/mail/read', $message->id); ?>" method="get" accept-charset="UTF-8">
     
     <!-- Current Encoding -->
@@ -159,7 +156,6 @@
     </noscript>
     
 </form>
-<?php endif; ?>
 
 <!-- Standard Footers -->
 
