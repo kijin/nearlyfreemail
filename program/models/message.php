@@ -178,9 +178,16 @@ class Message extends \Beaver\Base
         $query = \Common\DB::prepare('INSERT INTO originals (message_id, subject, content, source) VALUES (?, ?, ?, ?)');
         $subject = gzdeflate($subject);
         $content = gzdeflate($content);
-        $fp = fopen($source, 'rb');
-        stream_filter_append($fp, 'convert.base64-decode');
-        stream_filter_append($fp, 'zlib.deflate');
+        if (is_resource($source))
+        {
+            $fp = fopen($source, 'rb');
+            stream_filter_append($fp, 'convert.base64-decode');
+            stream_filter_append($fp, 'zlib.deflate');
+        }
+        else
+        {
+            $fp = gzdeflate($source);
+        }
         $query->bindParam(1, $this->id);
         $query->bindParam(2, $subject);
         $query->bindParam(3, $content);

@@ -350,6 +350,7 @@ class Compose extends Base
         $message->mark_as_sent();
         $message->move_to_folder(\Models\Folder::get_folder($this->user->id, 'Sent')->id);
         $message->save(array('sent_time' => time()));
+        $message->set_original_and_source($message->subject, $message->content, $mail->toString());
         
         if ($message->notes !== '')
         {
