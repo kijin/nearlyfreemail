@@ -79,6 +79,7 @@ class Folder extends \Beaver\Base
             if (is_resource($source))
             {
                 stream_filter_append($source, 'zlib.inflate');
+                if (feof($source)) continue;
                 $firstline = fgets($source);
                 if (strncasecmp($firstline, 'From ', 5))
                 {
@@ -89,13 +90,17 @@ class Folder extends \Beaver\Base
                     echo "From $sender_email  $asctime\n";
                 }
                 echo $firstline;
-                fpassthru($source);
-                
+                while ($line = fgets($source))
+                {
+                    if (!strncasecmp($line, 'From ', 5) || !strncasecmp($line, '>', 1)) echo ' ';
+                    echo $line;
+                }
             }
             else
             {
-                $source = gzinflate($source);
-                if (strncasecmp($source, 'From ', 5))
+                $lines = explode("\n", gzinflate($source));
+                if (!count($lines)) continue;
+                if (strncasecmp($lines[0], 'From ', 5))
                 {
                     $sender_objects = \Models\Contact::extract($sender);
                     $sender_email = count($sender_objects) ? ($sender_objects[0]->email ?: '-') : '-';
@@ -103,9 +108,14 @@ class Folder extends \Beaver\Base
                     if (strlen($asctime) < 24) $asctime = substr($asctime, 0, 8) . ' ' . substr($asctime, 8);
                     echo "From $sender_email  $asctime\n";
                 }
-                echo $source;
+                foreach ($lines as $index => $line)
+                {
+                    if ($index > 0 && !strncasecmp($line, 'From ', 5) || !strncasecmp($line, '>', 1)) echo ' ';
+                    echo $line . "\n";
+                }
             }
             echo "\n\n";
+            flush();
         }
     }
 }
