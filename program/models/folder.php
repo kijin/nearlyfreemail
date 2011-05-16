@@ -98,7 +98,7 @@ class Folder extends \Beaver\Base
             }
             else
             {
-                $lines = explode("\n", gzinflate($source));
+                $lines = explode("\n", gzinflate($source));  // This is memory-intensive, but we need to do this for now. See PHP bug #40913.
                 if (!count($lines)) continue;
                 if (strncasecmp($lines[0], 'From ', 5))
                 {
