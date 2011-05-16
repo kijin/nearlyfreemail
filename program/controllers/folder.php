@@ -72,7 +72,7 @@ class Folder extends Base
         $view->menu = 'settings';
         $view->user = $this->user;
         $view->folder = $folder;
-        $view->render();    
+        $view->render();
     }
     
     // Edit post.
@@ -109,6 +109,49 @@ class Folder extends Base
         // Redirect.
         
         \Common\AJAX::redirect(\Common\Router::get_url('/settings/folders'));
+    }
+    
+    // Export form.
+    
+    public function export_form($folder_id)
+    {
+        // Check user input.
+        
+        $folder = \Models\Folder::get($folder_id);
+        if (!$folder || $folder->account_id !== $this->user->id) \Common\AJAX::error('Folder not found, or access denied.');
+        
+        // Display edit form.
+        
+        $view = new \Common\View('folders_export');
+        $view->title = 'Export Folder';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->folder = $folder;
+        $view->render();
+    }
+    
+    public function export_post()
+    {
+        // Check user input.
+        
+        $folder_id = \Common\Request::post('folder_id');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Find the folder.
+        
+        $folder = \Models\Folder::get($folder_id);
+        if (!$folder || $folder->account_id !== $this->user->id) \Common\AJAX::error('Folder not found, or access denied.');
+        
+        // Export!
+        
+        header('Content-Type: application/mbox');
+        header('Content-Disposition: attachment; filename=' . $folder->name);
+        $folder->export();
+        exit;
     }
     
     // Folder actions.

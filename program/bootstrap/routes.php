@@ -58,6 +58,8 @@ $routes = array(
     'POST /settings/folders/add'         => '\\Controllers\\Folder->add',
     'GET  /settings/folders/edit/(int)'  => '\\Controllers\\Folder->edit_form',
     'POST /settings/folders/edit'        => '\\Controllers\\Folder->edit_post',
+    'GET  /settings/folders/export/(int)'=> '\\Controllers\\Folder->export_form',
+    'POST /settings/folders/export'      => '\\Controllers\\Folder->export_post',
     'POST /settings/folders/action'      => '\\Controllers\\Folder->do_action',
     'GET  /settings/rules'               => '\\Controllers\\Rule->show',
     

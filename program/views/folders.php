@@ -39,6 +39,7 @@
             <?php else: ?>
                 <a href="<?php u('/settings/folders/edit', $folder->id); ?>">Rename</a>
             <?php endif; ?>
+            &nbsp; <a href="<?php u('/settings/folders/export', $folder->id); ?>">Export</a>
         </span>
     </p>
     <?php endforeach; ?>

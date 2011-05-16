@@ -64,4 +64,48 @@ class Folder extends \Beaver\Base
         $this->save(array('messages_all' => 0, 'messages_new' => 0));
         \Common\DB::commit();
     }
+    
+    // Export.
+    
+    public function export()
+    {
+        $query = \Common\DB::query('SELECT messages.sender, messages.received_time, originals.source FROM messages, originals ' . 
+            'WHERE messages.id = originals.message_id AND messages.id IN (SELECT id FROM messages WHERE folder_id = ?) ORDER BY message_id', $this->id);
+        $query->bindColumn(1, $sender, \PDO::PARAM_STR);
+        $query->bindColumn(2, $received_time, \PDO::PARAM_INT);
+        $query->bindColumn(3, $source, \PDO::PARAM_LOB);
+        while ($query->fetch(\PDO::FETCH_BOUND))
+        {
+            if (is_resource($source))
+            {
+                stream_filter_append($source, 'zlib.inflate');
+                $firstline = fgets($source);
+                if (strncasecmp($firstline, 'From ', 5))
+                {
+                    $sender_objects = \Models\Contact::extract($sender);
+                    $sender_email = count($sender_objects) ? ($sender_objects[0]->email ?: '-') : '-';
+                    $asctime = gmdate('D M j H:i:s Y', $received_time);
+                    if (strlen($asctime) < 24) $asctime = substr($asctime, 0, 8) . ' ' . substr($asctime, 8);
+                    echo "From $sender_email  $asctime\n";
+                }
+                echo $firstline;
+                fpassthru($source);
+                
+            }
+            else
+            {
+                $source = gzinflate($source);
+                if (strncasecmp($source, 'From ', 5))
+                {
+                    $sender_objects = \Models\Contact::extract($sender);
+                    $sender_email = count($sender_objects) ? ($sender_objects[0]->email ?: '-') : '-';
+                    $asctime = gmdate('D M j H:i:s Y', $received_time);
+                    if (strlen($asctime) < 24) $asctime = substr($asctime, 0, 8) . ' ' . substr($asctime, 8);
+                    echo "From $sender_email  $asctime\n";
+                }
+                echo $source;
+            }
+            echo "\n\n";
+        }
+    }
 }
