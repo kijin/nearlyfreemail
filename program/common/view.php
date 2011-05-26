@@ -6,8 +6,16 @@ class View
 {
     // Some instance variables.
     
+    protected static $_dir = null;
     protected $_filename = null;
     protected $_vars = array();
+    
+    // Set the directory for template files.
+    
+    public static function set_dir($dir)
+    {
+        self::$_dir = rtrim($dir, '/');
+    }
     
     // Constructor.
     
@@ -15,7 +23,7 @@ class View
     {
         // Check if the view file exists.
         
-        $this->_filename = BASEDIR . '/program/views/' . $name . '.php';
+        $this->_filename = self::$_dir . '/' . $name . '.php';
         if (!file_exists($this->_filename)) throw new ViewException("View '{$name}' does not exist.");
     }
     
@@ -38,17 +46,12 @@ class View
     
     public function render($content_type = 'text/html')
     {
-        // Quickly define the escape function.
-        
-        $e = function($input) { echo htmlentities($input, ENT_QUOTES, 'UTF-8', false); };
-        
         // If returning, render the view in the output buffer.
         
         if ($content_type === false)
         {
             ob_start();
             extract($this->_vars);
-            include_once __DIR__ . '/view_func.php';
             include $this->_filename;
             echo "\n";
             return ob_get_clean();

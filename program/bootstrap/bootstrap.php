@@ -64,6 +64,10 @@ spl_autoload_register(function($class_name)
 
 \Common\Session::start(\Config\SESSION_NAME);
 
+// Set the directory for template files.
+
+\Common\View::set_dir(BASEDIR . '/program/views');
+
 // Initialize the database, and turn foreign keys on.
 
 \Common\DB::initialize(STORAGE_DBFILE);

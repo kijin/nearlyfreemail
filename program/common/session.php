@@ -4,7 +4,7 @@ namespace Common;
 
 class Session
 {
-    public static function start($name)
+    public static function start($name = 'PHPSESSID')
     {
         session_name($name);
         session_start();

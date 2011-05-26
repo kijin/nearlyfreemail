@@ -89,13 +89,13 @@ class Response
         {
             echo $message;
         }
-        elseif (self::$not_found_default_message)
+        elseif (self::$_not_found_default_message)
         {
-            echo self::$not_found_default_message;
+            echo self::$_not_found_default_message;
         }
-        elseif (self::$not_found_default_callback)
+        elseif (self::$_not_found_default_callback)
         {
-            call_user_func(self::$not_found_default_callback);
+            call_user_func(self::$_not_found_default_callback);
         }
         else
         {
@@ -108,16 +108,16 @@ class Response
     
     public static function not_found_set_default_message($message)
     {
-        self::$not_found_default_message = $message;
+        self::$_not_found_default_message = $message;
     }
     
     public static function not_found_set_default_callback($callback)
     {
-        self::$not_found_default_callback = $callback;
+        self::$_not_found_default_callback = $callback;
     }
     
-    protected static $not_found_default_message;
-    protected static $not_found_default_callback;
+    protected static $_not_found_default_message;
+    protected static $_not_found_default_callback;
     
     // Send a HTTP status code.
     
