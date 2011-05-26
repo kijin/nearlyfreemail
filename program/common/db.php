@@ -14,9 +14,16 @@ class DB
     
     // Initialize the database connection, and check if tables exist.
     
-    public static function initialize($filename)
+    public static function initialize($filename_or_pdo)
     {
-        self::$_dbh = new \PDO('sqlite:' . $filename);
+        if ($filename_or_pdo instanceof \PDO)  // Used for dependency injection.
+        {
+            self::$_dbh = $filename_or_pdo;
+        }
+        else  // Default is to open an SQLite database.
+        {
+            self::$_dbh = new \PDO('sqlite:' . $filename_or_pdo);
+        }
         self::$_dbh->setAttribute(\PDO::ATTR_CASE, \PDO::CASE_LOWER);
         self::$_dbh->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
     }
@@ -85,7 +92,7 @@ class DB
         return $status;
     }
     
-    // Nested transactions: begin/commit only when not already in a transaction.
+    // Fake nested transactions.
     
     public static function try_begin_transaction()
     {
