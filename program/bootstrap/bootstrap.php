@@ -36,7 +36,7 @@ if (!file_exists(STORAGE_DIR) || !is_writable(STORAGE_DIR))
     header('HTTP/1.0 500 Internal Server Error');
     header('Content-Type: text/plain; charset=UTF-8');
     echo "The protected directory doesn't exist, or it is not writable.\n";
-    echo "Please create /home/protected/{\Config\STORAGE_DIR} ";
+    echo "Please create /home/protected/" . \Config\STORAGE_DIR . " ";
     echo "and chgrp it to 'web'.\n";
     exit;
 }
@@ -68,10 +68,22 @@ spl_autoload_register(function($class_name)
 
 \Common\View::set_dir(BASEDIR . '/program/views');
 
-// Initialize the database, and turn foreign keys on.
+// Initialize the database.
 
-\Common\DB::initialize(STORAGE_DBFILE);
-\Common\DB::query('PRAGMA foreign_keys = ON');
+if (file_exists(STORAGE_DIR . '/mysql.php'))
+{
+    include STORAGE_DIR . '/mysql.php';
+    extract($mysql, EXTR_SKIP);
+    $dsn = "mysql:host=$host;port=$port;dbname=$dbname";
+    $opt = array(PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES 'UTF8'");
+    $pdo = new PDO($dsn, $username, $password, $opt);
+    \Common\DB::initialize($pdo);
+}
+else
+{
+    \Common\DB::initialize(STORAGE_DBFILE);
+    \Common\DB::query('PRAGMA foreign_keys = ON');  // SQLite needs this.
+}
 
 // Initialize the Beaver ORM.
 

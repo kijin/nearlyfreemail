@@ -30,7 +30,8 @@ class Install
     
     public static function create_tables()
     {
-        $schema = file_get_contents(BASEDIR . '/program/schemata/schema.sql');
+        $driver = \Common\DB::get_pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $schema = file_get_contents(BASEDIR . '/program/schemata/' . $driver . '.schema.sql');
         $schema = explode(';', $schema);
         try
         {
@@ -63,7 +64,8 @@ class Install
             return true;
         }
         
-        $filename = BASEDIR . '/program/schemata/upgrade.from.' . $matches[0] . '.sql';
+        $driver = \Common\DB::get_pdo()->getAttribute(\PDO::ATTR_DRIVER_NAME);
+        $filename = BASEDIR . '/program/schemata/' . $driver . '.upgrade.from.' . $matches[0] . '.sql';
         if (!file_exists($filename))
         {
             self::$_last_error = 'Cannot find upgrade path from ' . $matches[0];

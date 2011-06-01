@@ -1,0 +1,2 @@
+
+ALTER TABLE aliases ADD COLUMN notes TEXT NOT NULL DEFAULT '';
