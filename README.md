@@ -33,7 +33,7 @@ Please do not contact NFSN about bugs in this software.
 Features
 --------
 
-Right now, you can:
+Right now, NearlyFreeMail can:
 
 - Send and receive plain-text messages with your own domain name _(HTML messages are converted to plain text)_
 - Send and receive attachments up to ~7MB _(Larger messages may be rejected by NFSN)_
@@ -43,10 +43,10 @@ Right now, you can:
 - Manage your address book
 - Auto-save your drafts _(This is the only feature that requires JavaScript)_
 - Perform basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
-- Unicode support _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
+- Support Unicode _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
+- Support either SQLite (default) or MySQL for data storage.
 
 More features may be added if there is enough demand and if the author has time.
-Planned features include MySQL support, aliases/personalities, and message filters.
 Updates, if any, will be published on the author's GitHub page.
 
 Please also read "Known Issues" below.
@@ -86,6 +86,20 @@ Log in to your site with SSH. Issue the following commands, in that order:
     mkdir /home/protected/nearlyfreemail
     touch /home/protected/nearlyfreemail/db.sqlite
     chgrp -R web /home/protected/nearlyfreemail
+
+If you would like to use a MySQL database instead of the default SQLite,
+also issue the following command:
+
+    cp /home/public/nearlyfreemail/program/bootstrap/mysql.php /home/protected/nearlyfreemail
+
+Then, using your favorite text editor, edit /home/protected/nearlyfreemail/mysql.php
+and fill in your MySQL connection information.
+
+    $mysql['host'] = 'your_mysql_database.db';
+    $mysql['port'] = 3306;
+    $mysql['username'] = 'your_username';
+    $mysql['password'] = 'your_password';
+    $mysql['dbname'] = 'your_db_name';
 
 Afterwards, visit http://yoursite.nfshost.com/nearlyfreemail in your browser.
 Follow the instructions to create your first all-NFSN e-mail account.
