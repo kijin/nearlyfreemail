@@ -77,6 +77,8 @@ Mobile browsers have not been tested.
 Installation
 ------------
 
+### Step 1
+
 Log in to your site with SSH. Issue the following commands, in that order:
 
     cd /home/public
@@ -87,12 +89,16 @@ Log in to your site with SSH. Issue the following commands, in that order:
     touch /home/protected/nearlyfreemail/db.sqlite
     chgrp -R web /home/protected/nearlyfreemail
 
-If you would like to use a MySQL database instead of the default SQLite,
-also issue the following command:
+If you would like to use an SQLite database for data storage, skip to Step 3.
+If you would like to use MySQL instead, proceed to Step 2.
+
+### Step 2 (MySQL Only)
+
+While logged in with SSH, issue the following command:
 
     cp /home/public/nearlyfreemail/program/bootstrap/mysql.php /home/protected/nearlyfreemail
 
-Then, using your favorite text editor, edit /home/protected/nearlyfreemail/mysql.php
+Then, using your favorite text editor, edit `/home/protected/nearlyfreemail/mysql.php`
 and fill in your MySQL connection information.
 
     $mysql['host'] = 'your_mysql_database.db';
@@ -101,10 +107,13 @@ and fill in your MySQL connection information.
     $mysql['password'] = 'your_password';
     $mysql['dbname'] = 'your_db_name';
 
-Afterwards, visit http://yoursite.nfshost.com/nearlyfreemail in your browser.
-Follow the instructions to create your first all-NFSN e-mail account.
+### Step 3
 
-You can move NearlyFreeMail to the document root of your site, or to any other directory,
+Visit http://yoursite.nfshost.com/nearlyfreemail in your browser.
+Follow the instructions to create your first all-NFSN e-mail account.
+The welcome screen will tell you how to configure e-mail forwarding for your domain.
+
+You may move NearlyFreeMail to the document root of your site, or to any other directory,
 simply by moving all the files and directories to the desired location.
 **You must go to your NFSN control panel and update the forwarding URL if you change the installed location of NearlyFreeMail.**
 Also, don't forget the dotfiles: `.htaccess` and `.git`.
