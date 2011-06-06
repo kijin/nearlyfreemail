@@ -124,7 +124,7 @@ class Account extends Base
     {
         // Check the logout token to prevent CSRF.
         
-        $token = \Common\Request::post('logout_token');
+        $token = \Common\Request::get('token');
         if (!$token || $token !== \Common\Session::get_logout_token())
         {
             \Common\AJAX::error('CSRF');

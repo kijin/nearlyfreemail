@@ -29,7 +29,7 @@ $routes = array(
     'GET  /account/welcome' => '\\Controllers\\Install->install_welcome',
     'GET  /account/login'   => '\\Controllers\\Account->login_form',
     'POST /account/login'   => '\\Controllers\\Account->login_post',
-    'POST /account/logout'  => '\\Controllers\\Account->logout',
+    'GET  /account/logout'  => '\\Controllers\\Account->logout',
     
     'GET  /mail'             => '\\Controllers\\Mailbox->inbox',
     'GET  /mail/list/(any)'  => '\\Controllers\\Mailbox->show',
