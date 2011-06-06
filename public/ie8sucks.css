@@ -2,7 +2,6 @@
 /* Extra CSS for IE 8 */
 
 #header form button { padding-top: 6px; padding-bottom: 6px; }
-#logout button { margin-left: -5px; }
 
 #list_actions_buttons button { padding-top: 2px; padding-bottom: 2px; }
 #read_actions button { padding-top: 2px; padding-bottom: 2px; }
