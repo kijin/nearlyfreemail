@@ -68,6 +68,15 @@ spl_autoload_register(function($class_name)
 
 // Initialize the database.
 
+set_error_handler(function(errno, errstr)
+{
+    header('HTTP/1.0 500 Internal Server Error');
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo "Cannot connect to the database.\n";
+    echo errstr . "\n";
+    exit;
+}, E_WARNING);
+
 if (file_exists(STORAGE_DIR . '/mysql.php'))
 {
     include STORAGE_DIR . '/mysql.php';
@@ -82,6 +91,8 @@ else
     \Common\DB::initialize(STORAGE_DBFILE);
     \Common\DB::query('PRAGMA foreign_keys = ON');  // SQLite needs this.
 }
+
+restore_error_handler();
 
 // Initialize the Beaver ORM.
 
