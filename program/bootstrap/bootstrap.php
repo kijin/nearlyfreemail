@@ -48,15 +48,9 @@ spl_autoload_register(function($class_name)
     if (file_exists($file_name)) include $file_name;
 });
 
-// Set up the default error message.
+// Start output buffering, with gzip enabled.
 
-\Common\Response::not_found_set_default_callback(function()
-{
-    $view = new \Common\View('error');
-    $view->title = '404 Not Found';
-    $view->message = 'It seems you\'re looking for a page that doesn\'t exist.';
-    $view->render();
-});
+ob_start('ob_gzhandler');
 
 // Start the session now.
 
@@ -66,10 +60,21 @@ spl_autoload_register(function($class_name)
 
 \Common\View::set_dir(BASEDIR . '/program/views');
 
-// Set the default error and exception handlers.
+// Set up the default 404 error message.
+
+\Common\Response::not_found_set_default_callback(function()
+{
+    $view = new \Common\View('error');
+    $view->title = '404 Not Found';
+    $view->message = 'It seems you\'re looking for a page that doesn\'t exist.';
+    $view->render();
+});
+
+// Set the default exception handler, and a temporary error handler for PDO.
 
 set_exception_handler(function($exception)
 {
+    ob_end_clean();
     header('HTTP/1.0 500 Internal Server Error');
     header('Content-Type: text/plain; charset=UTF-8');
     echo 'Uncaught exception: ' . get_class($exception) . "\n";
@@ -104,6 +109,8 @@ else
     \Common\DB::initialize(STORAGE_DBFILE);
     \Common\DB::query('PRAGMA foreign_keys = ON');  // SQLite needs this.
 }
+
+// PDO now throws exceptions instead of warnings, so cancel the error handler.
 
 restore_error_handler();
 
