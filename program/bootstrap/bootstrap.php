@@ -50,7 +50,7 @@ spl_autoload_register(function($class_name)
 
 // Start output buffering, with gzip enabled.
 
-ob_start('ob_gzhandler');
+ob_start();
 
 // Start the session now.
 
@@ -74,7 +74,7 @@ ob_start('ob_gzhandler');
 
 set_exception_handler(function($exception)
 {
-    ob_end_clean();
+    ob_clean();
     header('HTTP/1.0 500 Internal Server Error');
     header('Content-Type: text/plain; charset=UTF-8');
     echo 'Uncaught exception: ' . get_class($exception) . "\n";
