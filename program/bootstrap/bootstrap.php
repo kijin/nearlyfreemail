@@ -66,7 +66,18 @@ spl_autoload_register(function($class_name)
 
 \Common\View::set_dir(BASEDIR . '/program/views');
 
-// Initialize the database.
+// Set the default error and exception handlers.
+
+set_exception_handler(function($exception)
+{
+    header('HTTP/1.0 500 Internal Server Error');
+    header('Content-Type: text/plain; charset=UTF-8');
+    echo 'Uncaught exception: ' . get_class($exception) . "\n";
+    echo $exception->getMessage() . "\n";
+    echo $exception->getFile() . ' line ' . $exception->getLine() . "\n\n";
+    echo $exception->getTraceAsString() . "\n";
+    exit;
+});
 
 set_error_handler(function($errno, $errstr)
 {
@@ -76,6 +87,8 @@ set_error_handler(function($errno, $errstr)
     echo $errstr . "\n";
     exit;
 }, E_WARNING);
+
+// Initialize the database.
 
 if (file_exists(STORAGE_DIR . '/mysql.php'))
 {
