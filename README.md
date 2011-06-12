@@ -44,7 +44,8 @@ Right now, NearlyFreeMail can:
 - Auto-save your drafts _(This is the only feature that requires JavaScript)_
 - Perform basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
 - Support Unicode _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
-- Support either SQLite (default) or MySQL for data storage.
+- Use either SQLite (default) or MySQL for data storage.
+- Export your messages in the mbox format.
 
 More features may be added if there is enough demand and if the author has time.
 Updates, if any, will be published on the author's GitHub page.
