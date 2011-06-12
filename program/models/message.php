@@ -178,7 +178,7 @@ class Message extends \Beaver\Base
         $query = \Common\DB::prepare('INSERT INTO originals (message_id, subject, content, source) VALUES (?, ?, ?, ?)');
         $subject = gzdeflate($subject);
         $content = gzdeflate($content);
-        if (is_resource($source))
+        if ($source[0] === '/' && file_exists($source))
         {
             $fp = fopen($source, 'rb');
             stream_filter_append($fp, 'convert.base64-decode');
