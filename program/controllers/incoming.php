@@ -8,14 +8,6 @@ class Incoming extends Base
     
     public function receive($key)
     {
-        // Does the client speak HTTP POST?
-        
-        if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !count($_POST))
-        {
-            error_log('Received a GET request. Request denied. [code 405]');
-            $this->return_status(405, 'Not POST');
-        }
-        
         // Does the client look like NFSN's e-mail forwarding gateway?
         
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'NearlyFreeSpeech.NET') === false ||
@@ -25,7 +17,7 @@ class Incoming extends Base
             !is_uploaded_file($_FILES['raw0']['tmp_name']))
         {
             error_log('This client doesn\'t look like NFSN. Request denied. [code 403]');
-            $this->return_status(403, 'Wrong Client');
+            $this->return_status(422, 'Unprocessable Entity');
         }
         
         // Does the URL key belong to an account/alias here?
@@ -199,6 +191,14 @@ class Incoming extends Base
             foreach ($attachments as $attachment)
             {
                 $name = $_FILES[$attachment]['name'];
+                if ($charset && $charset !== 'UTF-8' && @mb_check_encoding($name, $charset))  // Transcoding.
+                {
+                    $name = mb_convert_encoding($name, 'UTF-8', $charset);
+                }
+                elseif (!@mb_check_encoding($name, 'UTF-8'))
+                {
+                    $name = 'body0';  // Default placeholder for invalid filenames.
+                }
                 if (preg_match('/^body\\d+$/', $name))  // NFS.N destroys international filenames.
                 {
                     $type = $_FILES[$attachment]['type'];  // So let's at least restore the extension.

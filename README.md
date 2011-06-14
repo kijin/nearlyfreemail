@@ -172,9 +172,6 @@ Don't forget to update the forwarding URL if you move your installation of Nearl
 Known Issues
 ------------
 
-If your site is not accessible for any reason when NFSN tries to deliver a message, delivery will fail silently.
-There is currently no solution to this problem, due to the architecture of NFSN's e-mail-to-URL forwarding gateway.
-
 Attachments with names that include non-ASCII characters will be renamed to body1, body2, etc.
 A workaround will be developed in the future.
 
