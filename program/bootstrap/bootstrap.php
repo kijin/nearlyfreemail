@@ -80,12 +80,16 @@ set_exception_handler(function($exception)
     echo 'Uncaught exception: ' . get_class($exception) . "\n";
     echo $exception->getMessage() . "\n";
     echo $exception->getFile() . ' line ' . $exception->getLine() . "\n\n";
-    echo $exception->getTraceAsString() . "\n";
+    error_log('Uncaught exception: ' . get_class($exception));
+    error_log($exception->getMessage());
+    error_log($exception->getFile() . ' line ' . $exception->getLine());
+    error_log($exception->getTraceAsString());
     exit;
 });
 
 set_error_handler(function($errno, $errstr)
 {
+    ob_clean();
     header('HTTP/1.0 500 Internal Server Error');
     header('Content-Type: text/plain; charset=UTF-8');
     echo "Cannot connect to the database.\n";
