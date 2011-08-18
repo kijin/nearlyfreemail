@@ -134,6 +134,27 @@ class Alias extends Base
         \Common\AJAX::redirect(\Common\Router::get_url('/settings/aliases'));
     }
     
+    // Display setup instructions.
+    
+    public function instructions($alias_id)
+    {
+        // Check user input.
+        
+        $alias = \Models\Alias::get($alias_id);
+        if (!$alias || $alias->account_id !== $this->user->id) \Common\AJAX::error('Alias not found, or access denied.');
+        
+        // Display edit form.
+        
+        $view = new \Common\View('aliases_howto');
+        $view->title = 'Setup Instructions for Alias "' . $alias->name . '" <' . $alias->email . '>';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->alias = $alias;
+        $view->email_local = substr($alias->email, 0, strrpos($alias->email, '@'));
+        $view->email_domain = strtolower(substr($alias->email, strrpos($alias->email, '@') + 1));
+        $view->render();
+    }
+    
     // Alias actions.
     
     public function do_action()

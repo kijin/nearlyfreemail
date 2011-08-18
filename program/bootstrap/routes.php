@@ -52,6 +52,7 @@ $routes = array(
     'POST /settings/aliases/add'         => '\\Controllers\\Alias->add',
     'GET  /settings/aliases/edit/(int)'  => '\\Controllers\\Alias->edit_form',
     'POST /settings/aliases/edit'        => '\\Controllers\\Alias->edit_post',
+    'GET  /settings/aliases/howto/(int)' => '\\Controllers\\Alias->instructions',
     'POST /settings/aliases/action'      => '\\Controllers\\Alias->do_action',
     'GET  /settings/contacts'            => '\\Controllers\\Contact->show',
     'POST /settings/contacts/add'        => '\\Controllers\\Contact->add',

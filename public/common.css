@@ -229,3 +229,8 @@ em { font-style: italic; }
 #settings_actions_buttons { margin-top: 8px; font-size: 0.8em; }
 #settings_actions_buttons button { border: 1px solid #d0d0d0; background-color: #eaeaea; padding: 4px 7px 4px 7px; margin-right: 5px; }
 #settings_actions_buttons button:hover, #read_actions button:focus, #read_actions button:active { border-color: #a0a0ff; background-color: #e8e8ff; }
+
+#howto h3 { margin-top: 18px; margin-bottom: 12px; font-weight: bold; }
+#howto ol { margin-left: 16px; }
+#howto ol li { margin-left: 16px; list-style-type: decimal; }
+#howto ol li p.quote { margin: 6px 6px 6px 0px; font-size: 0.8em; font-weight: bold; }

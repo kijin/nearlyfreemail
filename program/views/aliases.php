@@ -37,6 +37,7 @@
         <?php if ($alias->id == $default_alias->id): ?>(Default)<?php endif; ?> &nbsp;
         <span class="actions"><a href="<?php u('/settings/aliases/edit', $alias->id); ?>">Edit</a></span> <br />
         <span class="url">Forwarding URL: <strong><?php e($alias->get_incoming_url()); ?></strong></span>
+        <span class="actions"><a href="<?php u('/settings/aliases/howto', $alias->id); ?>">Setup Instructions</a></span>
     </p>
     <?php endforeach; ?>
     </fieldset>
