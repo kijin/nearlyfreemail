@@ -209,12 +209,12 @@ em { font-style: italic; }
 #settings div.item label { font-weight: bold; color: #606060; }
 #settings div.item input { position: absolute; right: 0px; top: 3px; width: 300px; }
 #settings div.item select { position: absolute; right: 0px; top: 3px; width: 300px; padding: 5px; }
-#settings div.item textarea { float: right; width: 580px; min-width: 580px; max-width: 580px; height: 100px; min-height: 100px; }
 
 #settings_add { width: 700px; padding: 16px; border: 1px solid #c0c0c0; background-color: #f4f4f4; margin-bottom: 16px; }
 #settings_add label { margin-right: 10px; color: #808080; }
 #settings_add input { width: 240px; }
 #settings_add input.checkbox { width: 14px; position: relative; top: 1px; }
+#settings_add textarea { float: right; width: 580px; min-width: 580px; max-width: 580px; height: 120px; min-height: 120px; }
 #settings_add button { padding: 5px 9px 5px 9px; }
 
 #settings_existing { width: 700px; padding: 16px; border: 1px solid #d0d0d0; margin-bottom: 10px; }

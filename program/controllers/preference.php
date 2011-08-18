@@ -25,12 +25,9 @@ class Preference extends Base
     {
         // Get user input.
         
-        $email = \Common\Request::post('email');
-        $name = \Common\Request::post('name');
         $pass = \Common\Request::post('pass');
         $newpass1 = \Common\Request::post('newpass1');
         $newpass2 = \Common\Request::post('newpass2');
-        $signature = \Common\Request::post('signature');
         $messages_per_page = \Common\Request::post('messages_per_page');
         $show_sidebar_contacts = \Common\Request::post('show_sidebar_contacts');
         $show_compose_contacts = \Common\Request::post('show_compose_contacts');
@@ -44,16 +41,6 @@ class Preference extends Base
         if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
         
         // Check user input.
-        
-        if (!\Common\Security::validate($email, 'email'))
-        {
-            \Common\AJAX::error('Please enter a valid e-mail address, including the domain name.');
-        }
-        
-        if (!\Common\Security::validate($name, 'unicode,min=1,max=60'))
-        {
-            \Common\AJAX::error('Please enter your name. It can be between 1 and 60 characters.');
-        }
         
         if ($pass === '' && $newpass1 !== '')
         {
@@ -107,16 +94,6 @@ class Preference extends Base
         // Save settings.
         
         \Common\DB::begin_transaction();
-        
-        $alias = $this->user->get_default_alias();
-        if ($name !== $alias->name || $email !== $alias->email)
-        {
-            $alias->save(array('name' => $name, 'email' => $email));
-        }
-        if ($signature !== $alias->signature)
-        {
-            $alias->save(array('signature' => $signature));
-        }
         
         if ($newpass1 !== '')
         {

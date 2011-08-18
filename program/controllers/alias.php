@@ -94,6 +94,7 @@ class Alias extends Base
         $name = \Common\Request::post('name');
         $email = \Common\Request::post('email');
         $make_default = \Common\Request::post('make_default');
+        $signature = \Common\Request::post('signature');
         $csrf_token = \Common\Request::post('csrf_token');
         
         // Check the CSRF token.
@@ -118,6 +119,7 @@ class Alias extends Base
         if (!$alias || $alias->account_id !== $this->user->id) \Common\AJAX::error('Alias not found, or access denied.');
         $alias->name = $name;
         $alias->email = $email;
+        $alias->signature = $signature;
         $alias->save();
         
         // Make default?

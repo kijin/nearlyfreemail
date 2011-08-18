@@ -24,6 +24,12 @@
             <input type="checkbox" class="checkbox" id="make_default" name="make_default" value="yes" />
             <label for="make_default">Make Default</label> &nbsp; Remember that you can only log in using your default alias!
         <?php endif; ?>
+        <br /><br />
+    </fieldset>
+    
+    <fieldset>
+        <label for="signature">Signature</label>
+        <textarea id="signature" name="signature"><?php e($alias->signature); ?></textarea>
     </fieldset>
     
     <fieldset>

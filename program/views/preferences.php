@@ -8,28 +8,9 @@
 
 <form id="settings" class="ajax_capable" action="<?php u('/settings/preferences'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     
-    <!-- Incoming URL -->
-    
-    <fieldset class="category rounded" id="incoming_url">
-        
-        <p>Your e-mail forwarding URL is as follows. Give it to NFSN and nobody else.</p>
-        <p class="url"><strong><?php e($user->get_default_alias()->get_incoming_url()); ?></strong></p>
-        
-    </fieldset>
-    
-    <!-- Name, E-mail, and Password -->
+    <!-- Change Passphrase -->
     
     <fieldset class="category rounded">
-        <div class="item">
-            <label for="email">Change Your E-mail Address</label><br />
-            <span class="explain">Be sure to update NFSN's e-mail forwarding setting as well.</span>
-            <input type="text" id="email" name="email" value="<?php e($user->get_default_alias()->email); ?>" />
-        </div>
-        <div class="item">
-            <label for="name">Change Your Name</label><br />
-            <span class="explain">This is the name that you want your recipients to see.</span>
-            <input type="text" id="name" name="name" value="<?php e($user->get_default_alias()->name); ?>" />
-        </div>
         <div class="item">
             <label for="pass">Current Passphrase</label><br />
             <span class="explain">Enter if you want to change your passphrase.</span>
@@ -44,15 +25,6 @@
             <label for="newpass2">New Passphrase, Again</label><br />
             <span class="explain">Just to make sure you didn't make any typos the first time.</span>
             <input type="password" id="newpass2" name="newpass2" value="" />
-        </div>
-    </fieldset>
-    
-    <!-- Signature -->
-    
-    <fieldset class="category rounded">
-        <div class="item">
-            <label for="signature">Signature</label>
-            <textarea id="signature" name="signature"><?php e($user->get_default_alias()->signature); ?></textarea>
         </div>
     </fieldset>
     
