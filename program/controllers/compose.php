@@ -60,7 +60,7 @@ class Compose extends Base
                 $cc_objects2 = array();
                 foreach ($cc_objects1 as $cc_object)
                 {
-                    if ($cc_object->email !== $this->user->get_default_alias()->email) $cc_objects2[] = $cc_object->get_profile();
+                    if ($cc_object->email !== $alias->email) $cc_objects2[] = $cc_object->get_profile();
                 }
                 $cc = implode(', ', $cc_objects2);
                 $subject = strncasecmp('Re: ', $message->subject, 4) ? ('Re: ' . $message->subject) : $message->subject;
@@ -183,8 +183,8 @@ class Compose extends Base
             
             // Generate a message ID.
             
-            $random = sha1($this->user->get_default_alias()->email . \Common\Security::get_random(32) . microtime());
-            $domain = strtolower(substr($this->user->get_default_alias()->email, strrpos($this->user->get_default_alias()->email, '@') + 1));
+            $random = sha1($alias->email . \Common\Security::get_random(32) . microtime());
+            $domain = strtolower(substr($alias->email, strrpos($alias->email, '@') + 1));
             $msgid = '<' . base_convert($random, 16, 36) . '@' . $domain . '>';
             
             // Create a new message object.
@@ -194,7 +194,7 @@ class Compose extends Base
             $message->alias_id = $alias->id;
             $message->folder_id = \Models\Folder::get_folder($this->user->id, 'Drafts')->id;
             $message->msgid = $msgid;
-            $message->sender = $this->user->get_default_alias()->get_profile();
+            $message->sender = $alias->get_profile();
             $message->recipient = $recipient;
             $message->refs = $references;
             $message->cc = $cc;
@@ -229,6 +229,7 @@ class Compose extends Base
             
             $message->save(array(
                 'alias_id' => $alias->id,
+                'sender' = $alias->get_profile();
                 'recipient' => $recipient,
                 'cc' => $cc,
                 'bcc' => $bcc,
