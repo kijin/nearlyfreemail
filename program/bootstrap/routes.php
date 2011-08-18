@@ -46,8 +46,8 @@ $routes = array(
     'POST /mail/compose'    => '\\Controllers\\Compose->save',
     'GET  /mail/edit/(int)' => '\\Controllers\\Compose->edit',
     
-    'GET  /settings'                     => '\\Controllers\\Setting->show',
-    'POST /settings/account'             => '\\Controllers\\Setting->save',
+    'GET  /settings'                     => '\\Controllers\\Preference->show',
+    'POST /settings/preferences'         => '\\Controllers\\Preference->save',
     'GET  /settings/aliases'             => '\\Controllers\\Alias->show',
     'GET  /settings/contacts'            => '\\Controllers\\Contact->show',
     'POST /settings/contacts/add'        => '\\Controllers\\Contact->add',

@@ -1,12 +1,12 @@
 <?php include 'common_header.php'; ?>
 
-<!-- Settings View Title -->
+<!-- Preferences View Title -->
 
 <h3><?php e($title); ?></h3>
 
-<!-- Settings Form -->
+<!-- Preferences Form -->
 
-<form id="settings" class="ajax_capable" action="<?php u('/settings/account'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
+<form id="settings" class="ajax_capable" action="<?php u('/settings/preferences'); ?>" method="post" accept-charset="UTF-8" enctype="multipart/form-data">
     
     <!-- Incoming URL -->
     
@@ -133,7 +133,7 @@
     <!-- Save Button -->
     
     <fieldset>
-        <button type="submit" class="rounded">Save Settings</button>
+        <button type="submit" class="rounded">Save Preferences</button>
     </fieldset>
 
 </form>

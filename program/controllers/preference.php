@@ -2,24 +2,24 @@
 
 namespace Controllers;
 
-class Setting extends Base
+class Preference extends Base
 {
     // All calls to this controller require login.
     
     protected $require_login = true;
     
-    // Show the control panel.
+    // Show the preferences page.
     
     public function show()
     {
-        $view = new \Common\View('settings');
-        $view->title = 'Account Settings';
+        $view = new \Common\View('preferences');
+        $view->title = 'Preferences';
         $view->menu = 'settings';
         $view->user = $this->user;
         $view->render();
     }
     
-    // Save settings.
+    // Save preferences.
     
     public function save()
     {

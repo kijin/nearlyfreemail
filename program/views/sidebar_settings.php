@@ -10,7 +10,7 @@
 <h3>Settings</h3>
 
 <ul>
-    <li><a href="<?php u('/settings'); ?>">Account Settings</a></li>
+    <li><a href="<?php u('/settings'); ?>">Preferences</a></li>
     <li><a href="<?php u('/settings/aliases'); ?>">Aliases</a></li>
     <li><a href="<?php u('/settings/contacts'); ?>">Contacts</a></li>
     <li><a href="<?php u('/settings/folders'); ?>">Folders</a></li>
