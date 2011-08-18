@@ -32,7 +32,7 @@ $routes = array(
     'GET  /account/logout'  => '\\Controllers\\Account->logout',
     
     'GET  /mail'             => '\\Controllers\\Mailbox->inbox',
-    'GET  /mail/list/(any)'  => '\\Controllers\\Mailbox->show',
+    'GET  /mail/list/(.*)'   => '\\Controllers\\Mailbox->show',
     'POST /mail/list/action' => '\\Controllers\\Mailbox->do_action',
     'GET  /mail/search'      => '\\Controllers\\Mailbox->search',
     

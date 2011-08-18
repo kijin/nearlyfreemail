@@ -28,7 +28,7 @@ class Folder extends Base
         
         $name = \Common\Request::post('name');
         $csrf_token = \Common\Request::post('csrf_token');
-    
+        
         // Check the CSRF token.
         
         if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
@@ -39,9 +39,9 @@ class Folder extends Base
         {
             \Common\AJAX::error('Please enter a name between 1 and 30 characters.');
         }
-        if (!preg_match('/[a-zA-Z0-9._-]+/', $name))
+        if (!preg_match('/^[a-zA-Z0-9\' ._-]+$/', $name))
         {
-            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, and period.)');
+            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, apostrophe, and period.)');
         }
         
         // Add.
@@ -95,9 +95,9 @@ class Folder extends Base
         {
             \Common\AJAX::error('Please enter a name between 1 and 30 characters.');
         }
-        if (!preg_match('/[a-zA-Z0-9._-]+/', $name))
+        if (!preg_match('/^[a-zA-Z0-9\' ._-]+$/', $name))
         {
-            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, and period.)');
+            \Common\AJAX::error('Please enter a valid name. (Allowed characters: Alphabets, numbers, hyphen, underscore, apostrophe, and period.)');
         }
         
         // Rename.
