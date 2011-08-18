@@ -229,7 +229,7 @@ class Compose extends Base
             
             $message->save(array(
                 'alias_id' => $alias->id,
-                'sender' = $alias->get_profile();
+                'sender' => $alias->get_profile(),
                 'recipient' => $recipient,
                 'cc' => $cc,
                 'bcc' => $bcc,
