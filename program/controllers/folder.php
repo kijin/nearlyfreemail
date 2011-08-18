@@ -81,7 +81,7 @@ class Folder extends Base
     {
         // Check user input.
         
-        $folder_id = \Common\Request::post('folder_id');
+        $folder_id = \Common\Request::post('folder_id', 'int');
         $name = \Common\Request::post('name');
         $csrf_token = \Common\Request::post('csrf_token');
         

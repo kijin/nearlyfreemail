@@ -86,7 +86,7 @@ class Contact extends Base
     {
         // Check user input.
         
-        $contact_id = \Common\Request::post('contact_id');
+        $contact_id = \Common\Request::post('contact_id', 'int');
         $name = \Common\Request::post('name');
         $email = \Common\Request::post('email');
         $csrf_token = \Common\Request::post('csrf_token');

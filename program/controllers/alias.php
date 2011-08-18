@@ -90,7 +90,7 @@ class Alias extends Base
     {
         // Check user input.
         
-        $alias_id = \Common\Request::post('alias_id');
+        $alias_id = \Common\Request::post('alias_id', 'int');
         $name = \Common\Request::post('name');
         $email = \Common\Request::post('email');
         $make_default = \Common\Request::post('make_default');
