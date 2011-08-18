@@ -167,6 +167,7 @@ function autosave(async)
     var data = {
         "button": "autosave",
         "message_id": $("#message_id").val(),
+        "alias_id": $("#alias_id").val(),
         "recipient": $("#recipient").val(),
         "cc": $("#cc").val(),
         "bcc": $("#bcc").val(),

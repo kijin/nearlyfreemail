@@ -14,6 +14,7 @@ class Compose extends Base
     {
         // Check additional parameters.
         
+        $alias = $this->user->get_default_alias();
         $references = '';
         $recipient = '';
         $cc = '';
@@ -36,6 +37,9 @@ class Compose extends Base
         {
             if ($message = \Models\Message::get($id)) { if ($message->account_id === $this->user->id)
             {
+                $alias_candidate = \Models\Alias::get($message->alias_id);
+                if ($alias_candidate && $alias_candidate->account_id == $this->user->id) $alias = $alias_candidate;
+                
                 $references = trim($message->refs . ' ' . $message->msgid);
                 $recipient = $message->reply_to ?: $message->sender;
                 $subject = strncasecmp('Re: ', $message->subject, 4) ? ('Re: ' . $message->subject) : $message->subject;
@@ -47,6 +51,9 @@ class Compose extends Base
         {
             if ($message = \Models\Message::get($id)) { if ($message->account_id === $this->user->id)
             {
+                $alias_candidate = \Models\Alias::get($message->alias_id);
+                if ($alias_candidate && $alias_candidate->account_id == $this->user->id) $alias = $alias_candidate;
+                
                 $references = trim($message->refs . ' ' . $message->msgid);
                 $recipient = $message->reply_to ?: $message->sender;
                 $cc_objects1 = \Models\Contact::extract($message->recipient . ', ' . $message->cc);
@@ -65,6 +72,9 @@ class Compose extends Base
         {
             if ($message = \Models\Message::get($id)) { if ($message->account_id === $this->user->id)
             {
+                $alias_candidate = \Models\Alias::get($message->alias_id);
+                if ($alias_candidate && $alias_candidate->account_id == $this->user->id) $alias = $alias_candidate;
+                
                 $references = trim($message->refs . ' ' . $message->msgid);
                 $subject = strncasecmp('Fwd: ', $message->subject, 5) ? ('Fwd: ' . $message->subject) : $message->subject;
                 $content = $this->produce_reply_text($message);
@@ -72,9 +82,9 @@ class Compose extends Base
             }}
         }
         
-        // Add the current alias's signature.
+        // Add the selected alias's signature.
         
-        $content .= "\n\n" . $this->user->get_default_alias()->signature;
+        if ($alias->signature !== '') $content .= "\n\n" . $alias->signature;
         
         // Display the composition form.
         
@@ -83,6 +93,7 @@ class Compose extends Base
         $view->menu = 'compose';
         $view->user = $this->user;
         $view->message = null;
+        $view->selected_alias = $alias;
         $view->references = $references;
         $view->recipient = $recipient;
         $view->cc = $cc;
@@ -103,6 +114,18 @@ class Compose extends Base
         if (!$message || $message->account_id !== $this->user->id) \Common\AJAX::error('Message not found, or access denied.');
         if ($message->is_draft != 1) \Common\AJAX::error('Selected message is not a draft.');
         
+        // Find the alias from which the message was originally created. If the alias no longer exists, fall back to the default.
+        
+        $alias_candidate = \Models\Alias::get($message->alias_id);
+        if ($alias_candidate && $alias_candidate->account_id == $this->user->id)
+        {
+            $alias = $alias_candidate;
+        }
+        else
+        {
+            $alias = $this->user->get_default_alias();
+        }
+        
         // Display the composition form.
         
         $view = new \Common\View('compose');
@@ -110,6 +133,7 @@ class Compose extends Base
         $view->menu = 'compose';
         $view->user = $this->user;
         $view->message = $message;
+        $view->selected_alias = $alias;
         $view->render();
     }
     
@@ -120,6 +144,7 @@ class Compose extends Base
         // Get user input.
         
         $message_id = \Common\Request::post('message_id', 'int');
+        $alias_id = \Common\Request::post('alias_id', 'int');
         $recipient = \Common\Request::post('recipient');
         $cc = \Common\Request::post('cc');
         $bcc = \Common\Request::post('bcc');
@@ -130,6 +155,18 @@ class Compose extends Base
         // Check the CSRF token.
         
         if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check the alias ID.
+        
+        $alias_candidate = \Models\Alias::get($alias_id);
+        if ($alias_candidate && $alias_candidate->account_id == $this->user->id)
+        {
+            $alias = $alias_candidate;
+        }
+        else
+        {
+            $alias = $this->user->get_default_alias();
+        }
         
         // Everything below should happen in a transaction.
         
@@ -154,7 +191,7 @@ class Compose extends Base
             
             $message = new \Models\Message();
             $message->account_id = $this->user->id;
-            $message->alias_id = $this->user->get_default_alias()->id;
+            $message->alias_id = $alias->id;
             $message->folder_id = \Models\Folder::get_folder($this->user->id, 'Drafts')->id;
             $message->msgid = $msgid;
             $message->sender = $this->user->get_default_alias()->get_profile();
@@ -191,6 +228,7 @@ class Compose extends Base
             // Update the message.
             
             $message->save(array(
+                'alias_id' => $alias->id,
                 'recipient' => $recipient,
                 'cc' => $cc,
                 'bcc' => $bcc,
@@ -270,7 +308,15 @@ class Compose extends Base
         
         // Set basic details.
         
-        $alias = $this->user->get_default_alias();
+        $alias_candidate = \Models\Alias::get($message->alias_id);
+        if ($alias_candidate && $alias_candidate->account_id == $this->user->id)
+        {
+            $alias = $alias_candidate;
+        }
+        else
+        {
+            $alias = $this->user->get_default_alias();
+        }
         $mail->setFrom(array($alias->email => $alias->name));
         $mail->setSubject($message->subject);
         $mail->setBody($message->content, 'text/plain', 'UTF-8');

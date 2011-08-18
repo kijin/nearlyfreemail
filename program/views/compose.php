@@ -12,6 +12,17 @@
     
     <fieldset id="standard_fields">
         <div class="field">
+            <label for="alias_id">From:</label>
+            <div class="box">
+                <select id="alias_id" name="alias_id">
+                    <?php $aliases = $user->get_aliases(); ?>
+                    <?php foreach ($aliases as $alias): ?>
+                        <option value="<?php e($alias->id); ?>" <?php if ($alias->id == $selected_alias->id): ?>selected="selected"<?php endif; ?>><?php e($alias->name); ?> &lt;<?php e($alias->email); ?>&gt;</option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
+        </div>
+        <div class="field">
             <label for="recipient">To:</label>
             <div class="box"><input type="text" name="recipient" id="recipient" value="<?php e($message ? $message->recipient : $recipient); ?>" class="width" /></div>
         </div>
