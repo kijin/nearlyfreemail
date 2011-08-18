@@ -107,6 +107,10 @@ class Account extends Base
         
         $alias = $alias[0];
         $account = $alias->get_account();
+        if ($account->get_default_alias()->id != $alias->id)  // Only allow the default alias.
+        {
+            \Common\AJAX::error('Incorrect e-mail address or passphrase.');
+        }
         if (!$account->check_passphrase($pass))
         {
             \Common\AJAX::error('Incorrect e-mail address or passphrase.');

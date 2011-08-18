@@ -150,13 +150,14 @@ class Alias extends Base
         
         if (!$selected_aliases && $button !== 'empty') \Common\AJAX::error('No alias selected.');
         
-        // Compile a list of valid aliases.
+        // Compile a list of valid aliases. (Prevent deleting the default alias.)
         
         $aliases = array();
+        $default_alias = $this->user->get_default_alias();
         foreach ($selected_aliases as $alias_id)
         {
             $alias = \Models\Alias::get($alias_id);
-            if ($alias && $alias->account_id == $this->user->id) $aliases[] = $alias;
+            if ($alias && $alias->account_id == $this->user->id && $alias->id != $default_alias->id) $aliases[] = $alias;
         }
         
         // Do various other things with the selected aliases.
