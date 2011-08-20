@@ -205,10 +205,11 @@ class Account extends Base
         // Add.
         
         $incoming_key = \Common\Security::get_random(\Config\INCOMING_KEY_LENGTH);
-        $this->create($name, $email, $pass1, $incoming_key, 0);
+        $account_id = $this->create($name, $email, $pass1, $incoming_key, 0);
         
-        // Redirect.
+        // Redirect to the setup instructions page.
         
-        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+        $alias = \Models\Account::get($account_id)->get_default_alias();
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/aliases/howto', $alias->id));
     }
 }

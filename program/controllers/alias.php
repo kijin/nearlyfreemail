@@ -141,12 +141,15 @@ class Alias extends Base
         // Check user input.
         
         $alias = \Models\Alias::get($alias_id);
-        if (!$alias || $alias->account_id !== $this->user->id) \Common\AJAX::error('Alias not found, or access denied.');
+        if (!$this->user->is_admin && (!$alias || $alias->account_id !== $this->user->id))  // Allow admin to see other users' aliases.
+        {
+            \Common\AJAX::error('Alias not found, or access denied.');
+        }
         
         // Display edit form.
         
         $view = new \Common\View('aliases_howto');
-        $view->title = 'Setup Instructions for Alias "' . $alias->name . '" <' . $alias->email . '>';
+        $view->title = 'Setup Instructions for "' . $alias->name . '" <' . $alias->email . '>';
         $view->menu = 'settings';
         $view->user = $this->user;
         $view->alias = $alias;

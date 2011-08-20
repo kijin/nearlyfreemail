@@ -35,9 +35,12 @@
         <input type="checkbox" name="selected_aliases[]" value="<?php e($alias->id); ?>" <?php if ($alias->id == $default_alias->id): ?>disabled="disabled"<?php endif; ?> />
         <?php e($alias->name); ?> <span class="email"><?php e($alias->email); ?></span> &nbsp;
         <?php if ($alias->id == $default_alias->id): ?>(Default)<?php endif; ?> &nbsp;
-        <span class="actions"><a href="<?php u('/settings/aliases/edit', $alias->id); ?>">Edit</a></span> <br />
+        <span class="actions">
+            <a href="<?php u('/settings/aliases/howto', $alias->id); ?>">Setup</a> &nbsp;
+            <a href="<?php u('/settings/aliases/edit', $alias->id); ?>">Edit</a>
+        </span>
+        <br />
         <span class="url">Forwarding URL: <strong><?php e($alias->get_incoming_url()); ?></strong></span>
-        <span class="actions"><a href="<?php u('/settings/aliases/howto', $alias->id); ?>">Setup Instructions</a></span>
     </p>
     <?php endforeach; ?>
     </fieldset>

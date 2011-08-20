@@ -8,7 +8,7 @@
 
 <div id="howto">
 
-    <p>These steps must be completed in order for your new alias to work properly.</p>
+    <p>These steps must be completed in order for your new e-mail address to work properly.</p>
     
     <h3>A. Set up e-mail forwarding with NearlyFreeSpeech.NET</h3>
     <ol>
