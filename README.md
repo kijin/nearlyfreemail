@@ -33,19 +33,20 @@ Please do not contact NFSN about bugs in this software.
 Features
 --------
 
-Right now, NearlyFreeMail can:
+As of this writing, NearlyFreeMail supports:
 
-- Send and receive plain-text messages with your own domain name _(HTML messages are converted to plain text)_
-- Send and receive attachments up to ~7MB _(Larger messages may be rejected by NFSN)_
+- Multiple accounts, each with multiple aliases
+- Sending and receiving plain-text messages with your own domain name _(Sorry, no HTML)_
+- Aattachments up to ~7MB _(Larger messages may be rejected by NFSN)_
 - Reply, reply all, and forward _(With appropriate `In-Reply-To:` and `References:` headers)_
-- Add signatures to outgoing messages
-- Organize your messages into folders
-- Manage your address book
-- Auto-save your drafts _(This is the only feature that requires JavaScript)_
-- Perform basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
-- Support Unicode _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
-- Use either SQLite (default) or MySQL for data storage.
-- Export your messages in the mbox format.
+- Basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
+- Draft auto-saving _(This is the only feature that requires JavaScript)_
+- Unicode _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
+- SQLite (default) or MySQL for data storage
+- Exporting folders in the mbox format _(Compatible with Mozilla Thunderbird)_
+- Signatures
+- Folders
+- Address book
 
 More features may be added if there is enough demand and if the author has time.
 Updates, if any, will be published on the author's GitHub page.
