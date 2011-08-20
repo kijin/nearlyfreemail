@@ -14,5 +14,8 @@
     <li><a href="<?php u('/settings/aliases'); ?>">Aliases</a></li>
     <li><a href="<?php u('/settings/contacts'); ?>">Contacts</a></li>
     <li><a href="<?php u('/settings/folders'); ?>">Folders</a></li>
+    <?php if ($user->is_admin): ?>
+        <li><a href="<?php u('/settings/accounts'); ?>">Manage Accounts</a></li>
+    <?php endif; ?>
     <li><a href="<?php u('/settings/rules'); ?>">Rules</a></li>
 </ul>

@@ -139,4 +139,24 @@ class Account extends Base
         \Common\Session::logout();
         \Common\AJAX::redirect(\Common\Router::get_url('/'));
     }
+    
+    // Show the "Manage Accounts" control panel.
+    
+    public function show()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Display the list of accounts.
+        
+        $view = new \Common\View('accounts');
+        $view->title = 'Manage Accounts';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->accounts = \Models\Account::select('ORDER BY id');
+        $view->render();
+    }
+    
 }

@@ -3,7 +3,7 @@
 
 <ul>
     <li><a href="<?php u('/mail/compose'); ?>">New Message</a></li>
-    <li><a href="<?php u('/settings'); ?>">Preferences</a></li>
+    <li><a href="<?php u('/settings'); ?>">Settings</a></li>
     <li><a href="<?php u('/account/logout'); ?>?token=<?php e(\Common\Session::get_logout_token()); ?>">Logout</a></li>
 </ul>
 
