@@ -27,9 +27,7 @@ class Alias extends \Beaver\Base
     
     public function get_account()
     {
-        static $account = null;
-        if (!$account) $account = Account::get($this->account_id);
-        return $account;
+        return Account::get($this->account_id);
     }
     
     // Get a profile string.

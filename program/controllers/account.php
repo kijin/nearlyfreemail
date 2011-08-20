@@ -159,4 +159,56 @@ class Account extends Base
         $view->render();
     }
     
+    // Add a new account.
+    
+    public function add()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Get user input.
+        
+        $name = \Common\Request::post('name');
+        $email = \Common\Request::post('email');
+        $pass1 = \Common\Request::post('pass1');
+        $pass2 = \Common\Request::post('pass2');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check user input.
+        
+        if (!\Common\Security::validate($email, 'email'))
+        {
+            \Common\AJAX::error('Please enter a valid e-mail address, including the domain name.');
+        }
+        
+        if (!\Common\Security::validate($name, 'unicode,min=1,max=60'))
+        {
+            \Common\AJAX::error('Please enter a name between 1 and 60 characters.');
+        }
+        
+        if ($pass1 !== $pass2)
+        {
+            \Common\AJAX::error('Please enter the same passphrase twice.');
+        }
+        
+        if (empty($pass1))
+        {
+            \Common\AJAX::error('Please select a passphrase.');
+        }
+        
+        // Add.
+        
+        $incoming_key = \Common\Security::get_random(\Config\INCOMING_KEY_LENGTH);
+        $this->create($name, $email, $pass1, $incoming_key, 0);
+        
+        // Redirect.
+        
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+    }
 }

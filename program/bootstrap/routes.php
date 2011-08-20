@@ -49,6 +49,7 @@ $routes = array(
     'GET  /settings'                     => '\\Controllers\\Preference->show',
     'POST /settings/preferences'         => '\\Controllers\\Preference->save',
     'GET  /settings/accounts'            => '\\Controllers\\Account->show',
+    'POST /settings/accounts/add'        => '\\Controllers\\Account->add',
     'GET  /settings/aliases'             => '\\Controllers\\Alias->show',
     'POST /settings/aliases/add'         => '\\Controllers\\Alias->add',
     'GET  /settings/aliases/edit/(int)'  => '\\Controllers\\Alias->edit_form',

@@ -28,9 +28,7 @@ class Account extends \Beaver\Base
     
     public function get_default_alias()
     {
-        static $alias = null;
-        if (!$alias) $alias = Alias::get($this->default_alias);
-        return $alias;
+        return Alias::get($this->default_alias);
     }
     
     // Set the default alias.
