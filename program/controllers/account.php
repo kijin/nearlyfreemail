@@ -199,7 +199,7 @@ class Account extends Base
         
         if (empty($pass1))
         {
-            \Common\AJAX::error('Please select a passphrase.');
+            \Common\AJAX::error('Please enter a passphrase.');
         }
         
         // Add.
@@ -212,4 +212,225 @@ class Account extends Base
         $alias = \Models\Account::get($account_id)->get_default_alias();
         \Common\AJAX::redirect(\Common\Router::get_url('/settings/aliases/howto', $alias->id));
     }
+    
+    // Admin grant form.
+    
+    public function admin_grant_form($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account and check privileges.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot modify administrator rights for your own account.');
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_admin_grant');
+        $view->title = 'Grant Admin';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account = $account;
+        $view->render();
+    }
+    
+    // Admin grant POST.
+    
+    public function admin_grant_post()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Check user input.
+        
+        $account_id = \Common\Request::post('account_id', 'int');
+        $button = \Common\Request::post('button');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check the button.
+        
+        if ($button !== 'yes') \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+        
+        // Edit.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot modify administrator rights for your own account.');
+        $account->save(array('is_admin' => 1));
+        
+        // Redirect.
+        
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+    }
+    
+    // Admin revoke form.
+    
+    public function admin_revoke_form($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account and check privileges.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot modify administrator rights for your own account.');
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_admin_revoke');
+        $view->title = 'Revoke Admin';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account = $account;
+        $view->render();
+    }
+    
+    // Admin revoke POST.
+    
+    public function admin_revoke_post()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Check user input.
+        
+        $account_id = \Common\Request::post('account_id', 'int');
+        $button = \Common\Request::post('button');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check the button.
+        
+        if ($button !== 'yes') \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+        
+        // Edit.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot modify administrator rights for your own account.');
+        $account->save(array('is_admin' => 0));
+        
+        // Redirect.
+        
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+    }
+    
+    // Passphrase reset form.
+    
+    public function reset_form($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account and check privileges.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('Please use the "Preferences" page to change your own passphrase.');
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_reset');
+        $view->title = 'Reset Passphrase';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account = $account;
+        $view->render();
+    }
+    
+    // Passphrase reset POST.
+    
+    public function reset_post()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Check user input.
+        
+        $account_id = \Common\Request::post('account_id', 'int');
+        $pass1 = \Common\Request::post('pass1');
+        $pass2 = \Common\Request::post('pass2');
+        $button = \Common\Request::post('button');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check the button.
+        
+        if ($button !== 'yes') \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+        
+        // Check the passphrase.
+        
+        if ($pass1 !== $pass2)
+        {
+            \Common\AJAX::error('Please enter the same passphrase twice.');
+        }
+        
+        if (empty($pass1))
+        {
+            \Common\AJAX::error('Please enter a passphrase.');
+        }
+        
+        // Edit.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot reset your own password.');
+        $account->change_passphrase($pass1);
+        
+        // Redirect.
+        
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts/reset-ok', $account->id));
+
+    }
+    
+    // Passphrase reset OK message.
+    
+    public function reset_ok($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account and check privileges.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('Please use the "Preferences" page to change your own passphrase.');
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_reset_ok');
+        $view->title = 'Reset Passphrase';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account = $account;
+        $view->render();
+    }
 }
+
