@@ -55,7 +55,8 @@
                 <?php else: ?>
                     <a href="<?php u('/settings/accounts/admin-grant', $account->id); ?>">Grant Admin</a> &nbsp;
                 <?php endif; ?>
-                <a href="<?php u('/settings/accounts/reset', $account->id); ?>">Reset Passphrase</a>
+                <a href="<?php u('/settings/accounts/reset', $account->id); ?>">Reset Pass</a> &nbsp;
+                <a href="<?php u('/settings/accounts/delete', $account->id); ?>">Delete</a>
             </span>
         <?php endif; ?>
         <br />

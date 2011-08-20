@@ -58,6 +58,9 @@ $routes = array(
     'GET  /settings/accounts/reset/(int)'        => '\\Controllers\\Account->reset_form',
     'POST /settings/accounts/reset'              => '\\Controllers\\Account->reset_post',
     'GET  /settings/accounts/reset-ok/(int)'     => '\\Controllers\\Account->reset_ok',
+    'GET  /settings/accounts/delete/(int)'       => '\\Controllers\\Account->delete_form',
+    'POST /settings/accounts/delete'             => '\\Controllers\\Account->delete_post',
+    'GET  /settings/accounts/delete-ok/(int)'    => '\\Controllers\\Account->delete_ok',
     
     'GET  /settings/aliases'             => '\\Controllers\\Alias->show',
     'POST /settings/aliases/add'         => '\\Controllers\\Alias->add',

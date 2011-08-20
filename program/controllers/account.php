@@ -399,13 +399,12 @@ class Account extends Base
         
         $account = \Models\Account::get($account_id);
         if (!$account) \Common\AJAX::error('Account not found.');
-        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot reset your own password.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('Please use the "Preferences" page to change your own passphrase.');
         $account->change_passphrase($pass1);
         
         // Redirect.
         
         \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts/reset-ok', $account->id));
-
     }
     
     // Passphrase reset OK message.
@@ -432,5 +431,110 @@ class Account extends Base
         $view->account = $account;
         $view->render();
     }
+    
+    // Delete form.
+    
+    public function delete_form($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account and check privileges.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot delete your own account.');
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_delete');
+        $view->title = 'Delete Account';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account = $account;
+        $view->render();
+    }
+    
+    // Delete POST.
+    
+    public function delete_post()
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Check user input.
+        
+        $account_id = \Common\Request::post('account_id', 'int');
+        $button = \Common\Request::post('button');
+        $csrf_token = \Common\Request::post('csrf_token');
+        
+        // Check the CSRF token.
+        
+        if (!\Common\Session::check_token($csrf_token)) \Common\AJAX::error('CSRF');
+        
+        // Check the button.
+        
+        if ($button !== 'yes') \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts'));
+        
+        // Check the account.
+        
+        $account = \Models\Account::get($account_id);
+        if (!$account) \Common\AJAX::error('Account not found.');
+        if ($account->id === $this->user->id) \Common\AJAX::error('You cannot delete your own account.');
+        
+        // Store the deleted account's name in the session, for the confirmation message.
+        
+        $alias = $account->get_default_alias();
+        $_SESSION['deleted_account'][$account->id]['name'] = $alias->name;
+        $_SESSION['deleted_account'][$account->id]['email'] = $alias->email;
+        
+        // Go through each table and delete all relevant data. (We can't use foreign keys because we need to support MySQL.)
+        
+        \Common\DB::begin_transaction();
+        \Common\DB::query('DELETE FROM attachments WHERE message_id IN (SELECT id FROM messages WHERE account_id = ?)', $account->id);
+        \Common\DB::query('DELETE FROM originals WHERE message_id IN (SELECT id FROM messages WHERE account_id = ?)', $account->id);
+        \Common\DB::query('DELETE FROM messages WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM folders WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM contacts WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM settings WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM rules WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM aliases WHERE account_id = ?', $account->id);
+        \Common\DB::query('DELETE FROM accounts WHERE id = ?', $account->id);
+        \Common\DB::commit();
+        
+        // Redirect.
+        
+        \Common\AJAX::redirect(\Common\Router::get_url('/settings/accounts/delete-ok', $account->id));
+    }
+    
+    // Delete OK message.
+    
+    public function delete_ok($account_id)
+    {
+        // Only for admins.
+        
+        $this->check_login();
+        $this->check_admin();
+        
+        // Find the account that was just deleted.
+        
+        if (!isset($_SESSION['deleted_account'][$account_id])) \Common\AJAX::error('Account not found.');
+        $name = $_SESSION['deleted_account'][$account_id]['name'];
+        $email = $_SESSION['deleted_account'][$account_id]['email'];
+        unset($_SESSION['deleted_account'][$account_id]);
+        
+        // Display the form.
+        
+        $view = new \Common\View('accounts_delete_ok');
+        $view->title = 'Delete Account';
+        $view->menu = 'settings';
+        $view->user = $this->user;
+        $view->account_name = $name;
+        $view->account_email = $email;
+        $view->render();
+    }
 }
-
