@@ -181,19 +181,13 @@ class Compose extends Base
             $references = \Common\Request::post('references');
             $notes = \Common\Request::post('notes');
             
-            // Generate a message ID.
-            
-            $random = sha1($alias->email . \Common\Security::get_random(32) . microtime());
-            $domain = strtolower(substr($alias->email, strrpos($alias->email, '@') + 1));
-            $msgid = '<' . base_convert($random, 16, 36) . '@' . $domain . '>';
-            
             // Create a new message object.
             
             $message = new \Models\Message();
             $message->account_id = $this->user->id;
             $message->alias_id = $alias->id;
             $message->folder_id = \Models\Folder::get_folder($this->user->id, 'Drafts')->id;
-            $message->msgid = $msgid;
+            $message->msgid = '';
             $message->sender = $alias->get_profile();
             $message->recipient = $recipient;
             $message->refs = $references;
@@ -322,11 +316,15 @@ class Compose extends Base
         $mail->setSubject($message->subject);
         $mail->setBody($message->content, 'text/plain', 'UTF-8');
         
-        // Replace SwiftMailer's default message ID with something we made up.
+        // Replace SwiftMailer's default message ID with something that actually belongs to the domain.
+        
+        $random = md5(microtime() . $alias->email . \Common\Security::get_random(32));
+        $domain = strtolower(substr($alias->email, strrpos($alias->email, '@') + 1));
+        $msgid = '<' . base_convert($random, 16, 36) . '.' . dechex(time()) . '@' . $domain . '>';
         
         $headers = $mail->getHeaders();
         $headers->remove('Message-ID');
-        $headers->addTextHeader('Message-ID', $message->msgid);
+        $headers->addTextHeader('Message-ID', $msgid);
         
         // Add the user-agent string.
         
@@ -396,7 +394,7 @@ class Compose extends Base
         $message->mark_as_read();
         $message->mark_as_sent();
         $message->move_to_folder(\Models\Folder::get_folder($this->user->id, 'Sent')->id);
-        $message->save(array('sent_time' => time()));
+        $message->save(array('msgid' => $msgid, 'sent_time' => time()));
         $message->set_original_and_source($message->subject, $message->content, $mail->toString());
         
         if ($message->notes !== '')
