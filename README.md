@@ -173,8 +173,8 @@ Don't forget to update the forwarding URL if you move your installation of Nearl
 Known Issues
 ------------
 
-Attachments with names that include non-ASCII characters will be renamed to body1, body2, etc.
-A workaround will be developed in the future.
+Incoming attachments with names that include non-ASCII characters will be renamed to body1, body2, etc.
+This is because NFSN renames such files when forwarding them. A workaround will be developed in the future.
 
 Autosave will save the list of recipients, subject, and content of your draft,
 but it will not automatically save attachments that have yet to be uploaded.
