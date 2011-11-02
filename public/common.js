@@ -18,7 +18,7 @@ $(document).ready(function()
     
     $("#select_all").removeAttr("disabled").click(function()
     {
-        $("#message_list input[type=checkbox]").attr("checked", $("#select_all").attr("checked"));
+        $("#message_list input[type=checkbox]").prop("checked", $("#select_all").prop("checked"));
     });
     
     // Add events to sidebar contacts, if the compose form is loaded.
