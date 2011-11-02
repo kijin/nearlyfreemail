@@ -15,6 +15,7 @@ class Folder extends Base
         $view = new \Common\View('folders');
         $view->title = 'Folders';
         $view->menu = 'settings';
+        $view->current_menu = 'folders';
         $view->user = $this->user;
         $view->folders = \Models\Folder::get_folders($this->user->id);
         $view->render();
@@ -70,6 +71,7 @@ class Folder extends Base
         $view = new \Common\View('folders_edit');
         $view->title = 'Rename Folder';
         $view->menu = 'settings';
+        $view->current_menu = 'folders';
         $view->user = $this->user;
         $view->folder = $folder;
         $view->render();
@@ -125,6 +127,7 @@ class Folder extends Base
         $view = new \Common\View('folders_export');
         $view->title = 'Export Folder';
         $view->menu = 'settings';
+        $view->current_menu = 'folders';
         $view->user = $this->user;
         $view->folder = $folder;
         $view->render();

@@ -15,8 +15,7 @@
 
 <?php endif; ?>
 
-<!-- NearlyFreeMail v<?php e(VERSION); ?> :: (c) <?php e(date('Y')); ?> Kijin Sung -->
-<!-- Generated at <?php e(date('Y-m-d H:i:s e')); ?> -->
+<!-- NearlyFreeMail v<?php e(VERSION); ?> :: Generated at <?php e(gmdate('Y-m-d H:i:s')); ?> UTC -->
 
 </body>
 </html>

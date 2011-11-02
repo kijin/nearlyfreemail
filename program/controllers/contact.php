@@ -15,6 +15,7 @@ class Contact extends Base
         $view = new \Common\View('contacts');
         $view->title = 'Contacts';
         $view->menu = 'settings';
+        $view->current_menu = 'contacts';
         $view->user = $this->user;
         $view->contacts = \Models\Contact::get_if_account_id($this->user->id, 'name+');
         $view->render();
@@ -75,6 +76,7 @@ class Contact extends Base
         $view = new \Common\View('contacts_edit');
         $view->title = 'Edit Contact';
         $view->menu = 'settings';
+        $view->current_menu = 'contacts';
         $view->user = $this->user;
         $view->contact = $contact;
         $view->render();    

@@ -15,6 +15,7 @@ class Alias extends Base
         $view = new \Common\View('aliases');
         $view->title = 'Aliases';
         $view->menu = 'settings';
+        $view->current_menu = 'aliases';
         $view->user = $this->user;
         $view->aliases = $this->user->get_aliases();
         $view->default_alias = $this->user->get_default_alias();
@@ -78,6 +79,7 @@ class Alias extends Base
         $view = new \Common\View('aliases_edit');
         $view->title = 'Edit Alias';
         $view->menu = 'settings';
+        $view->current_menu = 'aliases';
         $view->user = $this->user;
         $view->alias = $alias;
         $view->default_alias = $this->user->get_default_alias();
@@ -151,6 +153,7 @@ class Alias extends Base
         $view = new \Common\View('aliases_howto');
         $view->title = 'Setup Instructions for "' . $alias->name . '" <' . $alias->email . '>';
         $view->menu = 'settings';
+        $view->current_menu = 'aliases';
         $view->user = $this->user;
         $view->alias = $alias;
         $view->email_local = substr($alias->email, 0, strrpos($alias->email, '@'));

@@ -15,6 +15,7 @@ class Preference extends Base
         $view = new \Common\View('preferences');
         $view->title = 'Preferences';
         $view->menu = 'settings';
+        $view->current_menu = 'preferences';
         $view->user = $this->user;
         $view->render();
     }

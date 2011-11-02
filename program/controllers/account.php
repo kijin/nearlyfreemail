@@ -154,6 +154,7 @@ class Account extends Base
         $view = new \Common\View('accounts');
         $view->title = 'Manage Accounts';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->accounts = \Models\Account::select('ORDER BY id');
         $view->render();
@@ -233,6 +234,7 @@ class Account extends Base
         $view = new \Common\View('accounts_admin_grant');
         $view->title = 'Grant Admin';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account = $account;
         $view->render();
@@ -293,6 +295,7 @@ class Account extends Base
         $view = new \Common\View('accounts_admin_revoke');
         $view->title = 'Revoke Admin';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account = $account;
         $view->render();
@@ -353,6 +356,7 @@ class Account extends Base
         $view = new \Common\View('accounts_reset');
         $view->title = 'Reset Passphrase';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account = $account;
         $view->render();
@@ -427,6 +431,7 @@ class Account extends Base
         $view = new \Common\View('accounts_reset_ok');
         $view->title = 'Reset Passphrase';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account = $account;
         $view->render();
@@ -452,6 +457,7 @@ class Account extends Base
         $view = new \Common\View('accounts_delete');
         $view->title = 'Delete Account';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account = $account;
         $view->render();
@@ -532,6 +538,7 @@ class Account extends Base
         $view = new \Common\View('accounts_delete_ok');
         $view->title = 'Delete Account';
         $view->menu = 'settings';
+        $view->current_menu = 'accounts';
         $view->user = $this->user;
         $view->account_name = $name;
         $view->account_email = $email;

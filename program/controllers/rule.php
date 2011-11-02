@@ -15,6 +15,7 @@ class Rule extends Base
         $view = new \Common\View('rules');
         $view->title = 'Rules';
         $view->menu = 'settings';
+        $view->current_menu = 'rules';
         $view->user = $this->user;
         $view->render();
     }
