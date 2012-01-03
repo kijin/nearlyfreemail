@@ -48,7 +48,7 @@ spl_autoload_register(function($class_name)
     if (file_exists($file_name)) include $file_name;
 });
 
-// Start output buffering, with gzip enabled.
+// Start output buffering before we do anything else.
 
 ob_start();
 
