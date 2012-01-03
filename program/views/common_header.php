@@ -9,7 +9,7 @@
     <!--[if IE 8]><link rel="stylesheet" type="text/css" media="all" href="<?php u('public/ie8sucks.css'); ?>?v=<?php e(VERSION); ?>" /><![endif]-->
     <!--[if IE 9]><link rel="stylesheet" type="text/css" media="all" href="<?php u('public/ie9sucks.css'); ?>?v=<?php e(VERSION); ?>" /><![endif]-->
     <link rel="stylesheet" type="text/css" media="all" href="<?php u('public/user/user.css'); ?>?v=<?php e(VERSION); ?>" />
-    <script type="text/javascript" src="<?php u('public/thirdparty/jquery-1.6.4.min.js'); ?>"></script>
+    <script type="text/javascript" src="<?php u('public/thirdparty/jquery-1.7.1.min.js'); ?>"></script>
     <script type="text/javascript" src="<?php u('public/common.js'); ?>?v=<?php e(VERSION); ?>"></script>
     <script type="text/javascript" src="<?php u('public/user/user.js'); ?>?v=<?php e(VERSION); ?>"></script>
 </head>
