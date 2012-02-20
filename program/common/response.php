@@ -47,13 +47,32 @@ class Response
             $name = rawurlencode($name);
         }
         
-        // Send the headers and the file.
+        // Check that the file exists.
+        
+        $handle = fopen($filename, 'rb');
+        if ($handle === false) return false;
+        
+        // Clear all output buffers. We don't want to corrupt the file.
+        
+        while (ob_get_level()) ob_end_clean();
+        
+        // Send some headers.
         
 		header('Content-Type: application/octet-stream');
 		header('Content-Disposition: attachment; filename="' . $name . '"');
         header('Content-Transfer-Encoding: binary');
         header('Content-Length: ' . filesize($filename));
-        readfile($filename);
+        
+        // Read the file in 64KB chunks. No, we can't use readfile() on large files because PHP is stupid.
+        
+        $buffer = '';
+        while (!feof($handle))
+        {
+            $buffer = fread($handle, 64 * 1024);
+            echo $buffer;
+            flush();
+        }
+        fclose($handle);
         exit;
     }
     
