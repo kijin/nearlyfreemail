@@ -26,13 +26,13 @@ class Security
             
             case 'escape':
                 if (!mb_check_encoding($input, 'UTF-8')) return false;
-                return trim(htmlentities($input, ENT_QUOTES, 'UTF-8', false));
+                return trim(htmlspecialchars($input, ENT_QUOTES, 'UTF-8', true));
             
             // Plain text, escaped and stripped of tags.
             
             case 'strip':
                 if (!mb_check_encoding($input, 'UTF-8')) return false;
-                return trim(htmlentities(strip_tags($input), ENT_QUOTES, 'UTF-8', false));
+                return trim(htmlspecialchars(strip_tags($input), ENT_QUOTES, 'UTF-8', true));
             
             // Filename.
             
@@ -237,7 +237,7 @@ class Security
             
                 // Basic checks.
                 
-                switch ($rule)
+                switch ($first_rule)
                 {
                     case 'alpha': if (!ctype_alpha($input)) return false; break;
                     case 'alnum': if (!ctype_alnum($input)) return false; break;
