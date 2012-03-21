@@ -42,13 +42,13 @@ As of this writing, NearlyFreeMail supports:
 - Basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
 - Draft auto-saving _(This is the only feature that requires JavaScript)_
 - Unicode _(Incoming messages may be in any character set; outgoing messages are always UTF-8)_
-- SQLite (default) or MySQL for data storage
-- Exporting folders in the mbox format _(Compatible with Mozilla Thunderbird)_
+- SQLite or MySQL for data storage
+- Exporting folders in the mbox format _(Can be imported into Mozilla Thunderbird)_
 - Signatures
 - Folders
 - Address book
 
-More features may be added if there is enough demand and if the author has time.
+More features may be added if there is demand and if the author has time.
 Updates, if any, will be published on the author's GitHub page.
 
 Please also read "Known Issues" below.
@@ -66,13 +66,14 @@ To install and use NearlyFreeMail, you need:
 
 Currently, a lot of things are hard-coded in a way that would make it inconvenient to use NearlyFreeMail
 anywhere except in NFSN's pay-as-you-go shared hosting environment.
-For example, all messages and attachments are stored in the "protected" directory in a single SQLite database;
+For example, all messages and attachments are stored in the "protected" directory in a single SQLite database
+(this prevents annoying situations where you have to repossess files and subdirectories owned by "web");
 and some features of included third-party libraries are disabled due to incompatibilities with NFSN's strict policies.
 
 NearlyFreeMail follows web standards for the most part, except where browser-specific hack are required.
 It should appear and function as intended in all modern desktop browsers,
-such as Firefox 3.5 and higher, Internet Explorer 8 and higher, Chrome, Safari, and Opera.
-It is known to break noticeably in Internet Explorer 7 and lower, including the infamous IE6.
+such as Firefox 3.6 and higher, Internet Explorer 8 and higher, Chrome, Safari, and Opera.
+It is known to break noticeably in Internet Explorer 7 and lower, and there are no plans to fix this.
 Mobile browsers have not been tested.
 
 
@@ -103,11 +104,11 @@ While logged in with SSH, issue the following command:
 Then, using your favorite text editor, edit `/home/protected/nearlyfreemail/mysql.php`
 and fill in your MySQL connection information.
 
-    $mysql['host'] = 'your_mysql_database.db';
+    $mysql['host'] = 'your_mysql_hostname.db';
     $mysql['port'] = 3306;
     $mysql['username'] = 'your_username';
     $mysql['password'] = 'your_password';
-    $mysql['dbname'] = 'your_db_name';
+    $mysql['dbname'] = 'your_database_name';
 
 ### Step 3
 
