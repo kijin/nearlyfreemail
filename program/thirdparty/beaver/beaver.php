@@ -10,7 +10,7 @@
  * @copyright  (c) 2010-2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    LGPL v3 <http://www.gnu.org/copyleft/lesser.html>
  * @link       http://github.com/kijin/beaver
- * @version    0.2.3
+ * @version    0.2.4
  * 
  * -----------------------------------------------------------------------------
  * 
@@ -42,7 +42,6 @@ class Base
     
     protected static $_db = null;
     protected static $_db_is_pgsql = false;
-    protected static $_cache = null;
     protected $_is_unsaved_object = true;
     
     // The following properties may be overridden by children.
@@ -59,13 +58,6 @@ class Base
         {
             self::$_db_is_pgsql = true;
         }
-    }
-    
-    // Call this method to inject a Memcached object (or equivalent) to the ORM.
-    
-    final public static function set_cache($cache)
-    {
-        self::$_cache = $cache;
     }
     
     // Flag this object as saved. (This flag is used internally by the ORM.)
@@ -94,6 +86,7 @@ class Base
             foreach (get_object_vars($this) as $field => $value)
             {
                 if ($field[0] === '_') continue;
+                if ($field === static::$_pk && is_null($this->{static::$_pk}) && $this->_is_unsaved_object) continue;
                 $fields[] = $field;
                 $values[] = $value;
             }
@@ -158,31 +151,21 @@ class Base
     
     // Fetch a single object, identified by its ID.
     
-    public static function get($id, $cache = false)
+    public static function get($id)
     {
-        $result = static::select('WHERE ' . static::$_pk . ' = ?', array($id), $cache);
+        $result = static::select('WHERE ' . static::$_pk . ' = ?', array($id));
         return count($result) ? $result[0] : null;
     }
     
     // Fetch an array of objects, identified by their IDs.
     
-    public static function get_array($ids, $cache = false)
+    public static function get_array($ids)
     {
         // This method can also be called with an arbitrary number of arguments instead of an array.
         
         if (!is_array($ids))
         {
             $ids = func_get_args();
-            $cache = false;
-        }
-        
-        // Look up the cache.
-        
-        if ($cache && self::$_cache)
-        {
-            $cache_key = '_BEAVER::' . get_called_class() . ':' . sha1(serialize($ids = (array)$ids));
-            $cache_result = self::$_cache->get($cache_key);
-            if ($cache_result !== false && $cache_result !== null) return unserialize($cache_result);
         }
         
         // Find some objects, preserving the order in the input array.
@@ -198,26 +181,13 @@ class Base
         {
             $result[$object->{static::$_pk}] = $object->_flag_as_saved();
         }
-        
-        // Store in cache.
-        
-        if ($cache && self::$_cache) self::$_cache->set($cache_key, serialize($result), (int)$cache);
         return $result;
     }
     
     // Generic select method.
     
-    public static function select($where, $params = array(), $cache = false)
+    public static function select($where, $params = array())
     {
-        // Look up the cache.
-        
-        if ($cache && self::$_cache)
-        {
-            $cache_key = '_BEAVER::' . get_called_class() . ':' . sha1($where . "\n" . serialize($params));
-            $cache_result = self::$_cache->get($cache_key);
-            if ($cache_result !== false && $cache_result !== null) return unserialize($cache_result);
-        }
-        
         // Find some objects.
         
         $ps = self::$_db->prepare('SELECT * FROM ' . static::$_table . ' ' . $where);
@@ -229,10 +199,6 @@ class Base
         {
             $result[] = $object->_flag_as_saved();
         }
-        
-        // Store in cache.
-        
-        if ($cache && self::$_cache) self::$_cache->set($cache_key, serialize($result), (int)$cache);
         return $result;
     }
     
@@ -316,10 +282,6 @@ class Base
         {
             $offset = (int)$args[3];
         }
-        if (isset($args[4]))  // Cache
-        {
-            $cache = $args[4];
-        }
         
         // Build the WHERE clause.
         
@@ -365,7 +327,7 @@ class Base
         
         // Return all matching objects.
         
-        return static::select($query, $search_value, isset($cache) ? $cache : false);
+        return static::select($query, $search_value);
     }
 }
 
