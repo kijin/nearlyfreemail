@@ -16,7 +16,7 @@ class Incoming extends Base
             !isset($_FILES['headers']) || !isset($_FILES['raw0']) ||
             !is_uploaded_file($_FILES['raw0']['tmp_name']))
         {
-            error_log('This client doesn\'t look like NFSN. Request denied. [code 403]');
+            error_log('This client doesn\'t look like NFSN. Request denied. [code 422]');
             $this->return_status(422, 'Unprocessable Entity');
         }
         
