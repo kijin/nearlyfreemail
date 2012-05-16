@@ -10,7 +10,7 @@
  * @copyright  (c) 2011, Kijin Sung <kijin.sung@gmail.com>
  * @license    GPL v3 <http://www.opensource.org/licenses/gpl-3.0.html>
  * @link       http://github.com/kijin/nearlyfreemail
- * @version    0.2.12
+ * @version    0.2.13
  * 
  * -----------------------------------------------------------------------------
  * 
@@ -37,7 +37,7 @@ error_reporting(-1);
 ini_set('log_errors', 1);
 ini_set('magic_quotes_gpc', 'Off');
 define('BASEDIR', dirname(__FILE__));
-define('VERSION', '0.2.12');
+define('VERSION', '0.2.13');
 
 // Version check. This is more friendly than a parse error.
 
