@@ -4,7 +4,7 @@
 
 function e($input, $preserve_line_breaks = false)
 {
-    $escaped = htmlentities($input, ENT_COMPAT | ENT_IGNORE, 'UTF-8', false);
+    $escaped = htmlspecialchars($input, ENT_COMPAT, 'UTF-8', false);
     $output = $preserve_line_breaks ? nl2br($escaped, true) : $escaped;
     echo $output;
     return $output;

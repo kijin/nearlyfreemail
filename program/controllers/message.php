@@ -100,8 +100,8 @@ class Message extends Base
         $subject = mb_convert_encoding($subject, 'UTF-8', $encoding);
         $content = mb_convert_encoding($content, 'UTF-8', $encoding);
         \Common\AJAX::content(array(
-            'subject' => htmlentities($subject, ENT_COMPAT | ENT_IGNORE, 'UTF-8', false),
-            'content' => nl2br(htmlentities($content, ENT_COMPAT | ENT_IGNORE, 'UTF-8', false)),
+            'subject' => htmlspecialchars($subject, ENT_COMPAT, 'UTF-8', false),
+            'content' => nl2br(htmlspecialchars($content, ENT_COMPAT, 'UTF-8', false)),
         ));
     }
     

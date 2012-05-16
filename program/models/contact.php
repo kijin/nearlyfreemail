@@ -62,7 +62,7 @@ class Contact extends \Beaver\Base
         $return = '';
         for ($i = 0; $i < $count; $i++)
         {
-            $return .= str_replace('ADDRESS', htmlentities($addresses[$i]->get_profile(), ENT_COMPAT, 'UTF-8', true), $html);
+            $return .= str_replace('ADDRESS', htmlspecialchars($addresses[$i]->get_profile(), ENT_COMPAT, 'UTF-8', true), $html);
             if ($i < $count - 1) $return .= ', ';
         }
         return $return;
