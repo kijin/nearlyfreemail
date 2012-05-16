@@ -10,6 +10,7 @@
     
     <!-- Sender and Recipients -->
     
+    <?php if ($message->sender): ?>
     <div class="item">
         <dt>From:</dt>
         <dd>
@@ -17,11 +18,14 @@
             <div class="source"><a href="<?php u('/mail/source', $message->id . '.eml') ?>">View Source</a></div>
         </dd>
     </div>
+    <?php endif; ?>
     
+    <?php if ($message->recipient): ?>
     <div class="item">
         <dt>To:</dt>
         <dd><?php echo \Models\Contact::extract_and_link($message->recipient, '<a class="addr" href="../compose?to=ADDRESS">ADDRESS</a>'); ?></dd>
     </div>
+    <?php endif; ?>
     
     <?php if ($message->reply_to): ?>
     <div class="item">
