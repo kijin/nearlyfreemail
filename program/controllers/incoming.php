@@ -229,6 +229,21 @@ class Incoming extends Base
             $this->return_status(500, 'Database Error');
         }
         
+        // If new mail notification is enabled, send a notification message.
+        
+        if ($notification_email = $alias->get_note('notification_email'))
+        {
+            error_log('Sending notification to ' . $notification_email . '...');
+            $notification_subject = 'New mail for ' . $alias->email;
+            $headers = 'From: ' . $alias->email . "\r\n" .
+                       'Content-Type: text/plain; charset=utf-8' . "\r\n" .
+                       'Content-Transfer-Encoding: quoted-printable' . "\r\n" .
+                       'X-Mailer: NearlyFreeMail/' . \VERSION;
+            $body = 'Subject: ' . quoted_printable_encode($subject) . "\r\n" .
+                    'From: ' . quoted_printable_encode($sender) . "\r\n";
+            mail($notification_email, $notification_subject, $body, $headers);
+        }
+        
         // Congratulations, your message got through.
         
         error_log('Message successfully delivered. [code 200]');
