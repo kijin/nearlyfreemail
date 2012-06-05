@@ -186,11 +186,11 @@ The message source is stored separately from the content and any attachments.
 This leads NearlyFreeMail to consume up to twice as much storage as the actual size of the message.
 ("Up to" twice as much, but usually less, since the message source is compressed before storage.)
 
-Deleting large messages will not automatically reduce the size of the SQLite database file.
-In order to reclaim unused space, you must manually vacuum the database using the following commands:
+NearlyFreemail currently does not work properly in a [multi-domain site](https://members.nearlyfreespeech.net/wiki/HowTo/MultiDomainSite).
 
-    sqlite3 /home/protected/nearlyfreemail/db.sqlite
-    vacuum;
-    .quit
+Deleting large messages will not automatically reduce the size of the SQLite database file.
+In order to reclaim unused space, you must manually vacuum the database using the following command:
+
+    sqlite3 /home/protected/nearlyfreemail/db.sqlite vacuum
 
 Do not do this too often, because vacuuming a large SQLite database may consume a lot of server resources.
