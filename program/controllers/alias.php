@@ -49,7 +49,7 @@ class Alias extends Base
         }
         
         // Add.
-
+        
         $alias = new \Models\Alias();
         $alias->account_id = $this->user->id;
         $alias->name = $name;
@@ -97,6 +97,7 @@ class Alias extends Base
         $email = \Common\Request::post('email');
         $make_default = \Common\Request::post('make_default');
         $signature = \Common\Request::post('signature');
+        $notification_email = \Common\Request::post('notification_email');
         $csrf_token = \Common\Request::post('csrf_token');
         
         // Check the CSRF token.
@@ -115,6 +116,16 @@ class Alias extends Base
             \Common\AJAX::error('Please enter a name between 1 and 60 characters.');
         }
         
+        if ($notification_email && !\Common\Security::validate($notification_email, 'email'))
+        {
+            \Common\AJAX::error('The notification e-mail is not valid.');
+        }
+        
+        if ($notification_email == $email)
+        {
+            \Common\AJAX::error('The notification e-mail cannot be the same as your own e-mail address.');
+        }
+        
         // Edit.
         
         $alias = \Models\Alias::get($alias_id);
@@ -122,6 +133,7 @@ class Alias extends Base
         $alias->name = $name;
         $alias->email = $email;
         $alias->signature = $signature;
+        $alias->set_note('notification_email', $notification_email);
         $alias->save();
         
         // Make default?

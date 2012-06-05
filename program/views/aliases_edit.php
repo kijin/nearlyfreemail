@@ -33,6 +33,12 @@
     </fieldset>
     
     <fieldset>
+        <br />
+        <label for="notification_email">Send new mail notification to:</label>
+        <input type="text" id="notification_email" name="notification_email" value="<?php e($alias->get_note('notification_email')); ?>" /> &nbsp;
+    </fieldset>
+    
+    <fieldset>
         <?php \Common\Session::add_token($token = \Common\Security::get_random(16)); ?>
         <input type="hidden" name="alias_id" value="<?php e($alias->id); ?>" />
         <input type="hidden" name="csrf_token" id="csrf_token" value="<?php e($token); ?>" />

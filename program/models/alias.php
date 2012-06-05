@@ -14,6 +14,7 @@ class Alias extends \Beaver\Base
     public $incoming_key;
     public $signature;
     public $created_time;
+    public $notes;
     
     // Get the incoming URL.
     
@@ -38,6 +39,38 @@ class Alias extends \Beaver\Base
         $contact->name = $this->name;
         $contact->email = $this->email;
         return $contact->get_profile();
+    }
+    
+    // Get a note item.
+    
+    public function get_note($key)
+    {
+        if (!$this->notes) return null;
+        $decoded = json_decode($this->notes, true);
+        if (is_array($decoded) && array_key_exists($key, $decoded))
+        {
+            return $decoded[$key];
+        }
+        else
+        {
+            return null;
+        }
+    }
+    
+    // Set a note item.
+    
+    public function set_note($key, $value)
+    {
+        if ($this->notes)
+        {
+            $decoded = json_decode($this->notes, true);
+        }
+        else
+        {
+            $decoded = array();
+        }
+        $decoded[$key] = $value;
+        $this->notes = json_encode($decoded);
     }
     
     // Is this the default alias for the account that owns it?

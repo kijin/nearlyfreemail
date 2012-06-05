@@ -41,6 +41,10 @@
         </span>
         <br />
         <span class="url">Forwarding URL: <strong><?php e($alias->get_incoming_url()); ?></strong></span>
+        <?php if ($notification_email = $alias->get_note('notification_email')): ?>
+            <br />
+            <span class="url">Send new mail notification to: <strong><?php e($notification_email); ?></strong></span>
+        <?php endif; ?>
     </p>
     <?php endforeach; ?>
     </fieldset>
