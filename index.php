@@ -6,15 +6,15 @@
  * -----------------------------------------------------------------------------
  * 
  * @package    NearlyFreeMail
- * @author     Kijin Sung <kijin.sung@gmail.com>
- * @copyright  (c) 2011, Kijin Sung <kijin.sung@gmail.com>
+ * @author     Kijin Sung <kijin@kijinsung.com>
+ * @copyright  (c) 2011-2013, Kijin Sung <kijin@kijinsung.com>
  * @license    GPL v3 <http://www.opensource.org/licenses/gpl-3.0.html>
  * @link       http://github.com/kijin/nearlyfreemail
  * @version    0.2.14
  * 
  * -----------------------------------------------------------------------------
  * 
- * Copyright (c) 2011, Kijin Sung <kijin.sung@gmail.com>
+ * Copyright (c) 2011-2013, Kijin Sung <kijin@kijinsung.com>
  * 
  * This program is free software: you can redistribute it and/or modify it
  * under the terms of the GNU General Public License as published by the Free
