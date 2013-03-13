@@ -46,6 +46,17 @@ function u( /* args */ )
     return e(str_replace('//', '/', $base . '/' . implode('/', $args)));
 }
 
+// Check for HTTPS status.
+
+function is_https()
+{
+    if (isset($_SERVER['HTTP_X_NFSN_HTTPS']) && $_SERVER['HTTP_X_NFSN_HTTPS'] === 'yes') return true;
+    if (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https') return true;
+    if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] === 'on' || $_SERVER['HTTPS'] > 0)) return true;
+    if (isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] === 443) return true;
+    return false;
+}
+
 // Third-party library loader.
 
 function load_third_party($library)

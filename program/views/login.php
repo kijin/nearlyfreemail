@@ -10,7 +10,11 @@
     
     <div class="rounded box">
     
-        <p>Please make sure that your Internet connection is secure!</p>
+        <?php if (is_https()): ?>
+            <p>Reminder: Always make sure that your connection is secure.</p>
+        <?php else: ?>
+            <p class="ssl_warning">Warning: It seems that your connection is insecure.<br />It is strongly recommended that you set up SSL before you proceed.</p>
+        <?php endif; ?>
         
         <form id="login" class="ajax_capable" action="<?php u('/account/login'); ?>" method="post" accept-charset="UTF-8">
         
@@ -20,7 +24,7 @@
             <p class="margin"><label for="pass">Passphrase</label></p>
             <p><input id="pass" name="pass" type="password" /></p>
             
-            <p class="margin right"><button type="submit" class="rounded">Login</button></p>
+            <p class="margin right"><button type="submit" class="rounded">Login <?php if (!is_https()): ?>without SSL<?php endif; ?></button></p>
             
         </form>
         

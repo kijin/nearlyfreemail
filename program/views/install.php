@@ -13,6 +13,10 @@
         <p>Welcome to NearlyFreeMail!</p>
         <p>Please complete the installation by creating your first e-mail account.</p>
         
+        <?php if (!is_https()): ?>
+            <p class="ssl_warning margin_up">Warning: It seems that your connection is insecure.<br />It is strongly recommended that you set up SSL before you proceed.</p>
+        <?php endif; ?>
+        
         <form id="install" class="ajax_capable" action="index.php" method="post" accept-charset="UTF-8">
         
             <p class="margin">
