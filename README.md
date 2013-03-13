@@ -151,16 +151,13 @@ Outgoing messages, on the other hand, are subject to
 NFSN's [sending limits](https://members.nearlyfreespeech.net/support/faq?q=EmailBank#EmailBank).
 This should be more than enough unless you frequently try to e-mail a lot of people.
 
-As of April 2011, NFSN does not support HTTPS on member sites.
-People can steal your passphrase (and more) if you use NearlyFreeMail (or any other non-HTTPS site)
+It is strongly recommended that you use SSL when connecting to your copy of NearlyFreeMail.
+People can steal your passphrase (and more) if you use NearlyFreeMail (or any other non-SSL site)
 with an insecure Internet connection, such as free Wi-Fi hotspots at libraries and coffee shops.
-Many governments and ISPs also have the capacity to intercept anything not sent over HTTPS.
-So if you care about security at all, **use a VPN or SSH tunnel whenever you use NearlyFreeMail**.
-NFSN [seems to allow](https://members.nearlyfreespeech.net/support/faq?q=SSH#SSH)
-using an SSH tunnel with your NFSN account to manage your own site -- but please don't abuse it --
-and there are other places where you can rent a low-cost virtual server to proxy through.
-Also, there are programs such as [FoxyProxy](https://addons.mozilla.org/en-US/firefox/addon/foxyproxy-standard/)
-which can be configured to switch to a tunneled connection automatically when you visit your own site.
+Many governments and ISPs also have the capacity to intercept anything not sent over SSL.
+So if you care about security at all, follow NFSN's directions for setting up SSL on your site.
+As of March 2013, NFSN offers SSL for free on request on all nfshost.com subdomains,
+and you can purchase your own SSL certificates from third parties as well.
 
 You might be tempted to add HTTP authentication ([basic](http://en.wikipedia.org/wiki/Basic_access_authentication) or
 [digest](http://en.wikipedia.org/wiki/Digest_access_authentication)) to your site. This is a bad idea.
