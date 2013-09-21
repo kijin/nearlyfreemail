@@ -2,7 +2,9 @@ RewriteEngine On
 RewriteCond $1 !^(public/|favicon\.ico|robots\.txt)
 RewriteRule ^(.*)$ index.php [L]
 
-php_value log_errors On
-php_value magic_quotes_gpc Off
-php_value post_max_size 32M
-php_value upload_max_filesize 32M
+<IfModule mod_php5.c>
+    php_value log_errors On
+    php_value magic_quotes_gpc Off
+    php_value post_max_size 32M
+    php_value upload_max_filesize 32M
+</IfModule>
