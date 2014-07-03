@@ -10,13 +10,20 @@ class Incoming extends Base
     {
         // Does the client look like NFSN's e-mail forwarding gateway?
         
-        if (strpos($_SERVER['HTTP_USER_AGENT'], 'NearlyFreeSpeech.NET') === false ||
-            !isset($_POST['From']) || !isset($_POST['To']) || !isset($_POST['Date']) || 
-            !isset($_POST['Subject']) || !isset($_POST['Body']) ||
-            !isset($_FILES['headers']) || !isset($_FILES['raw0']) ||
-            !is_uploaded_file($_FILES['raw0']['tmp_name']))
+        $errortype = 0;
+        if (strpos($_SERVER['HTTP_USER_AGENT'], 'NearlyFreeSpeech.NET') === false) $errortype = $errortype | 1;
+        if (!isset($_POST['From'])) $errortype = $errortype | 2;
+        if (!isset($_POST['To'])) $errortype = $errortype | 4;
+        if (!isset($_POST['Date'])) $errortype = $errortype | 8;
+        if (!isset($_POST['Subject'])) $errortype = $errortype | 16;
+        if (!isset($_POST['Body'])) $errortype = $errortype | 32;
+        if (!isset($_FILES['headers'])) $errortype = $errortype | 64;
+        if (!isset($_FILES['raw0'])) $errortype = $errortype | 128;
+        if (!is_uploaded_file($_FILES['raw0']['tmp_name'])) $errortype = $errortype | 256;
+        
+        if ($errortype > 0)
         {
-            error_log('This client doesn\'t look like NFSN. Request denied. [code 422]');
+            error_log('This client doesn\'t look like NFSN. Request denied. [code 422, type ' . $errortype . ']');
             $this->return_status(422, 'Unprocessable Entity');
         }
         
