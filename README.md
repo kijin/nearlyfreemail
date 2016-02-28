@@ -37,7 +37,7 @@ As of this writing, NearlyFreeMail supports:
 
 - Multiple accounts, each with multiple aliases
 - Sending and receiving plain-text messages with your own domain name _(Sorry, no HTML)_
-- Aattachments up to ~7MB _(Larger messages may be rejected by NFSN)_
+- Attachments up to ~7MB _(Larger messages may be rejected by NFSN)_
 - Reply, reply all, and forward _(With appropriate `In-Reply-To:` and `References:` headers)_
 - Basic spam filtering _(Based on spam scores assigned by NFSN's e-mail forwarder)_
 - Draft auto-saving _(This is the only feature that requires JavaScript)_
